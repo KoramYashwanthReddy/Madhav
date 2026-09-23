@@ -18,9 +18,9 @@ The complete MADHAV architecture encompasses 41 distinct modules ranging from pl
 
 ## Current Module
 
-**Module 02 — Configuration & Environment**
+**Module 03 — Identity & Personal Profile**
 
-This repository implements **Module 01: Platform Foundation** and **Module 02: Configuration & Environment**. Future modules (03 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
+This repository implements **Module 01: Platform Foundation**, **Module 02: Configuration & Environment**, and **Module 03: Identity & Personal Profile**. Future modules (04 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
 
 ---
 
@@ -28,9 +28,10 @@ This repository implements **Module 01: Platform Foundation** and **Module 02: C
 
 1. **Strict Modular Isolation**: Each module builds clean abstractions without early coupling to future features.
 2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `madhav.config` instead of directly accessing `os.getenv()`.
-3. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
-4. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret credentials.
-5. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies or database state.
+3. **Identity Decoupled from Authentication**: Identity defines *"Who Madhav is serving"* (`IdentityContext`) and operates independently from authentication mechanisms.
+4. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
+5. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret or personal credentials.
+6. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies or database state.
 
 ---
 
@@ -82,6 +83,34 @@ Madhav/
 │       │   ├── request_id.py
 │       │   └── responses.py
 │       │
+│       ├── identity/
+│       │   ├── __init__.py
+│       │   ├── exceptions.py
+│       │   ├── api/
+│       │   │   ├── __init__.py
+│       │   │   └── routes.py
+│       │   ├── domain/
+│       │   │   ├── __init__.py
+│       │   │   ├── assistant.py
+│       │   │   ├── context.py
+│       │   │   ├── enums.py
+│       │   │   ├── owner.py
+│       │   │   ├── preferences.py
+│       │   │   └── profile.py
+│       │   ├── repositories/
+│       │   │   ├── __init__.py
+│       │   │   ├── base.py
+│       │   │   └── memory.py
+│       │   ├── schemas/
+│       │   │   ├── __init__.py
+│       │   │   ├── assistant.py
+│       │   │   ├── owner.py
+│       │   │   ├── preferences.py
+│       │   │   └── profile.py
+│       │   └── services/
+│       │       ├── __init__.py
+│       │       └── identity_service.py
+│       │
 │       └── common/
 │           ├── __init__.py
 │           ├── types.py
@@ -93,10 +122,13 @@ Madhav/
 │   │   ├── test_health.py
 │   │   ├── test_exceptions.py
 │   │   ├── test_logging.py
-│   │   └── test_request_id.py
+│   │   ├── test_request_id.py
+│   │   ├── test_identity_domain.py
+│   │   └── test_identity_service.py
 │   │
 │   ├── integration/
 │   │   ├── test_config_integration.py
+│   │   ├── test_identity_api.py
 │   │   └── test_application.py
 │   │
 │   └── conftest.py
@@ -104,7 +136,8 @@ Madhav/
 ├── docs/
 │   └── architecture/
 │       ├── module-01-platform-foundation.md
-│       └── module-02-configuration.md
+│       ├── module-02-configuration.md
+│       └── module-03-identity-personal-profile.md
 │
 ├── scripts/
 │   ├── dev.py
@@ -129,52 +162,17 @@ MADHAV uses a centralized, strongly typed configuration system powered by `pydan
 - `testing`: Isolated deterministic defaults, disables `.env` file inheritance.
 - `production`: Enforces strict security validation rules (rejects `debug=True`, prohibits CORS origin wildcard `*` with credentials).
 
-### Environment Variable Precedence
-1. Built-in defaults
-2. Environment-specific defaults
-3. `.env` file (loaded if present, ignored in `testing`)
-4. Environment variables (prefixed with `MADHAV_`)
-5. Explicit runtime overrides
+---
 
-### Environment Variable Naming
-Environment variables use `MADHAV_` prefix and `__` (double underscore) for nested categories:
+## Identity & Personal Profile
 
-```bash
-MADHAV_APPLICATION__ENVIRONMENT=development
-MADHAV_APPLICATION__DEBUG=true
-MADHAV_SERVER__HOST=127.0.0.1
-MADHAV_SERVER__PORT=8000
-MADHAV_LOGGING__LEVEL=INFO
-MADHAV_SECURITY__SECRET_KEY=insecure-development-secret-key
-```
-
-### Configuration Diagnostics & Secret Masking
-To inspect current active settings with secret fields masked:
-
-```bash
-uv run python -m madhav.config
-```
-
-Sample output:
-
-```json
-{
-  "application": {
-    "name": "MADHAV",
-    "service": "madhav",
-    "version": "0.1.0",
-    "environment": "development",
-    "debug": false
-  },
-  "server": {
-    "host": "127.0.0.1",
-    "port": 8000
-  },
-  "security": {
-    "secret_key": "***REDACTED***"
-  }
-}
-```
+Module 03 introduces the identity domain contract and profile subsystem under `/api/v1/identity`:
+- **Assistant Identity**: `GET /api/v1/identity/assistant` (Default name `"Madhav"`).
+- **Owner Identity**: `GET /api/v1/identity/owner` (Partial profile support, zero fake personal data).
+- **Personal Profile**: `GET /api/v1/identity/profile` & `PUT /api/v1/identity/profile`.
+- **Safe Identity Summary**: `GET /api/v1/identity/summary` (Non-sensitive profile fields for safe logging).
+- **Preferences**: `GET /api/v1/identity/preferences`, `PATCH /api/v1/identity/preferences`, `PATCH /api/v1/identity/communication`, `PATCH /api/v1/identity/locale`.
+- **Profile Completeness**: `GET /api/v1/identity/completeness` (Deterministic score 0-100% and missing recommended fields).
 
 ---
 
@@ -186,23 +184,11 @@ Install `uv` (if not already installed) and synchronize dependencies:
 uv sync --extra dev
 ```
 
-Copy `.env.example` to `.env` for local configuration overrides:
-
-```bash
-cp .env.example .env
-```
-
 ---
 
 ## Run
 
 To start the local Uvicorn development server with hot reloading:
-
-```bash
-uv run uvicorn madhav.main:app --reload
-```
-
-Alternatively, use the developer runner script:
 
 ```bash
 uv run python scripts/dev.py
@@ -228,12 +214,6 @@ To check for code quality and style compliance using Ruff:
 uv run python -m ruff check .
 ```
 
-To automatically format files:
-
-```bash
-uv run python -m ruff format --check .
-```
-
 ---
 
 ## Type Check
@@ -256,29 +236,13 @@ uv run python scripts/verify.py
 
 ---
 
-## Architecture Rules
-
-- **Centralized Settings Access**: Application code must consume settings via `get_settings()` from `madhav.config` instead of reading `os.getenv()` directly.
-- **No Mocking Future Modules**: Module 02 provides configuration foundations without creating fake or stubbed implementations of future AI components.
-- **Secret Redaction**: Secret values use `SecretStr` and are masked (`***REDACTED***`) in logs, diagnostic dumps, and API responses.
-- **Zero Raw Stack Traces**: Internal exceptions are caught and logged with tracebacks while returning sanitized error envelopes to clients.
-
----
-
-## Security Philosophy
-
-- Automatic header masking for Authorization/Bearer tokens and password strings in log outputs.
-- Header validation for incoming `X-Request-ID` to prevent header injection.
-- Strict production configuration validation rejecting dangerous settings (e.g. `debug=True` in production).
-
----
-
 ## Module Development Strategy
 
 MADHAV is built sequentially across 41 modules:
 - **01. Platform Foundation** [COMPLETED]
 - **02. Configuration & Environment** [COMPLETED]
-- 03. Identity & Personal Profile (Next)
-- 04–41. (Future Modules)
+- **03. Identity & Personal Profile** [COMPLETED]
+- 04. AI Runtime (Next)
+- 05–41. (Future Modules)
 
-Only Modules 01 and 02 are implemented in this repository state.
+Only Modules 01, 02, and 03 are implemented in this repository state.

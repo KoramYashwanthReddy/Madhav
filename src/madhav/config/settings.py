@@ -11,6 +11,7 @@ from madhav.config.sections import (
     ApplicationSettings,
     CORSSettings,
     FeatureFlags,
+    IdentitySettings,
     LoggingSettings,
     SecuritySettings,
     ServerSettings,
@@ -25,7 +26,7 @@ from madhav.config.validators import (
 class Settings(BaseSettings):
     """MADHAV Root Configuration Model.
 
-    Combines application, server, API, logging, security, CORS, and feature flag settings.
+    Combines application, server, API, logging, security, CORS, identity, and feature flag settings.
     Supports environment variables prefixed with `MADHAV_` and double-underscore nested keys.
     """
 
@@ -44,6 +45,7 @@ class Settings(BaseSettings):
     security: SecuritySettings = Field(default_factory=SecuritySettings)
     cors: CORSSettings = Field(default_factory=CORSSettings)
     features: FeatureFlags = Field(default_factory=FeatureFlags)
+    identity: IdentitySettings = Field(default_factory=IdentitySettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""

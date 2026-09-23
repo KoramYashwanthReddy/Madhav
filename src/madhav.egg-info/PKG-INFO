@@ -11,6 +11,7 @@ Requires-Dist: fastapi>=0.110.0
 Requires-Dist: uvicorn[standard]>=0.28.0
 Requires-Dist: pydantic>=2.6.0
 Requires-Dist: pydantic-settings>=2.2.0
+Requires-Dist: tzdata>=2024.1
 Provides-Extra: dev
 Requires-Dist: pytest>=8.0.0; extra == "dev"
 Requires-Dist: pytest-asyncio>=0.23.0; extra == "dev"
@@ -39,18 +40,20 @@ The complete MADHAV architecture encompasses 41 distinct modules ranging from pl
 
 ## Current Module
 
-**Module 01 — Platform Foundation**
+**Module 03 — Identity & Personal Profile**
 
-This repository currently implements **Module 01: Platform Foundation**. Future modules (02 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
+This repository implements **Module 01: Platform Foundation**, **Module 02: Configuration & Environment**, and **Module 03: Identity & Personal Profile**. Future modules (04 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
 
 ---
 
 ## Architecture Philosophy
 
 1. **Strict Modular Isolation**: Each module builds clean abstractions without early coupling to future features.
-2. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
-3. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret credentials.
-4. **Environment Independent & Testable**: Core logic operates without mandatory cloud dependencies or database state.
+2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `madhav.config` instead of directly accessing `os.getenv()`.
+3. **Identity Decoupled from Authentication**: Identity defines *"Who Madhav is serving"* (`IdentityContext`) and operates independently from authentication mechanisms.
+4. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
+5. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret or personal credentials.
+6. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies or database state.
 
 ---
 
@@ -58,6 +61,7 @@ This repository currently implements **Module 01: Platform Foundation**. Future 
 
 - **Language**: Python 3.12+
 - **Package Manager**: `uv`
+- **Configuration**: Pydantic Settings
 - **Web Framework**: FastAPI & Uvicorn
 - **Validation & Serialization**: Pydantic v2 & `pydantic-settings`
 - **Testing**: Pytest, `pytest-asyncio`, `httpx`
@@ -74,11 +78,22 @@ Madhav/
 │   └── madhav/
 │       ├── __init__.py
 │       ├── main.py
+│       ├── version.py
 │       │
 │       ├── api/
 │       │   ├── __init__.py
 │       │   ├── router.py
 │       │   └── health.py
+│       │
+│       ├── config/
+│       │   ├── __init__.py
+│       │   ├── __main__.py
+│       │   ├── enums.py
+│       │   ├── errors.py
+│       │   ├── loader.py
+│       │   ├── sections.py
+│       │   ├── settings.py
+│       │   └── validators.py
 │       │
 │       ├── core/
 │       │   ├── __init__.py
@@ -90,43 +105,96 @@ Madhav/
 │       │   ├── request_id.py
 │       │   └── responses.py
 │       │
-│       ├── common/
+│       ├── identity/
 │       │   ├── __init__.py
-│       │   ├── types.py
-│       │   └── interfaces.py
+│       │   ├── exceptions.py
+│       │   ├── api/
+│       │   │   ├── __init__.py
+│       │   │   └── routes.py
+│       │   ├── domain/
+│       │   │   ├── __init__.py
+│       │   │   ├── assistant.py
+│       │   │   ├── context.py
+│       │   │   ├── enums.py
+│       │   │   ├── owner.py
+│       │   │   ├── preferences.py
+│       │   │   └── profile.py
+│       │   ├── repositories/
+│       │   │   ├── __init__.py
+│       │   │   ├── base.py
+│       │   │   └── memory.py
+│       │   ├── schemas/
+│       │   │   ├── __init__.py
+│       │   │   ├── assistant.py
+│       │   │   ├── owner.py
+│       │   │   ├── preferences.py
+│       │   │   └── profile.py
+│       │   └── services/
+│       │       ├── __init__.py
+│       │       └── identity_service.py
 │       │
-│       └── version.py
+│       └── common/
+│           ├── __init__.py
+│           ├── types.py
+│           └── interfaces.py
 │
 ├── tests/
 │   ├── unit/
+│   │   ├── test_config.py
 │   │   ├── test_health.py
 │   │   ├── test_exceptions.py
 │   │   ├── test_logging.py
-│   │   └── test_request_id.py
+│   │   ├── test_request_id.py
+│   │   ├── test_identity_domain.py
+│   │   └── test_identity_service.py
 │   │
 │   ├── integration/
+│   │   ├── test_config_integration.py
+│   │   ├── test_identity_api.py
 │   │   └── test_application.py
 │   │
 │   └── conftest.py
 │
 ├── docs/
 │   └── architecture/
-│       └── module-01-platform-foundation.md
+│       ├── module-01-platform-foundation.md
+│       ├── module-02-configuration.md
+│       └── module-03-identity-personal-profile.md
 │
 ├── scripts/
 │   ├── dev.py
 │   └── verify.py
 │
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
+├── .env.example
 ├── .gitignore
 ├── .python-version
 ├── pyproject.toml
 ├── README.md
 └── LICENSE
 ```
+
+---
+
+## Configuration
+
+MADHAV uses a centralized, strongly typed configuration system powered by `pydantic-settings`.
+
+### Supported Environments
+- `development` (Default): Local defaults, interactive docs (`/docs`, `/redoc`), hot reload support.
+- `testing`: Isolated deterministic defaults, disables `.env` file inheritance.
+- `production`: Enforces strict security validation rules (rejects `debug=True`, prohibits CORS origin wildcard `*` with credentials).
+
+---
+
+## Identity & Personal Profile
+
+Module 03 introduces the identity domain contract and profile subsystem under `/api/v1/identity`:
+- **Assistant Identity**: `GET /api/v1/identity/assistant` (Default name `"Madhav"`).
+- **Owner Identity**: `GET /api/v1/identity/owner` (Partial profile support, zero fake personal data).
+- **Personal Profile**: `GET /api/v1/identity/profile` & `PUT /api/v1/identity/profile`.
+- **Safe Identity Summary**: `GET /api/v1/identity/summary` (Non-sensitive profile fields for safe logging).
+- **Preferences**: `GET /api/v1/identity/preferences`, `PATCH /api/v1/identity/preferences`, `PATCH /api/v1/identity/communication`, `PATCH /api/v1/identity/locale`.
+- **Profile Completeness**: `GET /api/v1/identity/completeness` (Deterministic score 0-100% and missing recommended fields).
 
 ---
 
@@ -145,12 +213,6 @@ uv sync --extra dev
 To start the local Uvicorn development server with hot reloading:
 
 ```bash
-uv run uvicorn madhav.main:app --reload
-```
-
-Alternatively, use the developer runner script:
-
-```bash
 uv run python scripts/dev.py
 ```
 
@@ -161,7 +223,7 @@ uv run python scripts/dev.py
 To execute the unit and integration test suite:
 
 ```bash
-uv run pytest
+uv run python -m pytest
 ```
 
 ---
@@ -171,13 +233,7 @@ uv run pytest
 To check for code quality and style compliance using Ruff:
 
 ```bash
-uv run ruff check .
-```
-
-To automatically format files:
-
-```bash
-uv run ruff format --check .
+uv run python -m ruff check .
 ```
 
 ---
@@ -187,14 +243,14 @@ uv run ruff format --check .
 To verify static type safety with MyPy:
 
 ```bash
-uv run mypy src
+uv run python -m mypy src
 ```
 
 ---
 
-## Foundation Verification
+## Platform Verification
 
-To execute the full verification sequence (Ruff, MyPy, Pytest):
+To execute the full verification sequence (Configuration Diagnostics, Ruff, MyPy, Pytest):
 
 ```bash
 uv run python scripts/verify.py
@@ -202,26 +258,13 @@ uv run python scripts/verify.py
 
 ---
 
-## Architecture Rules
-
-- **No Mocking Future Modules**: Module 01 provides foundation abstractions (e.g. lifecycle, health checks, error models) without creating fake or stubbed implementations of future AI components.
-- **Consistent Response Envelopes**: All API responses use standard JSON structures with top-level `success`, `data` or `error`, and `request_id`.
-- **Zero Raw Stack Traces**: Internal exceptions are caught and logged with tracebacks while returning sanitized 500 error envelopes to clients.
-
----
-
-## Security Philosophy
-
-- Automatic header masking for Authorization/Bearer tokens and password strings in log outputs.
-- Header validation for incoming `X-Request-ID` to prevent header injection.
-
----
-
 ## Module Development Strategy
 
 MADHAV is built sequentially across 41 modules:
-- **01. Platform Foundation** (Current)
-- 02. Configuration & Environment (Next)
-- 03–41. (Future Modules)
+- **01. Platform Foundation** [COMPLETED]
+- **02. Configuration & Environment** [COMPLETED]
+- **03. Identity & Personal Profile** [COMPLETED]
+- 04. AI Runtime (Next)
+- 05–41. (Future Modules)
 
-Only Module 01 is implemented in this repository state.
+Only Modules 01, 02, and 03 are implemented in this repository state.

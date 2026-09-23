@@ -104,3 +104,11 @@ class FeatureFlags(BaseModel):
     api_docs: bool = Field(default=True, description="Toggle interactive API docs endpoints")
     debug_endpoints: bool = Field(default=False, description="Toggle internal diagnostic endpoints")
     experimental_features: bool = Field(default=False, description="Toggle experimental features")
+
+
+class IdentitySettings(BaseModel):
+    """Identity subsystem default configuration settings."""
+
+    assistant_name: str = Field(default="Madhav", description="Default assistant identity name")
+    default_timezone: str = Field(default="UTC", description="Default fallback timezone")
+    default_locale: str = Field(default="en_US", description="Default fallback locale")
