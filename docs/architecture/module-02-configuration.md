@@ -2,179 +2,104 @@
 
 ## 1. Purpose
 
-Module 02 provides a centralized, strongly typed, environment-aware configuration architecture for the MADHAV Personal AI System. It establishes `get_settings()` as the single source of truth for runtime configuration across all platform modules, eliminating raw `os.getenv()` calls.
+Module 02 establishes a centralized, strongly typed, environment-aware configuration framework for the MADHAV Personal AI platform. It replaces direct `os.getenv()` calls across modules with a single source of truth (`Settings`), providing environment resolution, strict validation, secret redaction, and seamless FastAPI integration.
 
 ---
 
 ## 2. Responsibilities
 
-- **Centralized Source of Truth**: Unified Pydantic Settings model hierarchy (`Settings`).
-- **Environment Awareness**: Strongly typed execution environments (`development`, `testing`, `production`, `staging`).
-- **Precedence Management**: Hierarchical settings loading combining built-in defaults, `.env` files, and `MADHAV_` environment variables.
-- **Secret Redaction**: Automatic masking of `SecretStr` fields into `"***REDACTED***"` in log outputs, health responses, and CLI diagnostics (`safe_dict()` / `redacted()`).
-- **Startup Validation**: Invariant enforcement checking port limits (1–65535), log levels, and production safety invariants (debug mode prohibition, wildcard CORS credential checks, placeholder secret keys).
-- **FastAPI Integration**: Dynamic configuration of app metadata, interactive docs (`/docs`, `/redoc`, `/openapi.json`), CORS middleware, and logging level.
-- **Test Isolation**: Guaranteeing deterministic test execution under `Environment.TESTING` without reading developer `.env` files.
+- **Strongly Typed Settings**: Uses `pydantic-settings` to parse, validate, and structure configuration settings across 7 distinct categories.
+- **Environment Precedence**: Enforces a strict 5-tier configuration loading order (`defaults -> environment-specific -> .env -> environment variables -> runtime overrides`).
+- **Secret Masking & Redaction**: Protects secret credentials (`SecretStr`) from leaking into logs, diagnostics (`python -m madhav.config`), or API responses via `redacted()` / `safe_dict()`.
+- **Validation Boundaries**: Enforces valid ports (1-65535), log levels, and production safety constraints (`debug=False` required, CORS origin wildcard prohibited when credentials are enabled).
+- **FastAPI Integration**: Dynamically configures application titles, docs (`/docs`, `/redoc`), OpenAPI schemas, CORS middleware, and structured logging based on active settings.
+- **Deterministic Test Isolation**: Autouse fixtures enforce `Environment.TESTING` during Pytest runs, preventing developer `.env` pollution.
 
 ---
 
-## 3. Configuration Hierarchy & Precedence
+## 3. Package Structure
 
-Configuration values are resolved in the following strict hierarchy:
+```
+src/madhav/config/
+├── __init__.py           # Exports Settings, get_settings, Environment, ConfigurationError
+├── __main__.py          # CLI diagnostic entry point (python -m madhav.config)
+├── enums.py              # Environment (DEVELOPMENT, TESTING, PRODUCTION)
+├── errors.py             # ConfigurationError exception
+├── loader.py             # Environment loading strategies
+├── sections.py           # Application, Server, API, Logging, Security, CORS, FeatureFlags sub-models
+├── settings.py           # Root Settings pydantic-settings model and get_settings() getter
+└── validators.py         # Network, logging, and production safety validation functions
+```
+
+---
+
+## 4. Configuration Loading Precedence
+
+Configuration settings are resolved following a deterministic hierarchy:
 
 ```mermaid
 graph TD
-    A["Built-in Defaults (sections.py)"] --> B["Environment Defaults"]
-    B --> C["Local .env File (Ignored in TESTING)"]
-    C --> D["Environment Variables (MADHAV_*)"]
-    D --> E["Explicit Runtime Overrides (loader.py)"]
-    E --> F["Validated Settings Singleton"]
+    Defaults["1. Safe Built-in Defaults"] --> EnvDefaults["2. Environment-Specific Defaults"]
+    EnvDefaults --> EnvFile["3. Local .env File (Ignored in TESTING)"]
+    EnvFile --> EnvVars["4. Environment Variables (MADHAV_ Prefix)"]
+    EnvVars --> Overrides["5. Explicit Runtime Overrides"]
+    Overrides --> SettingsInstance["Validated Root Settings Object"]
 ```
 
----
-
-## 4. Settings Architecture
-
-The configuration model is structured into domain-specific Pydantic sections:
-
-```mermaid
-classDiagram
-    class Settings {
-        +ApplicationSettings application
-        +ServerSettings server
-        +APISettings api
-        +LoggingSettings logging
-        +SecuritySettings security
-        +CORSSettings cors
-        +FeatureFlags features
-        +validate_runtime_invariants()
-        +redacted() Dict
-    }
-
-    class ApplicationSettings {
-        +str name
-        +str service_name
-        +str version
-        +Environment environment
-        +bool debug
-    }
-
-    class ServerSettings {
-        +str host
-        +int port
-        +bool reload
-        +int workers
-    }
-
-    class APISettings {
-        +str prefix
-        +str version
-        +bool docs_enabled
-        +bool openapi_enabled
-        +bool redoc_enabled
-    }
-
-    class LoggingSettings {
-        +LogLevel level
-        +bool structured_logging_enabled
-        +bool console_logging_enabled
-        +bool include_request_id
-    }
-
-    class SecuritySettings {
-        +SecretStr secret_key
-        +List~str~ allowed_hosts
-        +List~str~ trusted_origins
-        +bool secure_cookies
-        +bool require_https
-        +bool security_headers_enabled
-    }
-
-    class CORSSettings {
-        +bool enabled
-        +List~str~ allowed_origins
-        +List~str~ allowed_methods
-        +List~str~ allowed_headers
-        +bool allow_credentials
-    }
-
-    class FeatureFlags {
-        +bool api_docs
-        +bool debug_endpoints
-        +bool experimental_features
-    }
-
-    Settings *-- ApplicationSettings
-    Settings *-- ServerSettings
-    Settings *-- APISettings
-    Settings *-- LoggingSettings
-    Settings *-- SecuritySettings
-    Settings *-- CORSSettings
-    Settings *-- FeatureFlags
-```
+Environment variables use double underscores for nested categories:
+- `MADHAV_APPLICATION__ENVIRONMENT=production`
+- `MADHAV_SERVER__PORT=8000`
+- `MADHAV_LOGGING__LEVEL=INFO`
 
 ---
 
 ## 5. Secret Handling & Redaction Boundary
 
-Secret values are stored as Pydantic `SecretStr` instances. When emitting diagnostics or inspecting configuration via CLI:
+Secret fields (such as `security.secret_key`) are represented as `pydantic.SecretStr` instances.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant CLI as CLI / Diagnostic Call
-    participant Loader as get_settings()
-    participant Settings as Settings Model
-    participant Mask as _mask_secrets()
-
-    CLI->>Loader: Call get_settings()
-    Loader->>Settings: Retrieve Singleton
-    CLI->>Settings: Call settings.redacted()
-    Settings->>Mask: Recursively traverse model dictionary
-    Note over Mask: Replace SecretStr & secret keys with '***REDACTED***'
-    Mask-->>CLI: Safe JSON dictionary output
+graph LR
+    Settings["Settings Object"] -->|get_settings()| App["Application Core"]
+    Settings -->|redacted() / safe_dict()| Diagnostics["CLI Diagnostic Output"]
+    Settings -->|redacted() / safe_dict()| Logging["Structured Log Formatter"]
+    
+    subgraph Secret Boundaries
+    App -->|Raw SecretStr| Auth["Future Security Modules"]
+    Diagnostics -->|***REDACTED***| stdout["Safe Stdout Output"]
+    Logging -->|***REDACTED***| Logs["Sanitized JSON Logs"]
+    end
 ```
 
 ---
 
-## 6. Startup Validation & Production Invariants
+## 6. Environment Resolution & Production Safeguards
 
-Before runtime initialization completes, `validate_runtime_invariants()` verifies:
-1. `server.port` is bounded between 1 and 65535.
-2. `logging.level` matches a valid `LogLevel` value.
-3. If `application.environment == Environment.PRODUCTION`:
-   - `application.debug` MUST be `False`.
-   - `cors.allowed_origins` MUST NOT contain wildcard `"*"` if `cors.allow_credentials` is `True`.
-   - `security.secret_key` MUST NOT be the default development placeholder string.
+Supported environments are represented by the `Environment` enum:
+- **`DEVELOPMENT`**: Local dev defaults, interactive docs (`/docs`, `/redoc`), hot-reload support.
+- **`TESTING`**: Isolated deterministic defaults, disabled `.env` inheritance.
+- **`PRODUCTION`**: Strict validation rules:
+  - Reject `debug=True`.
+  - Reject CORS wildcard origin `"*"` when `allow_credentials=True`.
+  - Require non-empty `allowed_hosts`.
 
 ---
 
-## 7. FastAPI Integration Flow
+## 7. Extension Points for Future Modules
 
-The application factory (`create_app`) receives `Settings` and configures server infrastructure:
+Future modules consume settings via `get_settings()` without directly reading `os.getenv(...)`:
 
-```mermaid
-graph TD
-    AppFactory["create_app(settings)"] --> LogSetup["setup_logging(level, json_format)"]
-    AppFactory --> FastAPIBase["Instantiate FastAPI(title, version, debug)"]
-    AppFactory --> DocsConfig{"Docs Enabled & Feature Flag True?"}
-    DocsConfig -->|Yes| EnableDocs["Set /docs, /redoc, /openapi.json"]
-    DocsConfig -->|No| DisableDocs["Set docs_url=None, redoc_url=None"]
-    AppFactory --> CORSConfig{"CORS Enabled?"}
-    CORSConfig -->|Yes| AddCORS["add_middleware(CORSMiddleware, origins, methods)"]
-    CORSConfig -->|No| SkipCORS["Skip CORS Middleware"]
-    AppFactory --> StoreState["Attach app.state.settings = settings"]
+```python
+from madhav.config import get_settings
+
+settings = get_settings()
+# Access typed configuration categories:
+# settings.application
+# settings.server
+# settings.api
+# settings.logging
+# settings.security
+# settings.cors
+# settings.features
 ```
 
----
-
-## 8. Extension Points for Future Modules
-
-Subsequent MADHAV modules (03 to 41) will extend Module 02 configuration by creating new section models in `src/madhav/config/sections.py` and referencing them in `Settings`:
-- Module 03 (Identity): `settings.identity`
-- Module 04 (AI Runtime): `settings.ai`
-- Module 05 (Model Management): `settings.models`
-- Module 08 (Memory Engine): `settings.memory`
-- Module 10 (RAG & Retrieval): `settings.rag`
-
-Future modules consume settings via `get_settings()` dependency injection without needing to alter core loading mechanics or environment variable resolution.
+Future modules (e.g. Identity, AI Runtime, RAG, Memory) add section models to `sections.py` and mount them onto `Settings` in `settings.py`.

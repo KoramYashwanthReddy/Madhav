@@ -1,226 +1,106 @@
-"""Configuration section models for MADHAV platform."""
+"""Configuration section models for MADHAV configuration system."""
 
-from pydantic import AliasChoices, BaseModel, Field, SecretStr
+from pydantic import BaseModel, Field, SecretStr
 
-from madhav.config.enums import Environment, LogLevel
-
-_DEFAULT_SECRET_KEY_PLACEHOLDER = "development-placeholder-secret-key-32-bytes"
+from madhav.common.types import LogLevel
+from madhav.config.enums import Environment
+from madhav.version import APP_NAME, SERVICE_NAME, VERSION
 
 
 class ApplicationSettings(BaseModel):
-    """Application identity and environment settings."""
+    """Application metadata and runtime mode configuration."""
 
-    name: str = Field(
-        default="MADHAV",
-        validation_alias=AliasChoices("MADHAV_APP_NAME", "MADHAV_APPLICATION__NAME", "name"),
-        description="Application name",
-    )
-    service_name: str = Field(
-        default="madhav",
-        validation_alias=AliasChoices(
-            "MADHAV_SERVICE_NAME", "MADHAV_APPLICATION__SERVICE_NAME", "service_name"
-        ),
-        description="Service identifier",
-    )
-    version: str = Field(
-        default="0.1.0",
-        validation_alias=AliasChoices("MADHAV_VERSION", "MADHAV_APPLICATION__VERSION", "version"),
-        description="Application version",
-    )
+    name: str = Field(default=APP_NAME, description="Application display name")
+    service: str = Field(default=SERVICE_NAME, description="Canonical service name")
+    version: str = Field(default=VERSION, description="Application version")
     environment: Environment = Field(
-        default=Environment.DEVELOPMENT,
-        validation_alias=AliasChoices(
-            "MADHAV_ENVIRONMENT", "MADHAV_APPLICATION__ENVIRONMENT", "environment"
-        ),
-        description="Execution environment",
+        default=Environment.DEVELOPMENT, description="Execution environment mode"
     )
-    debug: bool = Field(
-        default=False,
-        validation_alias=AliasChoices("MADHAV_DEBUG", "MADHAV_APPLICATION__DEBUG", "debug"),
-        description="Debug mode flag (must be False in production)",
-    )
+    debug: bool = Field(default=False, description="Enable debug mode")
 
 
 class ServerSettings(BaseModel):
-    """HTTP server and networking configuration settings."""
+    """HTTP server and network listener configuration."""
 
-    host: str = Field(
-        default="127.0.0.1",
-        validation_alias=AliasChoices("MADHAV_SERVER_HOST", "MADHAV_SERVER__HOST", "host"),
-        description="Server bind host address",
-    )
-    port: int = Field(
-        default=8000,
-        validation_alias=AliasChoices("MADHAV_SERVER_PORT", "MADHAV_SERVER__PORT", "port"),
-        description="Server listen port (1-65535)",
-    )
-    reload: bool = Field(
-        default=True,
-        validation_alias=AliasChoices("MADHAV_SERVER_RELOAD", "MADHAV_SERVER__RELOAD", "reload"),
-        description="Enable auto-reload for local development",
-    )
-    workers: int = Field(
-        default=1,
-        validation_alias=AliasChoices("MADHAV_SERVER_WORKERS", "MADHAV_SERVER__WORKERS", "workers"),
-        description="Number of worker processes",
-    )
+    host: str = Field(default="127.0.0.1", description="Server listening host IP")
+    port: int = Field(default=8000, description="Server listening port")
+    reload: bool = Field(default=False, description="Enable auto-reload for local development")
+    workers: int = Field(default=1, description="Number of worker processes")
 
 
 class APISettings(BaseModel):
-    """API routing and documentation settings."""
+    """API routing and documentation configuration."""
 
-    prefix: str = Field(
-        default="/api",
-        validation_alias=AliasChoices("MADHAV_API_PREFIX", "MADHAV_API__PREFIX", "prefix"),
-        description="Base API route prefix",
-    )
-    version: str = Field(
-        default="v1",
-        validation_alias=AliasChoices("MADHAV_API_VERSION", "MADHAV_API__VERSION", "version"),
-        description="Default API version segment",
-    )
+    prefix: str = Field(default="/api", description="Base API route prefix")
+    version: str = Field(default="v1", description="Default API version string")
     docs_enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices(
-            "MADHAV_API_DOCS_ENABLED", "MADHAV_API__DOCS_ENABLED", "docs_enabled"
-        ),
-        description="Enable interactive OpenAPI UI documentation (/docs)",
+        default=True, description="Enable interactive OpenAPI documentation (/docs, /redoc)"
     )
     openapi_enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices(
-            "MADHAV_API_OPENAPI_ENABLED", "MADHAV_API__OPENAPI_ENABLED", "openapi_enabled"
-        ),
-        description="Enable OpenAPI JSON schema endpoint (/openapi.json)",
-    )
-    redoc_enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices(
-            "MADHAV_API_REDOC_ENABLED", "MADHAV_API__REDOC_ENABLED", "redoc_enabled"
-        ),
-        description="Enable ReDoc interactive documentation (/redoc)",
+        default=True, description="Enable OpenAPI schema JSON endpoint (/openapi.json)"
     )
 
 
 class LoggingSettings(BaseModel):
-    """Structured logging configuration settings."""
+    """Structured logging configuration."""
 
-    level: LogLevel = Field(
-        default=LogLevel.INFO,
-        validation_alias=AliasChoices("MADHAV_LOG_LEVEL", "MADHAV_LOGGING__LEVEL", "level"),
-        description="Minimum active log level",
-    )
-    structured_logging_enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices(
-            "MADHAV_LOGGING__STRUCTURED_LOGGING_ENABLED", "structured_logging_enabled"
-        ),
-        description="Format logs as structured JSON",
-    )
-    console_logging_enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices(
-            "MADHAV_LOGGING__CONSOLE_LOGGING_ENABLED", "console_logging_enabled"
-        ),
-        description="Output log entries to stdout",
-    )
+    level: LogLevel = Field(default=LogLevel.INFO, description="Log output minimum severity level")
+    json_format: bool = Field(default=True, description="Use structured JSON log formatting")
+    console: bool = Field(default=True, description="Output log records to stdout")
     include_request_id: bool = Field(
-        default=True,
-        validation_alias=AliasChoices("MADHAV_LOGGING__INCLUDE_REQUEST_ID", "include_request_id"),
-        description="Include X-Request-ID in log records",
+        default=True, description="Include correlation request_id in log records"
     )
 
 
 class SecuritySettings(BaseModel):
-    """Foundation security boundary settings."""
+    """Security foundation parameters."""
 
     secret_key: SecretStr = Field(
-        default=SecretStr(_DEFAULT_SECRET_KEY_PLACEHOLDER),
-        validation_alias=AliasChoices(
-            "MADHAV_SECRET_KEY", "MADHAV_SECURITY__SECRET_KEY", "secret_key"
-        ),
-        description="Application secret key (must be overridden in production)",
+        default=SecretStr("insecure-development-secret-key-change-in-production"),
+        description="Core platform secret key for security operations",
     )
     allowed_hosts: list[str] = Field(
-        default_factory=lambda: ["*"],
-        validation_alias=AliasChoices("MADHAV_SECURITY__ALLOWED_HOSTS", "allowed_hosts"),
+        default_factory=lambda: ["127.0.0.1", "localhost"],
         description="Allowed HTTP Host header values",
     )
     trusted_origins: list[str] = Field(
-        default_factory=lambda: ["http://localhost:8000", "http://127.0.0.1:8000"],
-        validation_alias=AliasChoices("MADHAV_SECURITY__TRUSTED_ORIGINS", "trusted_origins"),
-        description="Trusted origin URLs",
+        default_factory=list, description="Trusted proxy/network origins"
     )
-    secure_cookies: bool = Field(
-        default=False,
-        validation_alias=AliasChoices("MADHAV_SECURITY__SECURE_COOKIES", "secure_cookies"),
-        description="Require Secure attribute on cookies",
-    )
-    require_https: bool = Field(
-        default=False,
-        validation_alias=AliasChoices("MADHAV_SECURITY__REQUIRE_HTTPS", "require_https"),
-        description="Enforce HTTPS redirect",
-    )
+    secure_cookies: bool = Field(default=False, description="Enforce secure flag on cookies")
+    require_https: bool = Field(default=False, description="Enforce HTTPS redirect boundary")
     security_headers_enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices(
-            "MADHAV_SECURITY__SECURITY_HEADERS_ENABLED", "security_headers_enabled"
-        ),
-        description="Enable standard security response headers",
+        default=True, description="Enable standard HTTP security headers"
     )
 
 
 class CORSSettings(BaseModel):
-    """Cross-Origin Resource Sharing (CORS) settings."""
+    """Cross-Origin Resource Sharing (CORS) middleware configuration."""
 
-    enabled: bool = Field(
-        default=True,
-        validation_alias=AliasChoices("MADHAV_CORS__ENABLED", "enabled"),
-        description="Enable CORS middleware",
-    )
+    enabled: bool = Field(default=True, description="Enable CORS middleware")
     allowed_origins: list[str] = Field(
         default_factory=lambda: [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
             "http://localhost:8000",
             "http://127.0.0.1:8000",
-            "http://localhost:3000",
         ],
-        validation_alias=AliasChoices("MADHAV_CORS__ALLOWED_ORIGINS", "allowed_origins"),
         description="Allowed CORS origin URLs",
     )
     allowed_methods: list[str] = Field(
-        default_factory=lambda: ["*"],
-        validation_alias=AliasChoices("MADHAV_CORS__ALLOWED_METHODS", "allowed_methods"),
-        description="Allowed CORS HTTP methods",
+        default_factory=lambda: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+        description="Allowed HTTP methods for CORS requests",
     )
     allowed_headers: list[str] = Field(
-        default_factory=lambda: ["*"],
-        validation_alias=AliasChoices("MADHAV_CORS__ALLOWED_HEADERS", "allowed_headers"),
-        description="Allowed CORS HTTP headers",
+        default_factory=lambda: ["*"], description="Allowed HTTP request headers for CORS"
     )
     allow_credentials: bool = Field(
-        default=True,
-        validation_alias=AliasChoices("MADHAV_CORS__ALLOW_CREDENTIALS", "allow_credentials"),
-        description="Allow credentials in CORS requests",
+        default=True, description="Allow credentials (cookies, authorization headers)"
     )
 
 
 class FeatureFlags(BaseModel):
-    """Platform feature flags foundation."""
+    """Typed internal feature flag toggles."""
 
-    api_docs: bool = Field(
-        default=True,
-        validation_alias=AliasChoices("MADHAV_FEATURES__API_DOCS", "api_docs"),
-        description="Feature flag for API documentation",
-    )
-    debug_endpoints: bool = Field(
-        default=False,
-        validation_alias=AliasChoices("MADHAV_FEATURES__DEBUG_ENDPOINTS", "debug_endpoints"),
-        description="Feature flag for debug diagnostics endpoints",
-    )
-    experimental_features: bool = Field(
-        default=False,
-        validation_alias=AliasChoices(
-            "MADHAV_FEATURES__EXPERIMENTAL_FEATURES", "experimental_features"
-        ),
-        description="Feature flag for experimental functionality",
-    )
+    api_docs: bool = Field(default=True, description="Toggle interactive API docs endpoints")
+    debug_endpoints: bool = Field(default=False, description="Toggle internal diagnostic endpoints")
+    experimental_features: bool = Field(default=False, description="Toggle experimental features")

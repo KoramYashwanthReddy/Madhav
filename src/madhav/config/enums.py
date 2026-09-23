@@ -1,22 +1,11 @@
-"""Environment and logging enumerations for MADHAV configuration."""
+"""Environment enumerations for MADHAV configuration system."""
 
-from enum import StrEnum
+from enum import StrEnum, auto
 
 
 class Environment(StrEnum):
-    """Execution environment enumeration."""
+    """Supported application execution environments."""
 
-    DEVELOPMENT = "development"
-    STAGING = "staging"
-    PRODUCTION = "production"
-    TESTING = "testing"
-
-
-class LogLevel(StrEnum):
-    """Logging level enumeration."""
-
-    DEBUG = "DEBUG"
-    INFO = "INFO"
-    WARNING = "WARNING"
-    ERROR = "ERROR"
-    CRITICAL = "CRITICAL"
+    DEVELOPMENT = auto()
+    TESTING = auto()
+    PRODUCTION = auto()

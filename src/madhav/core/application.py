@@ -4,8 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from madhav.api.router import register_routers
-from madhav.config.loader import get_settings
-from madhav.config.settings import Settings
+from madhav.config.settings import Settings, get_settings
 from madhav.core.error_handlers import register_exception_handlers
 from madhav.core.lifecycle import lifespan
 from madhav.core.logging import setup_logging
@@ -17,22 +16,27 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     if settings is None:
         settings = get_settings()
 
-    # 1. Configure structured logging with settings
+    # 1. Configure structured logging from settings
     setup_logging(
-        level=settings.logging.level,
-        json_format=settings.logging.structured_logging_enabled,
+        level=str(settings.logging.level),
+        json_format=settings.logging.json_format,
     )
 
-    # 2. Determine docs URLs from settings and feature flags
-    docs_url = "/docs" if (settings.api.docs_enabled and settings.features.api_docs) else None
-    redoc_url = "/redoc" if (settings.api.redoc_enabled and settings.features.api_docs) else None
-    openapi_url = "/openapi.json" if settings.api.openapi_enabled else None
+    # 2. Determine documentation availability from API settings and feature flags
+    docs_enabled = settings.api.docs_enabled and settings.features.api_docs
+    docs_url = f"{settings.api.prefix}/{settings.api.version}/docs" if docs_enabled else None
+    redoc_url = f"{settings.api.prefix}/{settings.api.version}/redoc" if docs_enabled else None
+    openapi_url = (
+        f"{settings.api.prefix}/{settings.api.version}/openapi.json"
+        if settings.api.openapi_enabled
+        else None
+    )
 
-    # 3. Instantiate FastAPI with application metadata and lifespan
+    # 3. Instantiate FastAPI with application metadata, docs configuration, and lifespan
     app = FastAPI(
         title=settings.application.name,
         version=settings.application.version,
-        description="MADHAV Personal AI Platform",
+        description="MADHAV Personal AI System",
         docs_url=docs_url,
         redoc_url=redoc_url,
         openapi_url=openapi_url,
@@ -52,7 +56,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             allow_headers=settings.cors.allowed_headers,
         )
 
-    # 5. Add Request ID middleware
+    # 5. Add Request ID correlation middleware
     app.add_middleware(RequestIDMiddleware)
 
     # 6. Register exception handlers

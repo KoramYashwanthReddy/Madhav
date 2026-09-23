@@ -16,19 +16,18 @@ The complete MADHAV architecture encompasses 41 distinct modules ranging from pl
 
 ---
 
-## Current Status & Completed Modules
+## Current Module
 
-- **Module 01 — Platform Foundation** [COMPLETED]
-- **Module 02 — Configuration & Environment** [COMPLETED]
+**Module 02 — Configuration & Environment**
 
-Future modules (03 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
+This repository implements **Module 01: Platform Foundation** and **Module 02: Configuration & Environment**. Future modules (03 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
 
 ---
 
 ## Architecture Philosophy
 
-1. **Single Source of Truth Configuration**: Centralized, strongly typed configuration (`pydantic-settings`). Direct `os.getenv()` calls across application modules are strictly prohibited.
-2. **Strict Modular Isolation**: Each module builds clean abstractions without early coupling to future features.
+1. **Strict Modular Isolation**: Each module builds clean abstractions without early coupling to future features.
+2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `madhav.config` instead of directly accessing `os.getenv()`.
 3. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
 4. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret credentials.
 5. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies or database state.
@@ -39,9 +38,9 @@ Future modules (03 to 41) are intentionally not implemented in this phase to mai
 
 - **Language**: Python 3.12+
 - **Package Manager**: `uv`
-- **Configuration**: Pydantic Settings (`pydantic-settings`)
+- **Configuration**: Pydantic Settings
 - **Web Framework**: FastAPI & Uvicorn
-- **Validation & Serialization**: Pydantic v2
+- **Validation & Serialization**: Pydantic v2 & `pydantic-settings`
 - **Testing**: Pytest, `pytest-asyncio`, `httpx`
 - **Linting & Formatting**: Ruff
 - **Type Checking**: MyPy
@@ -58,19 +57,20 @@ Madhav/
 │       ├── main.py
 │       ├── version.py
 │       │
-│       ├── config/
-│       │   ├── __init__.py
-│       │   ├── __main__.py       # CLI diagnostic inspector (python -m madhav.config)
-│       │   ├── enums.py          # Environment & LogLevel
-│       │   ├── errors.py         # Configuration exceptions
-│       │   ├── loader.py         # Settings loader & caching
-│       │   ├── sections.py       # Pydantic section models
-│       │   └── settings.py       # Root Settings model & validation
-│       │
 │       ├── api/
 │       │   ├── __init__.py
 │       │   ├── router.py
 │       │   └── health.py
+│       │
+│       ├── config/
+│       │   ├── __init__.py
+│       │   ├── __main__.py
+│       │   ├── enums.py
+│       │   ├── errors.py
+│       │   ├── loader.py
+│       │   ├── sections.py
+│       │   ├── settings.py
+│       │   └── validators.py
 │       │
 │       ├── core/
 │       │   ├── __init__.py
@@ -96,8 +96,8 @@ Madhav/
 │   │   └── test_request_id.py
 │   │
 │   ├── integration/
-│   │   ├── test_application.py
-│   │   └── test_config_fastapi.py
+│   │   ├── test_config_integration.py
+│   │   └── test_application.py
 │   │
 │   └── conftest.py
 │
@@ -110,10 +110,6 @@ Madhav/
 │   ├── dev.py
 │   └── verify.py
 │
-├── .github/
-│   └── workflows/
-│       └── ci.yml
-│
 ├── .env.example
 ├── .gitignore
 ├── .python-version
@@ -124,30 +120,60 @@ Madhav/
 
 ---
 
-## Configuration & Environment Management
+## Configuration
 
-MADHAV uses a centralized Pydantic Settings architecture. All settings are loaded through `get_settings()`.
+MADHAV uses a centralized, strongly typed configuration system powered by `pydantic-settings`.
 
 ### Supported Environments
+- `development` (Default): Local defaults, interactive docs (`/docs`, `/redoc`), hot reload support.
+- `testing`: Isolated deterministic defaults, disables `.env` file inheritance.
+- `production`: Enforces strict security validation rules (rejects `debug=True`, prohibits CORS origin wildcard `*` with credentials).
 
-- `development`: Safe local defaults, auto-reloading enabled, interactive OpenAPI docs enabled.
-- `testing`: Isolated, deterministic environment used during test suite execution. Local `.env` files are ignored to prevent test leakage.
-- `production`: Strict security rules (debug mode forbidden, wildcard CORS origins forbidden with credentials, default secret key forbidden).
-
-### Configuration Precedence
-
-1. Safe built-in defaults (`sections.py`)
+### Environment Variable Precedence
+1. Built-in defaults
 2. Environment-specific defaults
-3. Local `.env` file (where allowed: development/local execution)
-4. Environment variables prefixed with `MADHAV_` (e.g. `MADHAV_ENVIRONMENT`, `MADHAV_SERVER_PORT`, `MADHAV_LOG_LEVEL`)
+3. `.env` file (loaded if present, ignored in `testing`)
+4. Environment variables (prefixed with `MADHAV_`)
 5. Explicit runtime overrides
 
-### Inspecting Configuration Diagnostics
+### Environment Variable Naming
+Environment variables use `MADHAV_` prefix and `__` (double underscore) for nested categories:
 
-To safely output redacted configuration diagnostics without exposing secrets:
+```bash
+MADHAV_APPLICATION__ENVIRONMENT=development
+MADHAV_APPLICATION__DEBUG=true
+MADHAV_SERVER__HOST=127.0.0.1
+MADHAV_SERVER__PORT=8000
+MADHAV_LOGGING__LEVEL=INFO
+MADHAV_SECURITY__SECRET_KEY=insecure-development-secret-key
+```
+
+### Configuration Diagnostics & Secret Masking
+To inspect current active settings with secret fields masked:
 
 ```bash
 uv run python -m madhav.config
+```
+
+Sample output:
+
+```json
+{
+  "application": {
+    "name": "MADHAV",
+    "service": "madhav",
+    "version": "0.1.0",
+    "environment": "development",
+    "debug": false
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8000
+  },
+  "security": {
+    "secret_key": "***REDACTED***"
+  }
+}
 ```
 
 ---
@@ -160,7 +186,7 @@ Install `uv` (if not already installed) and synchronize dependencies:
 uv sync --extra dev
 ```
 
-Copy `.env.example` to `.env` for local customization (never commit `.env`):
+Copy `.env.example` to `.env` for local configuration overrides:
 
 ```bash
 cp .env.example .env
@@ -189,23 +215,23 @@ uv run python scripts/dev.py
 To execute the unit and integration test suite:
 
 ```bash
-uv run pytest
+uv run python -m pytest
 ```
 
 ---
 
-## Lint & Format
+## Lint
 
 To check for code quality and style compliance using Ruff:
 
 ```bash
-uv run ruff check .
+uv run python -m ruff check .
 ```
 
 To automatically format files:
 
 ```bash
-uv run ruff format .
+uv run python -m ruff format --check .
 ```
 
 ---
@@ -215,18 +241,35 @@ uv run ruff format .
 To verify static type safety with MyPy:
 
 ```bash
-uv run mypy src
+uv run python -m mypy src
 ```
 
 ---
 
-## Foundation Verification
+## Platform Verification
 
-To execute the full verification sequence (Ruff, MyPy, Pytest):
+To execute the full verification sequence (Configuration Diagnostics, Ruff, MyPy, Pytest):
 
 ```bash
 uv run python scripts/verify.py
 ```
+
+---
+
+## Architecture Rules
+
+- **Centralized Settings Access**: Application code must consume settings via `get_settings()` from `madhav.config` instead of reading `os.getenv()` directly.
+- **No Mocking Future Modules**: Module 02 provides configuration foundations without creating fake or stubbed implementations of future AI components.
+- **Secret Redaction**: Secret values use `SecretStr` and are masked (`***REDACTED***`) in logs, diagnostic dumps, and API responses.
+- **Zero Raw Stack Traces**: Internal exceptions are caught and logged with tracebacks while returning sanitized error envelopes to clients.
+
+---
+
+## Security Philosophy
+
+- Automatic header masking for Authorization/Bearer tokens and password strings in log outputs.
+- Header validation for incoming `X-Request-ID` to prevent header injection.
+- Strict production configuration validation rejecting dangerous settings (e.g. `debug=True` in production).
 
 ---
 
@@ -237,3 +280,5 @@ MADHAV is built sequentially across 41 modules:
 - **02. Configuration & Environment** [COMPLETED]
 - 03. Identity & Personal Profile (Next)
 - 04–41. (Future Modules)
+
+Only Modules 01 and 02 are implemented in this repository state.
