@@ -108,10 +108,15 @@ class ModelManager:
         try:
             asyncio.run(self._registry.register_model(dev_model))
         except RuntimeError:
-            # Event loop already running (e.g. inside async context), schedule or insert directly
-            asyncio.create_task(self._registry.register_model(dev_model))
+            # Event loop already running (e.g. inside async context),
+            # insert directly into repository dict
+            if hasattr(self._repository, "_models"):
+                self._repository._models[dev_model.model_id] = dev_model
+
         except ModelAlreadyExistsError:
             pass
+
+
 
     async def register_model(self, model: Model) -> Model:
         """Register a new model definition with validation."""

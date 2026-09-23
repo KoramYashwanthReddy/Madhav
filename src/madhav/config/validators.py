@@ -4,6 +4,7 @@ from madhav.config.enums import Environment
 from madhav.config.errors import ConfigurationError
 from madhav.config.sections import (
     ApplicationSettings,
+    ContextManagementSettings,
     CORSSettings,
     LoggingSettings,
     SecuritySettings,
@@ -58,3 +59,43 @@ def validate_production_settings(
                 "Production security violation: allowed_hosts list cannot be empty.",
                 details={"allowed_hosts": sec_cfg.allowed_hosts},
             )
+
+
+def validate_context_settings(context_cfg: ContextManagementSettings) -> None:
+    """Validate Context Management subsystem configuration parameters."""
+    if context_cfg.default_max_tokens <= 0:
+        raise ConfigurationError(
+            f"Invalid default_max_tokens: {context_cfg.default_max_tokens}. Must be positive.",
+            details={"default_max_tokens": context_cfg.default_max_tokens},
+        )
+    if context_cfg.reserved_output_tokens < 0:
+        val = context_cfg.reserved_output_tokens
+        raise ConfigurationError(
+            f"Invalid reserved_output_tokens: {val}. Cannot be negative.",
+            details={"reserved_output_tokens": val},
+        )
+    if context_cfg.safety_margin_tokens < 0:
+        val = context_cfg.safety_margin_tokens
+        raise ConfigurationError(
+            f"Invalid safety_margin_tokens: {val}. Cannot be negative.",
+            details={"safety_margin_tokens": val},
+        )
+
+    if context_cfg.max_items <= 0:
+        raise ConfigurationError(
+            f"Invalid max_items: {context_cfg.max_items}. Must be positive.",
+            details={"max_items": context_cfg.max_items},
+        )
+    combined_reserve = context_cfg.reserved_output_tokens + context_cfg.safety_margin_tokens
+    if combined_reserve >= context_cfg.default_max_tokens:
+        raise ConfigurationError(
+            "Invalid context configuration: combined output reserve and safety margin "
+            "exceed default max tokens capacity.",
+
+            details={
+                "default_max_tokens": context_cfg.default_max_tokens,
+                "reserved_output_tokens": context_cfg.reserved_output_tokens,
+                "safety_margin_tokens": context_cfg.safety_margin_tokens,
+            },
+        )
+

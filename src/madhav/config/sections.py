@@ -140,3 +140,27 @@ class ModelManagementSettings(BaseModel):
     verify_checksum: bool = Field(
         default=False, description="Toggle strict checksum verification on artifact loading"
     )
+
+
+class ContextManagementSettings(BaseModel):
+    """Context Management subsystem configuration settings."""
+
+    default_max_tokens: int = Field(
+        default=4096, description="Default fallback model context length capacity in tokens"
+    )
+    reserved_output_tokens: int = Field(
+        default=1024, description="Default reserved tokens reserved for model output generation"
+    )
+    safety_margin_tokens: int = Field(
+        default=256, description="Default safety margin buffer tokens to prevent token overflow"
+    )
+    max_items: int = Field(
+        default=100, description="Maximum total candidate context items allowed per request"
+    )
+    max_item_tokens: int = Field(
+        default=2048, description="Maximum tokens allowed for a single context item"
+    )
+    debug_enabled: bool = Field(
+        default=False, description="Toggle context debug inspection and detailed reporting"
+    )
+

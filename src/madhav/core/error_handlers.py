@@ -14,6 +14,21 @@ from madhav.core.responses import ErrorDetails, ErrorResponse
 logger = logging.getLogger("madhav.error_handler")
 
 
+def _sanitize_error_dict(d: dict[str, Any]) -> dict[str, Any]:
+    """Recursively convert non-serializable objects (such as Exception instances) into strings."""
+    sanitized: dict[str, Any] = {}
+    for k, v in d.items():
+        if isinstance(v, Exception):
+            sanitized[k] = str(v)
+        elif isinstance(v, dict):
+            sanitized[k] = _sanitize_error_dict(v)
+        elif isinstance(v, (list, tuple)):
+            sanitized[k] = [str(item) if isinstance(item, Exception) else item for item in v]
+        else:
+            sanitized[k] = v
+    return sanitized
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     """Register custom exception handlers with FastAPI application instance."""
 
@@ -65,13 +80,14 @@ def register_exception_handlers(app: FastAPI) -> None:
     ) -> JSONResponse:
         req_id = get_request_id()
         raw_errors: list[dict[str, Any]] = exc.errors()  # type: ignore[assignment]
-        logger.warning("RequestValidationError caught: %d errors", len(raw_errors))
+        sanitized_errors = [_sanitize_error_dict(err) for err in raw_errors]
+        logger.warning("RequestValidationError caught: %d errors", len(sanitized_errors))
         error_payload = ErrorResponse(
             success=False,
             error=ErrorDetails(
                 code="VALIDATION_ERROR",
                 message="Request validation failed.",
-                details=raw_errors,
+                details=sanitized_errors,
                 request_id=req_id,
             ),
         )
