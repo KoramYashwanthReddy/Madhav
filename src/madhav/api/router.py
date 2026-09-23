@@ -14,6 +14,7 @@ from madhav.models.api.routes import router as models_router
 from madhav.rag.api.routes import router as rag_router
 from madhav.reasoning.api.routes import plan_router, reasoning_router
 from madhav.tasks.api.routes import plan_task_router, task_group_router, tasks_router
+from madhav.tools.api.routes import router as tools_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -37,6 +38,7 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(task_group_router)
     v1_router.include_router(plan_task_router)
     v1_router.include_router(agents_router)
+    v1_router.include_router(tools_router)
     app.include_router(v1_router)
 
 

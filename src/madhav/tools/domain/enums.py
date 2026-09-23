@@ -1,0 +1,145 @@
+"""Domain enums for Module 14 Tool Registry."""
+
+from enum import StrEnum
+
+
+class ToolCategory(StrEnum):
+    """Categorization taxonomy for tools."""
+
+    SYSTEM = "SYSTEM"
+    FILESYSTEM = "FILESYSTEM"
+    TERMINAL = "TERMINAL"
+    BROWSER = "BROWSER"
+    WEB = "WEB"
+    APPLICATION = "APPLICATION"
+    GIT = "GIT"
+    GITHUB = "GITHUB"
+    DATABASE = "DATABASE"
+    COMMUNICATION = "COMMUNICATION"
+    CALENDAR = "CALENDAR"
+    DOCUMENT = "DOCUMENT"
+    MEDIA = "MEDIA"
+    UTILITY = "UTILITY"
+    AI = "AI"
+
+
+class ToolStatus(StrEnum):
+    """Lifecycle status states for registered tools."""
+
+    REGISTERED = "REGISTERED"
+    ACTIVE = "ACTIVE"
+    DISABLED = "DISABLED"
+    DEPRECATED = "DEPRECATED"
+    ARCHIVED = "ARCHIVED"
+
+
+class ToolCapability(StrEnum):
+    """Claims of actions or capabilities supported by tools."""
+
+    READ_FILE = "READ_FILE"
+    WRITE_FILE = "WRITE_FILE"
+    EXECUTE_COMMAND = "EXECUTE_COMMAND"
+    OPEN_BROWSER = "OPEN_BROWSER"
+    CLICK_BROWSER = "CLICK_BROWSER"
+    TYPE_BROWSER = "TYPE_BROWSER"
+    READ_WEB_PAGE = "READ_WEB_PAGE"
+    GIT_READ = "GIT_READ"
+    GIT_WRITE = "GIT_WRITE"
+    SEND_EMAIL = "SEND_EMAIL"
+    CREATE_CALENDAR_EVENT = "CREATE_CALENDAR_EVENT"
+    TEXT_TRANSFORMATION = "TEXT_TRANSFORMATION"
+    MATH_CALCULATION = "MATH_CALCULATION"
+    ECHO_TEST = "ECHO_TEST"
+    TASK_COORDINATION = "TASK_COORDINATION"
+
+
+class ToolInvocationStatus(StrEnum):
+    """Lifecycle state machine for tool invocations."""
+
+    CREATED = "CREATED"
+    VALIDATING = "VALIDATING"
+    WAITING_PERMISSION = "WAITING_PERMISSION"
+    READY = "READY"
+    RUNNING = "RUNNING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+    TIMED_OUT = "TIMED_OUT"
+    REJECTED = "REJECTED"
+
+
+class ToolExecutionMode(StrEnum):
+    """Execution model for tool invocation."""
+
+    SYNCHRONOUS = "SYNCHRONOUS"
+    ASYNCHRONOUS = "ASYNCHRONOUS"
+    DRY_RUN = "DRY_RUN"
+
+
+class ToolRiskLevel(StrEnum):
+    """Risk classification metadata for security and permission evaluation."""
+
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+
+class ToolSource(StrEnum):
+    """Origin/provenance of a tool definition."""
+
+    BUILT_IN = "BUILT_IN"
+    SYSTEM = "SYSTEM"
+    PLUGIN = "PLUGIN"
+    USER_DEFINED = "USER_DEFINED"
+    DEVELOPMENT = "DEVELOPMENT"
+    FUTURE = "FUTURE"
+
+
+class ToolAvailabilityStatus(StrEnum):
+    """Operational availability status of a tool."""
+
+    AVAILABLE = "AVAILABLE"
+    UNAVAILABLE = "UNAVAILABLE"
+    DISABLED = "DISABLED"
+    DEGRADED = "DEGRADED"
+    UNKNOWN = "UNKNOWN"
+
+
+class ToolFailureCategory(StrEnum):
+    """Normalized taxonomy categories for tool failure diagnosis."""
+
+    VALIDATION_ERROR = "VALIDATION_ERROR"
+    TOOL_NOT_FOUND = "TOOL_NOT_FOUND"
+    TOOL_DISABLED = "TOOL_DISABLED"
+    VERSION_NOT_FOUND = "VERSION_NOT_FOUND"
+    CAPABILITY_ERROR = "CAPABILITY_ERROR"
+    PERMISSION_REQUIRED = "PERMISSION_REQUIRED"
+    PERMISSION_DENIED = "PERMISSION_DENIED"
+    EXECUTION_ERROR = "EXECUTION_ERROR"
+    TIMEOUT = "TIMEOUT"
+    CANCELLED = "CANCELLED"
+    INVALID_OUTPUT = "INVALID_OUTPUT"
+    INTERNAL_ERROR = "INTERNAL_ERROR"
+
+
+class ToolEventType(StrEnum):
+    """Operational audit trace event types for tools and tool invocations."""
+
+    TOOL_REGISTERED = "TOOL_REGISTERED"
+    TOOL_ACTIVATED = "TOOL_ACTIVATED"
+    TOOL_DISABLED = "TOOL_DISABLED"
+    TOOL_DEPRECATED = "TOOL_DEPRECATED"
+    TOOL_ARCHIVED = "TOOL_ARCHIVED"
+    TOOL_RESOLVED = "TOOL_RESOLVED"
+    INVOCATION_CREATED = "INVOCATION_CREATED"
+    ARGUMENTS_VALIDATED = "ARGUMENTS_VALIDATED"
+    PERMISSION_REQUESTED = "PERMISSION_REQUESTED"
+    PERMISSION_GRANTED = "PERMISSION_GRANTED"
+    PERMISSION_DENIED = "PERMISSION_DENIED"
+    EXECUTION_STARTED = "EXECUTION_STARTED"
+    EXECUTION_COMPLETED = "EXECUTION_COMPLETED"
+    EXECUTION_FAILED = "EXECUTION_FAILED"
+    OUTPUT_VALIDATED = "OUTPUT_VALIDATED"
+    INVOCATION_COMPLETED = "INVOCATION_COMPLETED"
+    INVOCATION_CANCELLED = "INVOCATION_CANCELLED"

@@ -365,6 +365,28 @@ class AgentSettings(BaseModel):
     )
 
 
+class ToolRegistrySettings(BaseModel):
+    """Tool Registry subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle Tool Registry active state")
+    default_timeout: float = Field(
+        default=30.0, description="Default timeout in seconds for tool invocations"
+    )
+    max_input_size: int = Field(
+        default=1048576, description="Maximum byte size allowed for tool input argument payload"
+    )
+    max_output_size: int = Field(
+        default=5242880, description="Maximum byte size allowed for tool output payload"
+    )
+    allow_development_tools: bool = Field(
+        default=True, description="Allow safe in-memory development tools"
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for tool listings"
+    )
+
+
+
 
 
 

@@ -18,7 +18,7 @@ from madhav.agents.services.coordinator import AgentCoordinationRequest, AgentCo
 from madhav.agents.services.delegation_service import AgentDelegationService
 from madhav.agents.services.run_service import AgentRunService
 from madhav.agents.services.trace_service import AgentTraceService
-from madhav.reasoning.domain.enums import CompletenessStatus, PlanStatus
+from madhav.reasoning.domain.enums import PlanStatus
 from madhav.reasoning.domain.plan import Plan, PlanStep
 from madhav.reasoning.repositories.plan_repository import InMemoryPlanRepository
 from madhav.tasks.domain.enums import TaskPriority, TaskType
@@ -35,9 +35,9 @@ def e2e_setup():
     plan_repo = InMemoryPlanRepository()
 
     agent_svc = AgentService(agent_repo)
-    assign_svc = AgentAssignmentService(assignment_repo, agent_repo)
-    run_svc = AgentRunService(run_repo, agent_repo)
     trace_svc = AgentTraceService(trace_repo)
+    assign_svc = AgentAssignmentService(assignment_repo, agent_repo, trace_service=trace_svc)
+    run_svc = AgentRunService(run_repo, agent_repo, trace_service=trace_svc)
     delegation_svc = AgentDelegationService(delegation_repo, agent_repo)
     task_svc = TaskService()
 
@@ -63,7 +63,8 @@ def e2e_setup():
     }
 
 
-def test_agent_engine_full_e2e_acceptance_flow(e2e_setup) -> None:
+@pytest.mark.asyncio
+async def test_agent_engine_full_e2e_acceptance_flow(e2e_setup) -> None:
     """Validate full acceptance scenario from Item 63 of Module 13 specification."""
     agent_svc = e2e_setup["agent_svc"]
     assign_svc = e2e_setup["assign_svc"]
@@ -97,21 +98,21 @@ def test_agent_engine_full_e2e_acceptance_flow(e2e_setup) -> None:
     )
 
     # 4. Create a Plan & PlanStep from Module 11
-    plan_step = PlanStep(step_index=1, title="Preparation", description="Check prerequisites")
+    plan_step = PlanStep(sequence=1, title="Preparation", description="Check prerequisites")
     plan = Plan(
-        goal="System Upgrade Plan",
+        title="System Upgrade Plan",
+        description="E2E System Upgrade Description",
         steps=[plan_step],
-        status=PlanStatus.APPROVED,
-        completeness=CompletenessStatus.COMPLETE,
+        status=PlanStatus.ACTIVE,
         owner_id=owner_id,
     )
-    plan_repo.save(plan)
+    await plan_repo.save(plan)
 
     # 5. Create an AgentAssignment and Accept it
     assignment = assign_svc.assign_task(
         agent_id=activated_agent.id,
         task_id=task.id,
-        plan_id=plan.id,
+        plan_id=plan.plan_id,
         reason="Assigned via E2E orchestration",
     )
     assign_svc.accept_assignment(assignment.assignment_id)
@@ -121,8 +122,8 @@ def test_agent_engine_full_e2e_acceptance_flow(e2e_setup) -> None:
         owner_id=owner_id,
         agent_id=activated_agent.id,
         task_id=task.id,
-        plan_id=plan.id,
-        plan_step_id=plan_step.id,
+        plan_id=plan.plan_id,
+        plan_step_id=plan_step.step_id,
         objective="Prepare system for upgrade",
         execution_mode=AgentExecutionMode.DRY_RUN,
     )

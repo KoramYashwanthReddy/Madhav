@@ -66,21 +66,24 @@ def get_agent_service() -> AgentService:
 def get_assignment_service() -> AgentAssignmentService:
     global _assignment_service
     if _assignment_service is None:
-        _assignment_service = AgentAssignmentService()
+        agent_svc = get_agent_service()
+        _assignment_service = AgentAssignmentService(agent_repo=agent_svc.repository)
     return _assignment_service
 
 
 def get_run_service() -> AgentRunService:
     global _run_service
     if _run_service is None:
-        _run_service = AgentRunService()
+        agent_svc = get_agent_service()
+        _run_service = AgentRunService(agent_repo=agent_svc.repository)
     return _run_service
 
 
 def get_delegation_service() -> AgentDelegationService:
     global _delegation_service
     if _delegation_service is None:
-        _delegation_service = AgentDelegationService()
+        agent_svc = get_agent_service()
+        _delegation_service = AgentDelegationService(agent_repo=agent_svc.repository)
     return _delegation_service
 
 

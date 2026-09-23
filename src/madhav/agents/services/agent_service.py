@@ -29,8 +29,9 @@ class AgentService:
         agent_repository: BaseAgentRepository | None = None,
         trace_service: AgentTraceService | None = None,
         settings: AgentSettings | None = None,
+        repository: BaseAgentRepository | None = None,
     ) -> None:
-        self.agent_repo = agent_repository or MemoryAgentRepository()
+        self.agent_repo = repository or agent_repository or MemoryAgentRepository()
         self.trace_service = trace_service or AgentTraceService()
         self.settings = settings or AgentSettings()
 

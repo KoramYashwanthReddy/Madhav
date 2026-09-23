@@ -16,6 +16,7 @@ from madhav.config.sections import (
     SecuritySettings,
     ServerSettings,
     TaskSettings,
+    ToolRegistrySettings,
 )
 
 
@@ -332,6 +333,26 @@ def validate_agent_settings(agent_cfg: AgentSettings) -> None:
             f"Invalid max_delegations: {agent_cfg.max_delegations}. Must be positive.",
             details={"max_delegations": agent_cfg.max_delegations},
         )
+
+
+def validate_tool_settings(tool_cfg: ToolRegistrySettings) -> None:
+    """Validate Tool Registry subsystem configuration parameters."""
+    if tool_cfg.default_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid default_timeout: {tool_cfg.default_timeout}. Must be positive.",
+            details={"default_timeout": tool_cfg.default_timeout},
+        )
+    if tool_cfg.max_input_size <= 0:
+        raise ConfigurationError(
+            f"Invalid max_input_size: {tool_cfg.max_input_size}. Must be positive.",
+            details={"max_input_size": tool_cfg.max_input_size},
+        )
+    if tool_cfg.max_output_size <= 0:
+        raise ConfigurationError(
+            f"Invalid max_output_size: {tool_cfg.max_output_size}. Must be positive.",
+            details={"max_output_size": tool_cfg.max_output_size},
+        )
+
 
 
 

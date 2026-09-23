@@ -115,6 +115,7 @@ class AgentRun(BaseModel):
 
     status: AgentRunStatus = Field(default=AgentRunStatus.CREATED, description="Run status")
     execution_mode: AgentExecutionMode = Field(default=AgentExecutionMode.DRY_RUN, description="Execution mode")
+    client_request_id: str | None = Field(default=None, description="Idempotency key")
 
     started_at: datetime | None = Field(default=None, description="Run start timestamp")
     completed_at: datetime | None = Field(default=None, description="Run completion timestamp")
