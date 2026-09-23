@@ -245,3 +245,43 @@ class KnowledgeSettings(BaseModel):
     )
 
 
+class RAGSettings(BaseModel):
+    """RAG & Retrieval subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle RAG & Retrieval subsystem active state")
+    chunk_size: int = Field(
+        default=512, description="Target character count for document chunking"
+    )
+    chunk_overlap: int = Field(
+        default=64, description="Overlapping character count between consecutive chunks"
+    )
+    minimum_chunk_size: int = Field(
+        default=32, description="Minimum character size boundary for generated chunks"
+    )
+    maximum_chunk_size: int = Field(
+        default=2048, description="Maximum character size boundary for generated chunks"
+    )
+    default_top_k: int = Field(
+        default=5, description="Default number of top vector similarity results to retrieve"
+    )
+    max_top_k: int = Field(
+        default=50, description="Maximum top_k limit allowed for retrieval requests"
+    )
+    minimum_score: float = Field(
+        default=0.0, description="Default minimum similarity threshold (0.0 to 1.0)"
+    )
+    embedding_provider: str = Field(
+        default="development", description="Embedding provider type ('development')"
+    )
+    embedding_model: str = Field(
+        default="dev-hash-embed-v1", description="Embedding model identifier"
+    )
+    embedding_dimensions: int = Field(
+        default=64, description="Vector embedding dimension size"
+    )
+    vector_store_provider: str = Field(
+        default="memory", description="Vector store backend provider type ('memory')"
+    )
+
+
+

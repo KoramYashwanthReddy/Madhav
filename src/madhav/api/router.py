@@ -10,6 +10,7 @@ from madhav.identity.api.routes import router as identity_router
 from madhav.knowledge.api.routes import router as knowledge_router
 from madhav.memory.api.routes import router as memory_router
 from madhav.models.api.routes import router as models_router
+from madhav.rag.api.routes import router as rag_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -26,5 +27,6 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(conversation_router)
     v1_router.include_router(memory_router)
     v1_router.include_router(knowledge_router)
+    v1_router.include_router(rag_router)
     app.include_router(v1_router)
 

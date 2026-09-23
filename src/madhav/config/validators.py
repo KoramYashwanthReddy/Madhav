@@ -10,6 +10,7 @@ from madhav.config.sections import (
     KnowledgeSettings,
     LoggingSettings,
     MemorySettings,
+    RAGSettings,
     SecuritySettings,
     ServerSettings,
 )
@@ -205,4 +206,50 @@ def validate_knowledge_settings(k_cfg: KnowledgeSettings) -> None:
                 "default_page_size": k_cfg.default_page_size,
             },
         )
+
+
+def validate_rag_settings(rag_cfg: RAGSettings) -> None:
+    """Validate RAG & Retrieval subsystem configuration parameters."""
+    if rag_cfg.minimum_chunk_size <= 0:
+        raise ConfigurationError(
+            f"Invalid minimum_chunk_size: {rag_cfg.minimum_chunk_size}. Must be positive.",
+            details={"minimum_chunk_size": rag_cfg.minimum_chunk_size},
+        )
+    if rag_cfg.chunk_size < rag_cfg.minimum_chunk_size:
+        raise ConfigurationError(
+            f"Invalid chunk_size: {rag_cfg.chunk_size}. Must be >= minimum_chunk_size.",
+            details={
+                "chunk_size": rag_cfg.chunk_size,
+                "minimum_chunk_size": rag_cfg.minimum_chunk_size,
+            },
+        )
+    if rag_cfg.maximum_chunk_size < rag_cfg.chunk_size:
+        raise ConfigurationError(
+            f"Invalid maximum_chunk_size: {rag_cfg.maximum_chunk_size}. Must be >= chunk_size.",
+            details={
+                "maximum_chunk_size": rag_cfg.maximum_chunk_size,
+                "chunk_size": rag_cfg.chunk_size,
+            },
+        )
+    if rag_cfg.chunk_overlap < 0 or rag_cfg.chunk_overlap >= rag_cfg.chunk_size:
+        raise ConfigurationError(
+            f"Invalid chunk_overlap: {rag_cfg.chunk_overlap}. Must be >= 0 and < chunk_size.",
+            details={"chunk_overlap": rag_cfg.chunk_overlap, "chunk_size": rag_cfg.chunk_size},
+        )
+    if rag_cfg.default_top_k <= 0:
+        raise ConfigurationError(
+            f"Invalid default_top_k: {rag_cfg.default_top_k}. Must be positive.",
+            details={"default_top_k": rag_cfg.default_top_k},
+        )
+    if rag_cfg.max_top_k < rag_cfg.default_top_k:
+        raise ConfigurationError(
+            f"Invalid max_top_k: {rag_cfg.max_top_k}. Must be >= default_top_k.",
+            details={"max_top_k": rag_cfg.max_top_k, "default_top_k": rag_cfg.default_top_k},
+        )
+    if rag_cfg.embedding_dimensions <= 0:
+        raise ConfigurationError(
+            f"Invalid embedding_dimensions: {rag_cfg.embedding_dimensions}. Must be positive.",
+            details={"embedding_dimensions": rag_cfg.embedding_dimensions},
+        )
+
 
