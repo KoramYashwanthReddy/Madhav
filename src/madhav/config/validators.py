@@ -3,6 +3,7 @@
 from madhav.config.enums import Environment
 from madhav.config.errors import ConfigurationError
 from madhav.config.sections import (
+    AgentSettings,
     ApplicationSettings,
     ContextManagementSettings,
     ConversationSettings,
@@ -312,6 +313,26 @@ def validate_task_settings(task_cfg: TaskSettings) -> None:
             f"Invalid max_parent_depth: {task_cfg.max_parent_depth}. Must be positive.",
             details={"max_parent_depth": task_cfg.max_parent_depth},
         )
+
+
+def validate_agent_settings(agent_cfg: AgentSettings) -> None:
+    """Validate Agent Engine subsystem configuration parameters."""
+    if agent_cfg.max_concurrent_runs <= 0:
+        raise ConfigurationError(
+            f"Invalid max_concurrent_runs: {agent_cfg.max_concurrent_runs}. Must be positive.",
+            details={"max_concurrent_runs": agent_cfg.max_concurrent_runs},
+        )
+    if agent_cfg.max_delegation_depth <= 0:
+        raise ConfigurationError(
+            f"Invalid max_delegation_depth: {agent_cfg.max_delegation_depth}. Must be positive.",
+            details={"max_delegation_depth": agent_cfg.max_delegation_depth},
+        )
+    if agent_cfg.max_delegations <= 0:
+        raise ConfigurationError(
+            f"Invalid max_delegations: {agent_cfg.max_delegations}. Must be positive.",
+            details={"max_delegations": agent_cfg.max_delegations},
+        )
+
 
 
 

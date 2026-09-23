@@ -7,6 +7,7 @@ from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from madhav.config.sections import (
+    AgentSettings,
     AIRuntimeSettings,
     APISettings,
     ApplicationSettings,
@@ -26,6 +27,7 @@ from madhav.config.sections import (
     TaskSettings,
 )
 from madhav.config.validators import (
+    validate_agent_settings,
     validate_context_settings,
     validate_conversation_settings,
     validate_knowledge_settings,
@@ -44,7 +46,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, and feature flags.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, and feature flags.
 
     Supports environment variables prefixed with `MADHAV_` and double-underscore nested keys.
     """
@@ -74,6 +76,7 @@ class Settings(BaseSettings):
     rag: RAGSettings = Field(default_factory=RAGSettings)
     reasoning: ReasoningSettings = Field(default_factory=ReasoningSettings)
     tasks: TaskSettings = Field(default_factory=TaskSettings)
+    agents: AgentSettings = Field(default_factory=AgentSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -91,6 +94,8 @@ class Settings(BaseSettings):
         validate_rag_settings(self.rag)
         validate_reasoning_settings(self.reasoning)
         validate_task_settings(self.tasks)
+        validate_agent_settings(self.agents)
+
 
 
 

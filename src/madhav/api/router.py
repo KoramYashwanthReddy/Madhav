@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, FastAPI
 
+from madhav.agents.api.routes import router as agents_router
 from madhav.ai.api.routes import router as ai_router
 from madhav.api.health import router as health_router
 from madhav.context.api.routes import router as context_router
@@ -35,6 +36,7 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(tasks_router)
     v1_router.include_router(task_group_router)
     v1_router.include_router(plan_task_router)
+    v1_router.include_router(agents_router)
     app.include_router(v1_router)
 
 

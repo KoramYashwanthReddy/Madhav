@@ -341,6 +341,31 @@ class TaskSettings(BaseModel):
     )
 
 
+class AgentSettings(BaseModel):
+    """Agent Engine subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle Agent Engine active state")
+    max_concurrent_runs: int = Field(
+        default=10, description="Maximum concurrent active runs allowed"
+    )
+    default_max_retries: int = Field(
+        default=3, description="Default maximum retry limit for agent runs"
+    )
+    max_delegation_depth: int = Field(
+        default=5, description="Maximum allowed nesting depth for agent delegations"
+    )
+    max_delegations: int = Field(
+        default=10, description="Maximum allowed delegation count per run"
+    )
+    default_execution_mode: str = Field(
+        default="DRY_RUN", description="Default execution mode ('DRY_RUN', 'SYNCHRONOUS', etc.)"
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for agent listings"
+    )
+
+
+
 
 
 
