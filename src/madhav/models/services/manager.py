@@ -116,8 +116,6 @@ class ModelManager:
         except ModelAlreadyExistsError:
             pass
 
-
-
     async def register_model(self, model: Model) -> Model:
         """Register a new model definition with validation."""
         self._validate_model_definition(model)

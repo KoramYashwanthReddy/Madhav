@@ -27,4 +27,3 @@ class BuildContextRequest(BaseModel):
         if not v or not v.strip():
             raise ValueError("user_request cannot be empty or whitespace-only.")
         return v.strip()
-

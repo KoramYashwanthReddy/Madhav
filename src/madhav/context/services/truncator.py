@@ -27,7 +27,6 @@ class ContextTruncator:
         content = item.content
 
         if strategy == TruncationStrategy.TAIL:
-
             truncated_content = self._truncate_tail(content, target_max_tokens)
         elif strategy == TruncationStrategy.HEAD:
             truncated_content = self._truncate_head(content, target_max_tokens)

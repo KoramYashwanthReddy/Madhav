@@ -44,9 +44,7 @@ class ContextManager:
         """Expose inner context source registry."""
         return self._registry
 
-    async def resolve_budget(
-        self, request: ContextRequest, policy: ContextPolicy
-    ) -> ContextBudget:
+    async def resolve_budget(self, request: ContextRequest, policy: ContextPolicy) -> ContextBudget:
         """Resolve ContextBudget from request, Module 05 metadata, or fallback config."""
 
         if request.budget is not None:

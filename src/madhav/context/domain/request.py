@@ -37,7 +37,6 @@ class ContextRequest(BaseModel):
         description="Configuration options passed to registered context sources",
     )
 
-
     @field_validator("user_request")
     @classmethod
     def validate_user_request_not_empty(cls, v: str) -> str:

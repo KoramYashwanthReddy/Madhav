@@ -67,4 +67,3 @@ def test_build_context_package_endpoint_validation_failure() -> None:
     assert response.status_code in {400, 422}
     data = response.json()
     assert "error" in data or "detail" in data
-

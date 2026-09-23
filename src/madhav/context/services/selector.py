@@ -174,7 +174,6 @@ class ContextSelector:
                         details={
                             "context_id": item.context_id,
                             "source": item.source,
-
                             "category": item.category.value,
                             "item_tokens": item.token_estimate,
                             "remaining_budget": remaining_budget,

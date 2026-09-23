@@ -49,7 +49,6 @@ class ContextPolicy(BaseModel):
         description="Explicit policy opt-in permitting sensitive identity attributes",
     )
 
-
     @classmethod
     def default(cls) -> "ContextPolicy":
         """Create standard balanced default context policy."""

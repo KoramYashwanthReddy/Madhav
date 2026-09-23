@@ -78,7 +78,6 @@ def test_context_truncator_strategies() -> None:
     assert "[TRUNCATED HEAD] ..." in truncated_head.content
 
 
-
 def test_context_selector_priority_and_deduplication() -> None:
     """Test ContextSelector priority ordering and duplicate removal."""
     estimator = ApproximateTokenEstimator()
@@ -132,7 +131,6 @@ def test_context_selector_required_overflow() -> None:
 
     with pytest.raises(RequiredContextOverflowError, match="cannot fit within"):
         selector.select(candidates=[giant_required], budget=budget, policy=policy)
-
 
 
 @pytest.mark.asyncio

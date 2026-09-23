@@ -28,7 +28,6 @@ class ContextBudget(BaseModel):
             raise ValueError(msg)
         return self
 
-
     @property
     def available_input_tokens(self) -> int:
         """Calculate net available input budget for context selection."""

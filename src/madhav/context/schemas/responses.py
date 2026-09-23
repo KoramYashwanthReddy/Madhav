@@ -43,7 +43,6 @@ class ContextPackageResponse(BaseModel):
     )
 
 
-
 class ContextSourceSummary(BaseModel):
     """Diagnostic metadata describing a registered ContextSource."""
 

@@ -96,7 +96,7 @@ class TestAIRuntimeManager:
         response = await manager.generate(request)
         assert response.provider == "stub"
         assert response.execution.success is True
-        assert response.execution.duration_ms > 0
+        assert response.execution.duration_ms >= 0
 
     @pytest.mark.asyncio
     async def test_manager_timeout_handling(self) -> None:

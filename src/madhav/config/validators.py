@@ -5,6 +5,7 @@ from madhav.config.errors import ConfigurationError
 from madhav.config.sections import (
     ApplicationSettings,
     ContextManagementSettings,
+    ConversationSettings,
     CORSSettings,
     LoggingSettings,
     SecuritySettings,
@@ -91,7 +92,6 @@ def validate_context_settings(context_cfg: ContextManagementSettings) -> None:
         raise ConfigurationError(
             "Invalid context configuration: combined output reserve and safety margin "
             "exceed default max tokens capacity.",
-
             details={
                 "default_max_tokens": context_cfg.default_max_tokens,
                 "reserved_output_tokens": context_cfg.reserved_output_tokens,
@@ -99,3 +99,35 @@ def validate_context_settings(context_cfg: ContextManagementSettings) -> None:
             },
         )
 
+
+def validate_conversation_settings(conv_cfg: ConversationSettings) -> None:
+    """Validate Conversation Engine subsystem configuration parameters."""
+    if conv_cfg.max_message_characters <= 0:
+        raise ConfigurationError(
+            f"Invalid max_message_characters: {conv_cfg.max_message_characters}. Must be positive.",
+            details={"max_message_characters": conv_cfg.max_message_characters},
+        )
+    if conv_cfg.max_title_characters <= 0:
+        raise ConfigurationError(
+            f"Invalid max_title_characters: {conv_cfg.max_title_characters}. Must be positive.",
+            details={"max_title_characters": conv_cfg.max_title_characters},
+        )
+    if conv_cfg.default_page_size <= 0:
+        raise ConfigurationError(
+            f"Invalid default_page_size: {conv_cfg.default_page_size}. Must be positive.",
+            details={"default_page_size": conv_cfg.default_page_size},
+        )
+    if conv_cfg.max_page_size < conv_cfg.default_page_size:
+        raise ConfigurationError(
+            f"Invalid max_page_size: {conv_cfg.max_page_size}. Must be >= default_page_size.",
+            details={
+                "max_page_size": conv_cfg.max_page_size,
+                "default_page_size": conv_cfg.default_page_size,
+            },
+        )
+    if conv_cfg.history_retrieval_limit <= 0:
+        val = conv_cfg.history_retrieval_limit
+        raise ConfigurationError(
+            f"Invalid history_retrieval_limit: {val}. Must be positive.",
+            details={"history_retrieval_limit": val},
+        )

@@ -164,3 +164,25 @@ class ContextManagementSettings(BaseModel):
         default=False, description="Toggle context debug inspection and detailed reporting"
     )
 
+
+class ConversationSettings(BaseModel):
+    """Conversation Engine subsystem configuration settings."""
+
+    max_message_characters: int = Field(
+        default=16384, description="Maximum characters allowed in a single message"
+    )
+    max_title_characters: int = Field(
+        default=100, description="Maximum characters allowed for a conversation title"
+    )
+    default_page_size: int = Field(
+        default=50, description="Default page size for conversation and message pagination"
+    )
+    max_page_size: int = Field(
+        default=200, description="Maximum page size allowed for pagination requests"
+    )
+    auto_title_enabled: bool = Field(
+        default=True, description="Toggle automatic title generation on first conversation turn"
+    )
+    history_retrieval_limit: int = Field(
+        default=100, description="Maximum recent messages retrieved for ContextSource adapter"
+    )

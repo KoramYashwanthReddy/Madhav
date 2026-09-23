@@ -1,6 +1,5 @@
 """Privacy-aware IdentityContext adapter projecting safe identity fields into ContextItems."""
 
-
 from madhav.context.domain.enums import ContextCategory, ContextPriority, SourceTrustLevel
 from madhav.context.domain.item import ContextItem
 from madhav.identity.domain.context import IdentityContext
@@ -82,7 +81,6 @@ class IdentityProjection:
                         metadata={"scope": "preferences", "sensitive": False},
                     )
                 )
-
 
         # 4. Sensitive Owner Details (Included ONLY if explicit policy permits)
         if allow_sensitive:

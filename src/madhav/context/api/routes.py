@@ -41,8 +41,6 @@ def get_context_manager() -> ContextManager:
         "and budget to assemble a ContextPackage."
     ),
 )
-
-
 async def build_context_package(
     req: BuildContextRequest,
     manager: ContextManager = Depends(get_context_manager),

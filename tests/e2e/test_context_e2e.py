@@ -57,7 +57,6 @@ async def test_end_to_end_context_to_ai_runtime_flow() -> None:
     assert "identity" in categories
     assert "request" in categories
 
-
     # 6. Convert ContextPackage into Module 04 AIRequest
     ai_request = await context_manager.prepare_ai_request(ctx_request)
     assert ai_request.model == "development-stub"
@@ -66,11 +65,9 @@ async def test_end_to_end_context_to_ai_runtime_flow() -> None:
     # 7. Execute inference via Module 04 AI Runtime
     ai_response = await ai_runtime_manager.generate(ai_request)
 
-
     # Verify response from Module 04 runtime backend
     assert ai_response.request_id == ctx_request.request_id
     assert ai_response.content is not None
     assert len(ai_response.content) > 0
 
     assert ai_response.model_reference is not None
-
