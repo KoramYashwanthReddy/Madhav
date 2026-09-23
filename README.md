@@ -18,9 +18,9 @@ The complete MADHAV architecture encompasses 41 distinct modules ranging from pl
 
 ## Current Module
 
-**Module 03 — Identity & Personal Profile**
+**Module 04 — AI Runtime**
 
-This repository implements **Module 01: Platform Foundation**, **Module 02: Configuration & Environment**, and **Module 03: Identity & Personal Profile**. Future modules (04 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
+This repository implements **Module 01: Platform Foundation**, **Module 02: Configuration & Environment**, **Module 03: Identity & Personal Profile**, and **Module 04: AI Runtime**. Future modules (05 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
 
 ---
 
@@ -29,9 +29,10 @@ This repository implements **Module 01: Platform Foundation**, **Module 02: Conf
 1. **Strict Modular Isolation**: Each module builds clean abstractions without early coupling to future features.
 2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `madhav.config` instead of directly accessing `os.getenv()`.
 3. **Identity Decoupled from Authentication**: Identity defines *"Who Madhav is serving"* (`IdentityContext`) and operates independently from authentication mechanisms.
-4. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
-5. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret or personal credentials.
-6. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies or database state.
+4. **Provider-Neutral AI Runtime**: Inference execution is decoupled from specific LLM vendors via `ModelRuntime` protocols and runtime registries, operating with an offline `StubModelRuntime` by default.
+5. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
+6. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret or personal credentials.
+7. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies, model weight downloads, or database state.
 
 ---
 
@@ -57,6 +58,33 @@ Madhav/
 │       ├── __init__.py
 │       ├── main.py
 │       ├── version.py
+│       │
+│       ├── ai/
+│       │   ├── __init__.py
+│       │   ├── exceptions.py
+│       │   ├── api/
+│       │   │   ├── __init__.py
+│       │   │   └── routes.py
+│       │   ├── domain/
+│       │   │   ├── __init__.py
+│       │   │   ├── capabilities.py
+│       │   │   ├── enums.py
+│       │   │   ├── execution.py
+│       │   │   ├── messages.py
+│       │   │   ├── parameters.py
+│       │   │   ├── requests.py
+│       │   │   ├── responses.py
+│       │   │   └── usage.py
+│       │   ├── runtime/
+│       │   │   ├── __init__.py
+│       │   │   ├── base.py
+│       │   │   ├── manager.py
+│       │   │   ├── registry.py
+│       │   │   └── stub.py
+│       │   └── schemas/
+│       │       ├── __init__.py
+│       │       ├── requests.py
+│       │       └── responses.py
 │       │
 │       ├── api/
 │       │   ├── __init__.py
@@ -87,28 +115,14 @@ Madhav/
 │       │   ├── __init__.py
 │       │   ├── exceptions.py
 │       │   ├── api/
-│       │   │   ├── __init__.py
 │       │   │   └── routes.py
 │       │   ├── domain/
-│       │   │   ├── __init__.py
-│       │   │   ├── assistant.py
-│       │   │   ├── context.py
-│       │   │   ├── enums.py
-│       │   │   ├── owner.py
-│       │   │   ├── preferences.py
-│       │   │   └── profile.py
+│       │   │   └── ...
 │       │   ├── repositories/
-│       │   │   ├── __init__.py
-│       │   │   ├── base.py
 │       │   │   └── memory.py
 │       │   ├── schemas/
-│       │   │   ├── __init__.py
-│       │   │   ├── assistant.py
-│       │   │   ├── owner.py
-│       │   │   ├── preferences.py
-│       │   │   └── profile.py
+│       │   │   └── ...
 │       │   └── services/
-│       │       ├── __init__.py
 │       │       └── identity_service.py
 │       │
 │       └── common/
@@ -124,11 +138,14 @@ Madhav/
 │   │   ├── test_logging.py
 │   │   ├── test_request_id.py
 │   │   ├── test_identity_domain.py
-│   │   └── test_identity_service.py
+│   │   ├── test_identity_service.py
+│   │   ├── test_ai_domain.py
+│   │   └── test_ai_runtime.py
 │   │
 │   ├── integration/
 │   │   ├── test_config_integration.py
 │   │   ├── test_identity_api.py
+│   │   ├── test_ai_api.py
 │   │   └── test_application.py
 │   │
 │   └── conftest.py
@@ -137,7 +154,8 @@ Madhav/
 │   └── architecture/
 │       ├── module-01-platform-foundation.md
 │       ├── module-02-configuration.md
-│       └── module-03-identity-personal-profile.md
+│       ├── module-03-identity-personal-profile.md
+│       └── module-04-ai-runtime.md
 │
 ├── scripts/
 │   ├── dev.py
@@ -173,6 +191,15 @@ Module 03 introduces the identity domain contract and profile subsystem under `/
 - **Safe Identity Summary**: `GET /api/v1/identity/summary` (Non-sensitive profile fields for safe logging).
 - **Preferences**: `GET /api/v1/identity/preferences`, `PATCH /api/v1/identity/preferences`, `PATCH /api/v1/identity/communication`, `PATCH /api/v1/identity/locale`.
 - **Profile Completeness**: `GET /api/v1/identity/completeness` (Deterministic score 0-100% and missing recommended fields).
+
+---
+
+## AI Runtime
+
+Module 04 introduces provider-neutral AI inference execution under `/api/v1/ai`:
+- **Generate AI Response**: `POST /api/v1/ai/generate`
+- **Runtime Health Status**: `GET /api/v1/ai/runtime/status`
+- **Runtime Capabilities**: `GET /api/v1/ai/runtime/capabilities`
 
 ---
 
@@ -242,7 +269,9 @@ MADHAV is built sequentially across 41 modules:
 - **01. Platform Foundation** [COMPLETED]
 - **02. Configuration & Environment** [COMPLETED]
 - **03. Identity & Personal Profile** [COMPLETED]
-- 04. AI Runtime (Next)
-- 05–41. (Future Modules)
+- **04. AI Runtime** [COMPLETED]
+- 05. Model Management (Next)
+- 06–41. (Future Modules)
 
-Only Modules 01, 02, and 03 are implemented in this repository state.
+Only Modules 01, 02, 03, and 04 are implemented in this repository state.
+

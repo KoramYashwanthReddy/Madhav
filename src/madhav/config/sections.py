@@ -112,3 +112,16 @@ class IdentitySettings(BaseModel):
     assistant_name: str = Field(default="Madhav", description="Default assistant identity name")
     default_timezone: str = Field(default="UTC", description="Default fallback timezone")
     default_locale: str = Field(default="en_US", description="Default fallback locale")
+
+
+class AIRuntimeSettings(BaseModel):
+    """AI Runtime subsystem configuration settings."""
+
+    provider: str = Field(default="stub", description="Active default AI runtime provider")
+    timeout_seconds: float = Field(
+        default=60.0, description="Default inference request timeout in seconds"
+    )
+    default_temperature: float = Field(default=0.7, description="Default generation temperature")
+    default_max_tokens: int = Field(
+        default=1024, description="Default maximum response token limit"
+    )

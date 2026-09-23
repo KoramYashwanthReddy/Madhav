@@ -7,6 +7,7 @@ from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from madhav.config.sections import (
+    AIRuntimeSettings,
     APISettings,
     ApplicationSettings,
     CORSSettings,
@@ -26,7 +27,8 @@ from madhav.config.validators import (
 class Settings(BaseSettings):
     """MADHAV Root Configuration Model.
 
-    Combines application, server, API, logging, security, CORS, identity, and feature flag settings.
+    Combines application, server, API, logging, security, CORS, identity, AI runtime,
+    and feature flag settings.
     Supports environment variables prefixed with `MADHAV_` and double-underscore nested keys.
     """
 
@@ -46,6 +48,7 @@ class Settings(BaseSettings):
     cors: CORSSettings = Field(default_factory=CORSSettings)
     features: FeatureFlags = Field(default_factory=FeatureFlags)
     identity: IdentitySettings = Field(default_factory=IdentitySettings)
+    ai_runtime: AIRuntimeSettings = Field(default_factory=AIRuntimeSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""

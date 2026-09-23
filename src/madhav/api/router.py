@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter, FastAPI
 
+from madhav.ai.api.routes import router as ai_router
 from madhav.api.health import router as health_router
 from madhav.identity.api.routes import router as identity_router
 
@@ -14,4 +15,5 @@ def register_routers(app: FastAPI) -> None:
     # API v1 Router prefix foundation
     v1_router = APIRouter(prefix="/api/v1")
     v1_router.include_router(identity_router)
+    v1_router.include_router(ai_router)
     app.include_router(v1_router)
