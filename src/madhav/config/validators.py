@@ -8,6 +8,7 @@ from madhav.config.sections import (
     ConversationSettings,
     CORSSettings,
     LoggingSettings,
+    MemorySettings,
     SecuritySettings,
     ServerSettings,
 )
@@ -130,4 +131,34 @@ def validate_conversation_settings(conv_cfg: ConversationSettings) -> None:
         raise ConfigurationError(
             f"Invalid history_retrieval_limit: {val}. Must be positive.",
             details={"history_retrieval_limit": val},
+        )
+
+
+def validate_memory_settings(mem_cfg: MemorySettings) -> None:
+    """Validate Memory Engine subsystem configuration parameters."""
+    if mem_cfg.max_content_length <= 0:
+        val = mem_cfg.max_content_length
+        raise ConfigurationError(
+            f"Invalid max_content_length: {val}. Must be positive.",
+            details={"max_content_length": val},
+        )
+    if mem_cfg.max_metadata_size <= 0:
+        val = mem_cfg.max_metadata_size
+        raise ConfigurationError(
+            f"Invalid max_metadata_size: {val}. Must be positive.",
+            details={"max_metadata_size": val},
+        )
+    if mem_cfg.default_page_size <= 0:
+        val = mem_cfg.default_page_size
+        raise ConfigurationError(
+            f"Invalid default_page_size: {val}. Must be positive.",
+            details={"default_page_size": val},
+        )
+    if mem_cfg.max_page_size < mem_cfg.default_page_size:
+        raise ConfigurationError(
+            f"Invalid max_page_size: {mem_cfg.max_page_size}. Must be >= default_page_size.",
+            details={
+                "max_page_size": mem_cfg.max_page_size,
+                "default_page_size": mem_cfg.default_page_size,
+            },
         )

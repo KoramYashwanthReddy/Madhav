@@ -186,3 +186,32 @@ class ConversationSettings(BaseModel):
     history_retrieval_limit: int = Field(
         default=100, description="Maximum recent messages retrieved for ContextSource adapter"
     )
+
+
+class MemorySettings(BaseModel):
+    """Memory Engine subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle Memory Engine active state")
+    max_content_length: int = Field(
+        default=8192, description="Maximum characters allowed in a single memory text payload"
+    )
+    max_metadata_size: int = Field(default=4096, description="Maximum serialized metadata length")
+    default_importance: str = Field(
+        default="NORMAL",
+        description="Default memory importance level ('LOW', 'NORMAL', 'HIGH', 'CRITICAL')",
+    )
+    default_confidence: str = Field(
+        default="MEDIUM", description="Default memory confidence level ('LOW', 'MEDIUM', 'HIGH')"
+    )
+    duplicate_detection_enabled: bool = Field(
+        default=True, description="Toggle automatic duplicate memory detection on creation"
+    )
+    access_tracking_enabled: bool = Field(
+        default=True, description="Toggle tracking last_accessed_at timestamp on retrieval"
+    )
+    default_page_size: int = Field(
+        default=50, description="Default page size for memory list and search pagination"
+    )
+    max_page_size: int = Field(
+        default=200, description="Maximum page size allowed for memory pagination requests"
+    )
