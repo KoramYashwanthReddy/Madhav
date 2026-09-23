@@ -284,4 +284,35 @@ class RAGSettings(BaseModel):
     )
 
 
+class ReasoningSettings(BaseModel):
+    """Reasoning & Planning subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle Reasoning subsystem active state")
+    max_plan_steps: int = Field(
+        default=50, description="Maximum number of steps allowed in a single plan"
+    )
+    max_dependencies: int = Field(
+        default=100, description="Maximum number of dependencies allowed per plan"
+    )
+    max_assumptions: int = Field(
+        default=20, description="Maximum number of assumptions per reasoning request"
+    )
+    max_risks: int = Field(
+        default=20, description="Maximum number of identified risks per plan"
+    )
+    max_evidence: int = Field(
+        default=50, description="Maximum evidence references attached per result"
+    )
+    default_mode: str = Field(
+        default="PLANNING", description="Default reasoning mode ('PLANNING', 'ANALYSIS', etc.)"
+    )
+    development_provider: str = Field(
+        default="deterministic", description="Development reasoning provider type"
+    )
+    ai_provider: str = Field(
+        default="runtime", description="AI-backed reasoning provider type"
+    )
+
+
+
 

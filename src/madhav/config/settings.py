@@ -20,6 +20,7 @@ from madhav.config.sections import (
     MemorySettings,
     ModelManagementSettings,
     RAGSettings,
+    ReasoningSettings,
     SecuritySettings,
     ServerSettings,
 )
@@ -31,6 +32,7 @@ from madhav.config.validators import (
     validate_memory_settings,
     validate_production_settings,
     validate_rag_settings,
+    validate_reasoning_settings,
     validate_server_settings,
 )
 
@@ -40,7 +42,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG & retrieval engine, and feature flags.
+    personal knowledge engine, RAG engine, reasoning & planning engine, and feature flags.
 
     Supports environment variables prefixed with `MADHAV_` and double-underscore nested keys.
     """
@@ -68,6 +70,7 @@ class Settings(BaseSettings):
     memory: MemorySettings = Field(default_factory=MemorySettings)
     knowledge: KnowledgeSettings = Field(default_factory=KnowledgeSettings)
     rag: RAGSettings = Field(default_factory=RAGSettings)
+    reasoning: ReasoningSettings = Field(default_factory=ReasoningSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -83,6 +86,7 @@ class Settings(BaseSettings):
         validate_memory_settings(self.memory)
         validate_knowledge_settings(self.knowledge)
         validate_rag_settings(self.rag)
+        validate_reasoning_settings(self.reasoning)
 
 
     def safe_dict(self) -> dict[str, Any]:

@@ -11,6 +11,7 @@ from madhav.config.sections import (
     LoggingSettings,
     MemorySettings,
     RAGSettings,
+    ReasoningSettings,
     SecuritySettings,
     ServerSettings,
 )
@@ -251,5 +252,35 @@ def validate_rag_settings(rag_cfg: RAGSettings) -> None:
             f"Invalid embedding_dimensions: {rag_cfg.embedding_dimensions}. Must be positive.",
             details={"embedding_dimensions": rag_cfg.embedding_dimensions},
         )
+
+
+def validate_reasoning_settings(reasoning_cfg: ReasoningSettings) -> None:
+    """Validate Reasoning & Planning subsystem configuration parameters."""
+    if reasoning_cfg.max_plan_steps <= 0:
+        raise ConfigurationError(
+            f"Invalid max_plan_steps: {reasoning_cfg.max_plan_steps}. Must be positive.",
+            details={"max_plan_steps": reasoning_cfg.max_plan_steps},
+        )
+    if reasoning_cfg.max_dependencies <= 0:
+        raise ConfigurationError(
+            f"Invalid max_dependencies: {reasoning_cfg.max_dependencies}. Must be positive.",
+            details={"max_dependencies": reasoning_cfg.max_dependencies},
+        )
+    if reasoning_cfg.max_assumptions <= 0:
+        raise ConfigurationError(
+            f"Invalid max_assumptions: {reasoning_cfg.max_assumptions}. Must be positive.",
+            details={"max_assumptions": reasoning_cfg.max_assumptions},
+        )
+    if reasoning_cfg.max_risks <= 0:
+        raise ConfigurationError(
+            f"Invalid max_risks: {reasoning_cfg.max_risks}. Must be positive.",
+            details={"max_risks": reasoning_cfg.max_risks},
+        )
+    if reasoning_cfg.max_evidence <= 0:
+        raise ConfigurationError(
+            f"Invalid max_evidence: {reasoning_cfg.max_evidence}. Must be positive.",
+            details={"max_evidence": reasoning_cfg.max_evidence},
+        )
+
 
 
