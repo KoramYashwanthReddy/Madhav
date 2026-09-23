@@ -65,4 +65,3 @@ class RuntimeRegistry:
     def list_providers(self) -> list[str]:
         """Return list of registered runtime provider identifiers."""
         return list(self._runtimes.keys())
-

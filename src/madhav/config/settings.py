@@ -14,6 +14,7 @@ from madhav.config.sections import (
     FeatureFlags,
     IdentitySettings,
     LoggingSettings,
+    ModelManagementSettings,
     SecuritySettings,
     ServerSettings,
 )
@@ -28,7 +29,7 @@ class Settings(BaseSettings):
     """MADHAV Root Configuration Model.
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
-    and feature flag settings.
+    model management, and feature flag settings.
     Supports environment variables prefixed with `MADHAV_` and double-underscore nested keys.
     """
 
@@ -49,6 +50,7 @@ class Settings(BaseSettings):
     features: FeatureFlags = Field(default_factory=FeatureFlags)
     identity: IdentitySettings = Field(default_factory=IdentitySettings)
     ai_runtime: AIRuntimeSettings = Field(default_factory=AIRuntimeSettings)
+    models: ModelManagementSettings = Field(default_factory=ModelManagementSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""

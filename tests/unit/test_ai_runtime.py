@@ -113,9 +113,7 @@ class TestAIRuntimeManager:
         registry = RuntimeRegistry()
         registry.register("slow", slow_runtime)
 
-        manager = AIRuntimeManager(
-            registry=registry, default_provider="slow", default_timeout=0.05
-        )
+        manager = AIRuntimeManager(registry=registry, default_provider="slow", default_timeout=0.05)
         request = AIRequest(messages=[AIMessage(role=AIRole.USER, content="Slow prompt")])
 
         with pytest.raises(AIInferenceTimeoutError) as exc_info:

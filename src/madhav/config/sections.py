@@ -125,3 +125,18 @@ class AIRuntimeSettings(BaseModel):
     default_max_tokens: int = Field(
         default=1024, description="Default maximum response token limit"
     )
+
+
+class ModelManagementSettings(BaseModel):
+    """Model Management subsystem configuration settings."""
+
+    model_directory: str = Field(
+        default="./models", description="Configured local filesystem model root directory"
+    )
+    default_model: str = Field(default="development-stub", description="Default model identifier")
+    auto_discovery: bool = Field(
+        default=False, description="Toggle local filesystem automatic model discovery on startup"
+    )
+    verify_checksum: bool = Field(
+        default=False, description="Toggle strict checksum verification on artifact loading"
+    )

@@ -114,17 +114,13 @@ class AIRuntimeManager:
 
     async def get_status(self, provider: str | None = None) -> RuntimeStatus:
         """Get diagnostic health status for specified runtime provider."""
-        resolved_provider = (
-            provider or self._default_provider or self._settings.ai_runtime.provider
-        )
+        resolved_provider = provider or self._default_provider or self._settings.ai_runtime.provider
         runtime = self._registry.resolve_runtime(resolved_provider)
         return await runtime.health()
 
     async def get_capabilities(self, provider: str | None = None) -> RuntimeCapabilities:
         """Get capability feature matrix for specified runtime provider."""
-        resolved_provider = (
-            provider or self._default_provider or self._settings.ai_runtime.provider
-        )
+        resolved_provider = provider or self._default_provider or self._settings.ai_runtime.provider
         runtime = self._registry.resolve_runtime(resolved_provider)
         return await runtime.capabilities()
 

@@ -23,6 +23,9 @@ class AIRequest(BaseModel):
     metadata: dict[str, Any] = Field(
         default_factory=dict, description="Metadata dictionary for execution context"
     )
+    model: str | None = Field(
+        default=None, description="Optional target model identifier (e.g. 'development-stub')"
+    )
     timeout: float | None = Field(
         default=None, description="Optional per-request timeout limit in seconds", gt=0.0
     )

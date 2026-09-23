@@ -18,9 +18,9 @@ The complete MADHAV architecture encompasses 41 distinct modules ranging from pl
 
 ## Current Module
 
-**Module 04 — AI Runtime**
+**Module 05 — Model Management**
 
-This repository implements **Module 01: Platform Foundation**, **Module 02: Configuration & Environment**, **Module 03: Identity & Personal Profile**, and **Module 04: AI Runtime**. Future modules (05 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
+This repository implements **Module 01: Platform Foundation**, **Module 02: Configuration & Environment**, **Module 03: Identity & Personal Profile**, **Module 04: AI Runtime**, and **Module 05: Model Management**. Future modules (06 to 41) are intentionally not implemented in this phase to maintain strict architectural boundaries and modular isolation.
 
 ---
 
@@ -30,9 +30,10 @@ This repository implements **Module 01: Platform Foundation**, **Module 02: Conf
 2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `madhav.config` instead of directly accessing `os.getenv()`.
 3. **Identity Decoupled from Authentication**: Identity defines *"Who Madhav is serving"* (`IdentityContext`) and operates independently from authentication mechanisms.
 4. **Provider-Neutral AI Runtime**: Inference execution is decoupled from specific LLM vendors via `ModelRuntime` protocols and runtime registries, operating with an offline `StubModelRuntime` by default.
-5. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
-6. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret or personal credentials.
-7. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies, model weight downloads, or database state.
+5. **Model Registry & Governance**: Model metadata, capabilities, artifacts, hardware requirements, and lifecycle state management operate via provider-neutral `ModelManager` abstractions.
+6. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
+7. **Structured & Secure Observability**: JSON-formatted logging with correlation IDs (`X-Request-ID`) and zero leakage of secret or personal credentials.
+8. **Environment Independent & Testable**: Core logic operates deterministically without mandatory cloud dependencies, model weight downloads, or database state.
 
 ---
 
@@ -59,7 +60,7 @@ Madhav/
 │       ├── main.py
 │       ├── version.py
 │       │
-│       ├── ai/
+│       ├── models/
 │       │   ├── __init__.py
 │       │   ├── exceptions.py
 │       │   ├── api/
@@ -67,68 +68,36 @@ Madhav/
 │       │   │   └── routes.py
 │       │   ├── domain/
 │       │   │   ├── __init__.py
+│       │   │   ├── artifact.py
 │       │   │   ├── capabilities.py
 │       │   │   ├── enums.py
-│       │   │   ├── execution.py
-│       │   │   ├── messages.py
-│       │   │   ├── parameters.py
-│       │   │   ├── requests.py
-│       │   │   ├── responses.py
-│       │   │   └── usage.py
-│       │   ├── runtime/
+│       │   │   ├── identity.py
+│       │   │   ├── model.py
+│       │   │   ├── requirements.py
+│       │   │   └── status.py
+│       │   ├── services/
 │       │   │   ├── __init__.py
-│       │   │   ├── base.py
+│       │   │   ├── loaders.py
 │       │   │   ├── manager.py
 │       │   │   ├── registry.py
-│       │   │   └── stub.py
+│       │   │   └── repositories.py
 │       │   └── schemas/
 │       │       ├── __init__.py
 │       │       ├── requests.py
 │       │       └── responses.py
 │       │
+│       ├── ai/
+│       │   └── ...
 │       ├── api/
-│       │   ├── __init__.py
-│       │   ├── router.py
-│       │   └── health.py
-│       │
+│       │   └── ...
 │       ├── config/
-│       │   ├── __init__.py
-│       │   ├── __main__.py
-│       │   ├── enums.py
-│       │   ├── errors.py
-│       │   ├── loader.py
-│       │   ├── sections.py
-│       │   ├── settings.py
-│       │   └── validators.py
-│       │
+│       │   └── ...
 │       ├── core/
-│       │   ├── __init__.py
-│       │   ├── application.py
-│       │   ├── lifecycle.py
-│       │   ├── exceptions.py
-│       │   ├── error_handlers.py
-│       │   ├── logging.py
-│       │   ├── request_id.py
-│       │   └── responses.py
-│       │
+│       │   └── ...
 │       ├── identity/
-│       │   ├── __init__.py
-│       │   ├── exceptions.py
-│       │   ├── api/
-│       │   │   └── routes.py
-│       │   ├── domain/
-│       │   │   └── ...
-│       │   ├── repositories/
-│       │   │   └── memory.py
-│       │   ├── schemas/
-│       │   │   └── ...
-│       │   └── services/
-│       │       └── identity_service.py
-│       │
+│       │   └── ...
 │       └── common/
-│           ├── __init__.py
-│           ├── types.py
-│           └── interfaces.py
+│           └── ...
 │
 ├── tests/
 │   ├── unit/
@@ -140,12 +109,15 @@ Madhav/
 │   │   ├── test_identity_domain.py
 │   │   ├── test_identity_service.py
 │   │   ├── test_ai_domain.py
-│   │   └── test_ai_runtime.py
+│   │   ├── test_ai_runtime.py
+│   │   ├── test_models_domain.py
+│   │   └── test_models_service.py
 │   │
 │   ├── integration/
 │   │   ├── test_config_integration.py
 │   │   ├── test_identity_api.py
 │   │   ├── test_ai_api.py
+│   │   ├── test_models_api.py
 │   │   └── test_application.py
 │   │
 │   └── conftest.py
@@ -155,7 +127,8 @@ Madhav/
 │       ├── module-01-platform-foundation.md
 │       ├── module-02-configuration.md
 │       ├── module-03-identity-personal-profile.md
-│       └── module-04-ai-runtime.md
+│       ├── module-04-ai-runtime.md
+│       └── module-05-model-management.md
 │
 ├── scripts/
 │   ├── dev.py
@@ -200,6 +173,22 @@ Module 04 introduces provider-neutral AI inference execution under `/api/v1/ai`:
 - **Generate AI Response**: `POST /api/v1/ai/generate`
 - **Runtime Health Status**: `GET /api/v1/ai/runtime/status`
 - **Runtime Capabilities**: `GET /api/v1/ai/runtime/capabilities`
+
+---
+
+## Model Management
+
+Module 05 introduces model definition registry and lifecycle management under `/api/v1/models`:
+- **List Models**: `GET /api/v1/models`
+- **Register Model**: `POST /api/v1/models`
+- **Get Model Details**: `GET /api/v1/models/{model_id}`
+- **Update Model Metadata**: `PATCH /api/v1/models/{model_id}`
+- **Unregister Model**: `DELETE /api/v1/models/{model_id}`
+- **Load Model**: `POST /api/v1/models/{model_id}/load`
+- **Unload Model**: `POST /api/v1/models/{model_id}/unload`
+- **Model Status**: `GET /api/v1/models/{model_id}/status`
+- **Model Capabilities**: `GET /api/v1/models/{model_id}/capabilities`
+- **Verify Checksum**: `POST /api/v1/models/{model_id}/verify`
 
 ---
 
@@ -270,8 +259,9 @@ MADHAV is built sequentially across 41 modules:
 - **02. Configuration & Environment** [COMPLETED]
 - **03. Identity & Personal Profile** [COMPLETED]
 - **04. AI Runtime** [COMPLETED]
-- 05. Model Management (Next)
-- 06–41. (Future Modules)
+- **05. Model Management** [COMPLETED]
+- 06. Context Management (Next)
+- 07–41. (Future Modules)
 
-Only Modules 01, 02, 03, and 04 are implemented in this repository state.
+Only Modules 01, 02, 03, 04, and 05 are implemented in this repository state.
 

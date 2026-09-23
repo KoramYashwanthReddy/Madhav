@@ -36,6 +36,9 @@ class AIGenerateRequest(BaseModel):
     generation: GenerationParametersSchema = Field(
         default_factory=GenerationParametersSchema, description="Generation parameters"
     )
+    model: str | None = Field(
+        default=None, description="Optional target model identifier (e.g. 'development-stub')"
+    )
     provider: str | None = Field(
         default=None, description="Optional target runtime provider override"
     )
