@@ -14,10 +14,12 @@ from madhav.config.sections import (
     ReasoningSettings,
     SecuritySettings,
     ServerSettings,
+    TaskSettings,
 )
 
 
 def validate_server_settings(server: ServerSettings) -> None:
+
     """Validate HTTP server network configuration."""
     if not (1 <= server.port <= 65535):
         raise ConfigurationError(
@@ -281,6 +283,36 @@ def validate_reasoning_settings(reasoning_cfg: ReasoningSettings) -> None:
             f"Invalid max_evidence: {reasoning_cfg.max_evidence}. Must be positive.",
             details={"max_evidence": reasoning_cfg.max_evidence},
         )
+
+
+def validate_task_settings(task_cfg: TaskSettings) -> None:
+    """Validate Task Engine subsystem configuration parameters."""
+    if task_cfg.max_page_size <= 0:
+        raise ConfigurationError(
+            f"Invalid max_page_size: {task_cfg.max_page_size}. Must be positive.",
+            details={"max_page_size": task_cfg.max_page_size},
+        )
+    if task_cfg.max_title_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_title_length: {task_cfg.max_title_length}. Must be positive.",
+            details={"max_title_length": task_cfg.max_title_length},
+        )
+    if task_cfg.max_description_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_description_length: {task_cfg.max_description_length}. Must be positive.",
+            details={"max_description_length": task_cfg.max_description_length},
+        )
+    if task_cfg.max_dependency_depth <= 0:
+        raise ConfigurationError(
+            f"Invalid max_dependency_depth: {task_cfg.max_dependency_depth}. Must be positive.",
+            details={"max_dependency_depth": task_cfg.max_dependency_depth},
+        )
+    if task_cfg.max_parent_depth <= 0:
+        raise ConfigurationError(
+            f"Invalid max_parent_depth: {task_cfg.max_parent_depth}. Must be positive.",
+            details={"max_parent_depth": task_cfg.max_parent_depth},
+        )
+
 
 
 

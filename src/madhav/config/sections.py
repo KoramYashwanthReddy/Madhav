@@ -314,5 +314,33 @@ class ReasoningSettings(BaseModel):
     )
 
 
+class TaskSettings(BaseModel):
+    """Task Engine subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle Task Engine active state")
+    max_page_size: int = Field(
+        default=100, description="Maximum page size allowed for task listings"
+    )
+    max_title_length: int = Field(
+        default=255, description="Maximum character length allowed for task titles"
+    )
+    max_description_length: int = Field(
+        default=4096, description="Maximum character length allowed for task descriptions"
+    )
+    max_dependency_depth: int = Field(
+        default=20, description="Maximum nesting depth allowed for task dependency graph traversal"
+    )
+    max_parent_depth: int = Field(
+        default=10, description="Maximum hierarchy depth allowed for parent/child tasks"
+    )
+    default_priority: str = Field(
+        default="NORMAL", description="Default task priority level ('LOW', 'NORMAL', 'HIGH', etc.)"
+    )
+    max_retries: int = Field(
+        default=3, description="Default maximum retry attempts allowed for tasks"
+    )
+
+
+
 
 

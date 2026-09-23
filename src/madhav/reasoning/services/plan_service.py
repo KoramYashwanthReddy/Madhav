@@ -14,7 +14,6 @@ from madhav.reasoning.domain.plan import (
     PlanValidationResult,
     PlanVersion,
 )
-
 from madhav.reasoning.domain.reasoning import ReasoningConstraint
 from madhav.reasoning.repositories.plan_repository import InMemoryPlanRepository, PlanRepository
 from madhav.reasoning.repositories.plan_version_repository import (
