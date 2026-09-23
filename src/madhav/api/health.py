@@ -2,12 +2,12 @@
 
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from madhav.common.interfaces import HealthCheckProvider
+from madhav.config.loader import get_settings
 from madhav.core.request_id import get_request_id
 from madhav.core.responses import APIResponse
-from madhav.version import APP_NAME, SERVICE_NAME, VERSION
 
 router = APIRouter(tags=["Platform Foundation"])
 
@@ -20,14 +20,16 @@ def register_readiness_provider(provider: HealthCheckProvider) -> None:
 
 
 @router.get("/", response_model=APIResponse[dict[str, str]])
-async def get_root() -> APIResponse[dict[str, str]]:
+async def get_root(request: Request) -> APIResponse[dict[str, str]]:
     """Root endpoint returning service identity."""
+    settings = getattr(request.app.state, "settings", get_settings())
     return APIResponse(
         success=True,
         data={
-            "name": APP_NAME,
-            "service": SERVICE_NAME,
-            "version": VERSION,
+            "name": settings.application.name,
+            "service": settings.application.service_name,
+            "version": settings.application.version,
+            "environment": str(settings.application.environment),
             "message": "MADHAV platform is running.",
         },
         request_id=get_request_id(),
@@ -35,22 +37,24 @@ async def get_root() -> APIResponse[dict[str, str]]:
 
 
 @router.get("/health", response_model=APIResponse[dict[str, str]])
-async def get_health() -> APIResponse[dict[str, str]]:
+async def get_health(request: Request) -> APIResponse[dict[str, str]]:
     """Liveness probe indicating whether application process is running."""
+    settings = getattr(request.app.state, "settings", get_settings())
     return APIResponse(
         success=True,
         data={
             "status": "ok",
-            "service": SERVICE_NAME,
-            "version": VERSION,
+            "service": settings.application.service_name,
+            "version": settings.application.version,
         },
         request_id=get_request_id(),
     )
 
 
 @router.get("/ready", response_model=APIResponse[dict[str, Any]])
-async def get_readiness() -> APIResponse[dict[str, Any]]:
+async def get_readiness(request: Request) -> APIResponse[dict[str, Any]]:
     """Readiness probe indicating whether application foundation is ready."""
+    settings = getattr(request.app.state, "settings", get_settings())
     provider_results: dict[str, Any] = {}
     is_ready = True
 
@@ -64,8 +68,9 @@ async def get_readiness() -> APIResponse[dict[str, Any]]:
 
     data: dict[str, Any] = {
         "status": "ready" if is_ready else "unready",
-        "service": SERVICE_NAME,
-        "version": VERSION,
+        "service": settings.application.service_name,
+        "version": settings.application.version,
+        "environment": str(settings.application.environment),
     }
     if provider_results:
         data["checks"] = provider_results

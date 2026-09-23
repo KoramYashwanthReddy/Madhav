@@ -59,9 +59,10 @@ class JSONLogFormatter(logging.Formatter):
         return json.dumps(log_data)
 
 
-def setup_logging(level: str = "INFO", json_format: bool = True) -> logging.Logger:
+def setup_logging(level: str | Any = "INFO", json_format: bool = True) -> logging.Logger:
     """Configure structured logging for MADHAV application."""
-    numeric_level = getattr(logging, level.upper(), logging.INFO)
+    level_str = str(level).upper() if level else "INFO"
+    numeric_level = getattr(logging, level_str, logging.INFO)
     root_logger = logging.getLogger()
     root_logger.setLevel(numeric_level)
 
