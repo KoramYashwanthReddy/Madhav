@@ -2,21 +2,21 @@
 
 import pytest
 
-from madhav.context.domain.budget import ContextBudget
-from madhav.context.domain.enums import ContextCategory, ContextPriority, TruncationStrategy
-from madhav.context.domain.item import ContextItem
-from madhav.context.domain.policy import ContextPolicy
-from madhav.context.domain.request import ContextRequest
-from madhav.context.exceptions import RequiredContextOverflowError
-from madhav.context.services.estimator import ApproximateTokenEstimator
-from madhav.context.services.identity_adapter import IdentityProjection
-from madhav.context.services.manager import ContextManager
-from madhav.context.services.selector import ContextSelector
-from madhav.context.services.truncator import ContextTruncator
-from madhav.identity.domain.assistant import AssistantIdentity
-from madhav.identity.domain.context import IdentityContext
-from madhav.identity.domain.owner import OwnerIdentity
-from madhav.identity.domain.profile import PersonalProfile
+from max.context.domain.budget import ContextBudget
+from max.context.domain.enums import ContextCategory, ContextPriority, TruncationStrategy
+from max.context.domain.item import ContextItem
+from max.context.domain.policy import ContextPolicy
+from max.context.domain.request import ContextRequest
+from max.context.exceptions import RequiredContextOverflowError
+from max.context.services.estimator import ApproximateTokenEstimator
+from max.context.services.identity_adapter import IdentityProjection
+from max.context.services.manager import ContextManager
+from max.context.services.selector import ContextSelector
+from max.context.services.truncator import ContextTruncator
+from max.identity.domain.assistant import AssistantIdentity
+from max.identity.domain.context import IdentityContext
+from max.identity.domain.owner import OwnerIdentity
+from max.identity.domain.profile import PersonalProfile
 
 
 def test_approximate_token_estimator() -> None:
@@ -30,7 +30,7 @@ def test_approximate_token_estimator() -> None:
 def test_identity_projection_privacy_filtering() -> None:
     """Verify safe vs sensitive field projection in IdentityProjection adapter."""
     ctx = IdentityContext(
-        assistant=AssistantIdentity(name="Madhav"),
+        assistant=AssistantIdentity(name="Max"),
         owner=OwnerIdentity(
             preferred_name="Alice",
             email="alice@example.com",
@@ -137,7 +137,7 @@ def test_context_selector_required_overflow() -> None:
 async def test_context_manager_build_and_prepare() -> None:
     """Test full ContextManager facade context package building and AIRequest preparation."""
     manager = ContextManager()
-    request = ContextRequest(user_request="Hello Madhav", model_reference="development-stub")
+    request = ContextRequest(user_request="Hello Max", model_reference="development-stub")
 
     package = await manager.build_context(request)
     assert package.request_id == request.request_id

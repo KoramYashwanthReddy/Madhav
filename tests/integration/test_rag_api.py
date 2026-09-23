@@ -4,13 +4,13 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from madhav.api.router import register_routers
-from madhav.rag.api.routes import set_rag_services
-from madhav.rag.providers.dev_provider import DevelopmentEmbeddingProvider
-from madhav.rag.repositories.document_repository import InMemoryDocumentRepository
-from madhav.rag.services.indexing_service import DocumentIndexingService
-from madhav.rag.services.retrieval_service import RetrievalService
-from madhav.rag.stores.memory_store import InMemoryVectorStore
+from max.api.router import register_routers
+from max.rag.api.routes import set_rag_services
+from max.rag.providers.dev_provider import DevelopmentEmbeddingProvider
+from max.rag.repositories.document_repository import InMemoryDocumentRepository
+from max.rag.services.indexing_service import DocumentIndexingService
+from max.rag.services.retrieval_service import RetrievalService
+from max.rag.stores.memory_store import InMemoryVectorStore
 
 
 @pytest.fixture

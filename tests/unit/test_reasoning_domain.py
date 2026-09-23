@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from madhav.reasoning.domain import (
+from max.reasoning.domain import (
     ConfidenceLevel,
     ConstraintClassification,
     ConstraintType,

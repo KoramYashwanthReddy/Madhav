@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Module 03 establishes the formal **Identity & Personal Profile Subsystem** for the MADHAV Personal AI platform. It answers the foundational question *"Who is the person Madhav is serving?"* by providing domain models for Assistant Identity, Owner Identity, Personal Profile, and structured User/Communication/Locale Preferences.
+Module 03 establishes the formal **Identity & Personal Profile Subsystem** for the MAX Personal AI platform. It answers the foundational question *"Who is the person Max is serving?"* by providing domain models for Assistant Identity, Owner Identity, Personal Profile, and structured User/Communication/Locale Preferences.
 
 ---
 
@@ -85,9 +85,9 @@ classDiagram
 
 ## 5. Assistant Identity
 
-The assistant identity (`AssistantIdentity`) represents MADHAV itself:
-- **Default Name**: `"Madhav"` (configured via settings).
-- **Default Display Name**: `"MADHAV Personal AI"`.
+The assistant identity (`AssistantIdentity`) represents MAX itself:
+- **Default Name**: `"Max"` (configured via settings).
+- **Default Display Name**: `"MAX Personal AI"`.
 - **Purpose**: Serve, assist, manage personal knowledge, and empower the owner autonomously.
 
 ---
@@ -114,7 +114,7 @@ The owner identity (`OwnerIdentity`) represents the primary human user:
 The `IdentityContext` abstraction enables downstream modules (Context Engine, Reasoning, Tools, Orchestration) to consume owner and assistant attributes without accessing internal repository state:
 
 ```python
-from madhav.identity import IdentityService
+from max.identity import IdentityService
 
 identity_service = IdentityService()
 ctx = await identity_service.build_identity_context()
@@ -169,7 +169,7 @@ All endpoints are mounted under `/api/v1/identity`:
 
 ## 12. Privacy & Security Boundaries
 
-- **Authentication Decoupling**: Identity answers *"Who is Madhav serving?"*, not *"Who is authorized to access Madhav?"*. Authentication (OAuth/JWT/passwords) is explicitly excluded from Module 03.
+- **Authentication Decoupling**: Identity answers *"Who is Max serving?"*, not *"Who is authorized to access Max?"*. Authentication (OAuth/JWT/passwords) is explicitly excluded from Module 03.
 - **Log Sanitization**: Logs output high-level actions (`Updated owner identity owner_id=...`) without logging sensitive personal data (email, phone, date of birth, bio).
 - **Secret Redaction**: Secret keys are prohibited from identity profile structures.
 

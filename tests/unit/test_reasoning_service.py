@@ -2,16 +2,16 @@
 
 import pytest
 
-from madhav.reasoning.domain import (
+from max.reasoning.domain import (
     ReasoningMode,
     ReasoningObjective,
     ReasoningRequest,
     ReasoningStatus,
 )
-from madhav.reasoning.domain.exceptions import ReasoningNotFoundError
-from madhav.reasoning.providers import DevelopmentReasoningProvider
-from madhav.reasoning.repositories import InMemoryReasoningRepository
-from madhav.reasoning.services import ReasoningService
+from max.reasoning.domain.exceptions import ReasoningNotFoundError
+from max.reasoning.providers import DevelopmentReasoningProvider
+from max.reasoning.repositories import InMemoryReasoningRepository
+from max.reasoning.services import ReasoningService
 
 
 @pytest.mark.asyncio

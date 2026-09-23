@@ -2,9 +2,9 @@
 
 import pytest
 
-from madhav.common.interfaces import ServiceLifecycle
-from madhav.core.application import create_app
-from madhav.core.lifecycle import get_lifecycle_manager, lifespan
+from max.common.interfaces import ServiceLifecycle
+from max.core.application import create_app
+from max.core.lifecycle import get_lifecycle_manager, lifespan
 
 
 class MockLifecycleService(ServiceLifecycle):

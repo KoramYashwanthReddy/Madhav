@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-The AI Runtime module provides a provider-neutral, strongly typed execution boundary for AI model inference within the MADHAV Personal AI platform. It isolates upper-level orchestrators, agents, and API handlers from vendor-specific LLM providers, model runtimes, and local inference engines.
+The AI Runtime module provides a provider-neutral, strongly typed execution boundary for AI model inference within the MAX Personal AI platform. It isolates upper-level orchestrators, agents, and API handlers from vendor-specific LLM providers, model runtimes, and local inference engines.
 
 ## 2. Responsibilities
 

@@ -11,7 +11,7 @@ async def test_get_assistant_endpoint(client: AsyncClient) -> None:
     assert res.status_code == 200
     json_data = res.json()
     assert json_data["success"] is True
-    assert json_data["data"]["name"] == "Madhav"
+    assert json_data["data"]["name"] == "Max"
     assert "request_id" in json_data
 
 

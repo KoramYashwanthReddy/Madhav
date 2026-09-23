@@ -2,12 +2,12 @@
 
 import pytest
 
-from madhav.common.clock import DeterministicClock
-from madhav.memory.domain.content import MemoryContent
-from madhav.memory.domain.enums import MemoryImportance, MemoryStatus, MemoryType
-from madhav.memory.domain.filter import MemorySearchFilter
-from madhav.memory.domain.memory import Memory
-from madhav.memory.repositories.memory import InMemoryMemoryRepository
+from max.common.clock import DeterministicClock
+from max.memory.domain.content import MemoryContent
+from max.memory.domain.enums import MemoryImportance, MemoryStatus, MemoryType
+from max.memory.domain.filter import MemorySearchFilter
+from max.memory.domain.memory import Memory
+from max.memory.repositories.memory import InMemoryMemoryRepository
 
 
 @pytest.mark.asyncio

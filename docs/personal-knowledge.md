@@ -24,7 +24,7 @@ Personal Knowledge (Module 09)
 
 - **Memory (Module 08)** answers: *"What raw statement or experience did the user communicate?"*
   - Example: *"The user said yesterday that they are learning Spring Boot."*
-- **Personal Knowledge (Module 09)** answers: *"What structured knowledge does Madhav maintain about the user and their world?"*
+- **Personal Knowledge (Module 09)** answers: *"What structured knowledge does Max maintain about the user and their world?"*
   - Example: Entity `Spring Boot` (type: `TECHNOLOGY`), Relation `User -> LEARNING -> Spring Boot`, with provenance referencing `memory_id`.
 
 ---

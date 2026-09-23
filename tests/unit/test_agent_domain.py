@@ -3,27 +3,27 @@
 import pytest
 from pydantic import ValidationError
 
-from madhav.agents.domain.agent import (
+from max.agents.domain.agent import (
     Agent,
     AgentCapability,
     AgentConfiguration,
     AgentLimits,
 )
-from madhav.agents.domain.assignment import AgentAssignment, AssignmentPriority, AssignmentStatus
-from madhav.agents.domain.enums import AgentRole, AgentStatus, AgentType
-from madhav.agents.domain.exceptions import (
+from max.agents.domain.assignment import AgentAssignment, AssignmentPriority, AssignmentStatus
+from max.agents.domain.enums import AgentRole, AgentStatus, AgentType
+from max.agents.domain.exceptions import (
     InvalidAgentStateTransitionError,
     InvalidRunStateTransitionError,
 )
-from madhav.agents.domain.run import (
+from max.agents.domain.run import (
     AgentFailure,
     AgentRetryPolicy,
     AgentRunStatus,
     RetryBackoffStrategy,
 )
-from madhav.agents.domain.trace import AgentEvent, AgentEventType, AgentTrace
-from madhav.agents.services.capability_matcher import CapabilityMatcher
-from madhav.agents.services.state_machine import AgentStateMachine
+from max.agents.domain.trace import AgentEvent, AgentEventType, AgentTrace
+from max.agents.services.capability_matcher import CapabilityMatcher
+from max.agents.services.state_machine import AgentStateMachine
 
 
 def test_agent_creation_defaults() -> None:

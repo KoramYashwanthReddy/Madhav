@@ -4,14 +4,14 @@ import asyncio
 
 import pytest
 
-from madhav.conversation.domain.conversation import Conversation
-from madhav.conversation.domain.enums import ConversationStatus, MessageRole
-from madhav.conversation.domain.message import Message
-from madhav.conversation.exceptions import (
+from max.conversation.domain.conversation import Conversation
+from max.conversation.domain.enums import ConversationStatus, MessageRole
+from max.conversation.domain.message import Message
+from max.conversation.exceptions import (
     ConversationArchivedError,
     ConversationDeletedError,
 )
-from madhav.conversation.repositories.memory import InMemoryConversationRepository
+from max.conversation.repositories.memory import InMemoryConversationRepository
 
 
 @pytest.mark.asyncio

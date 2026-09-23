@@ -3,10 +3,10 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from madhav.knowledge.api.routes import set_knowledge_service
-from madhav.knowledge.repositories.memory import InMemoryKnowledgeRepository
-from madhav.knowledge.services.knowledge_service import KnowledgeService
-from madhav.main import app
+from max.knowledge.api.routes import set_knowledge_service
+from max.knowledge.repositories.memory import InMemoryKnowledgeRepository
+from max.knowledge.services.knowledge_service import KnowledgeService
+from max.main import app
 
 
 @pytest.fixture(autouse=True)
@@ -54,7 +54,7 @@ def test_api_entity_fact_relation_collection_flow() -> None:
         "/api/v1/knowledge/entities",
         json={
             "type": "project",
-            "name": "Madhav Personal AI",
+            "name": "Max Personal AI",
             "description": "Modular AI System",
             "collection_id": col_id,
         },
@@ -76,7 +76,7 @@ def test_api_entity_fact_relation_collection_flow() -> None:
     )
     assert fact_resp.status_code == 201
 
-    # 4. Create relation link (Madhav Personal AI -> USES -> Python)
+    # 4. Create relation link (Max Personal AI -> USES -> Python)
     rel_resp = client.post(
         "/api/v1/knowledge/relations",
         json={

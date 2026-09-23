@@ -2,21 +2,21 @@
 
 import pytest
 
-from madhav.agents.domain.agent import AgentCapability, AgentLimits
-from madhav.agents.domain.assignment import AssignmentPriority, AssignmentStatus
-from madhav.agents.domain.enums import AgentExecutionMode, AgentRole, AgentStatus, AgentType
-from madhav.agents.domain.exceptions import (
+from max.agents.domain.agent import AgentCapability, AgentLimits
+from max.agents.domain.assignment import AssignmentPriority, AssignmentStatus
+from max.agents.domain.enums import AgentExecutionMode, AgentRole, AgentStatus, AgentType
+from max.agents.domain.exceptions import (
     AgentCapabilityMismatchError,
 )
-from madhav.agents.domain.run import AgentRunStatus
-from madhav.agents.repositories.agent_repository import InMemoryAgentRepository
-from madhav.agents.repositories.assignment_repository import InMemoryAssignmentRepository
-from madhav.agents.repositories.run_repository import InMemoryRunRepository
-from madhav.agents.services.agent_service import AgentService
-from madhav.agents.services.assignment_service import AgentAssignmentService
-from madhav.agents.services.availability_service import AgentAvailabilityService
-from madhav.agents.services.run_service import AgentRunService
-from madhav.agents.services.selection_service import AgentSelectionService
+from max.agents.domain.run import AgentRunStatus
+from max.agents.repositories.agent_repository import InMemoryAgentRepository
+from max.agents.repositories.assignment_repository import InMemoryAssignmentRepository
+from max.agents.repositories.run_repository import InMemoryRunRepository
+from max.agents.services.agent_service import AgentService
+from max.agents.services.assignment_service import AgentAssignmentService
+from max.agents.services.availability_service import AgentAvailabilityService
+from max.agents.services.run_service import AgentRunService
+from max.agents.services.selection_service import AgentSelectionService
 
 
 @pytest.fixture

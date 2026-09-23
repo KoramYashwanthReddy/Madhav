@@ -2,17 +2,17 @@
 
 import pytest
 
-from madhav.rag.domain.document import Document, DocumentSource
-from madhav.rag.domain.embedding import EmbeddingModelInfo, EmbeddingVector
-from madhav.rag.domain.enums import DocumentSourceType, DocumentStatus
-from madhav.rag.domain.exceptions import (
+from max.rag.domain.document import Document, DocumentSource
+from max.rag.domain.embedding import EmbeddingModelInfo, EmbeddingVector
+from max.rag.domain.enums import DocumentSourceType, DocumentStatus
+from max.rag.domain.exceptions import (
     DocumentValidationError,
     EmbeddingDimensionMismatchError,
     EmbeddingProviderError,
     RetrievalValidationError,
 )
-from madhav.rag.domain.query import RetrievalQuery
-from madhav.rag.domain.result import Citation, RetrievalResult
+from max.rag.domain.query import RetrievalQuery
+from max.rag.domain.result import Citation, RetrievalResult
 
 
 def test_document_lifecycle_transitions() -> None:

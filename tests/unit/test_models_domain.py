@@ -4,12 +4,12 @@ from pathlib import Path
 
 import pytest
 
-from madhav.models.domain.artifact import ModelLocation
-from madhav.models.domain.capabilities import ModelCapabilities
-from madhav.models.domain.enums import ModelLifecycleState, ModelProvider
-from madhav.models.domain.identity import ModelIdentifier
-from madhav.models.domain.model import Model
-from madhav.models.domain.requirements import HardwareProfile, ModelRequirements
+from max.models.domain.artifact import ModelLocation
+from max.models.domain.capabilities import ModelCapabilities
+from max.models.domain.enums import ModelLifecycleState, ModelProvider
+from max.models.domain.identity import ModelIdentifier
+from max.models.domain.model import Model
+from max.models.domain.requirements import HardwareProfile, ModelRequirements
 
 
 class TestModelDomainEntities:
@@ -96,11 +96,11 @@ class TestModelLocationSecurity:
     def test_verify_checksum(self, tmp_path: Path) -> None:
         resolver = ModelLocation(tmp_path)
         test_file = tmp_path / "artifact.txt"
-        test_file.write_text("madhav-test-content", encoding="utf-8")
+        test_file.write_text("max-test-content", encoding="utf-8")
 
         import hashlib
 
-        expected_sha = hashlib.sha256(b"madhav-test-content").hexdigest()
+        expected_sha = hashlib.sha256(b"max-test-content").hexdigest()
 
         assert resolver.verify_checksum("artifact.txt", expected_sha) is True
         assert resolver.verify_checksum("artifact.txt", "wrong_hash") is False

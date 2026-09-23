@@ -1,4 +1,4 @@
-"""Pytest fixtures for MADHAV platform foundation tests."""
+"""Pytest fixtures for MAX platform foundation tests."""
 
 from collections.abc import AsyncGenerator, Generator
 
@@ -6,16 +6,16 @@ import pytest
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
-from madhav.config.enums import Environment
-from madhav.config.sections import ApplicationSettings, ServerSettings
-from madhav.config.settings import Settings, clear_settings_cache
-from madhav.core.application import create_app
+from max.config.enums import Environment
+from max.config.sections import ApplicationSettings, ServerSettings
+from max.config.settings import Settings, clear_settings_cache
+from max.core.application import create_app
 
 
 @pytest.fixture(autouse=True)
 def isolate_test_environment(monkeypatch: pytest.MonkeyPatch) -> Generator[None, None, None]:
-    """Ensure test environment isolation by setting MADHAV_APPLICATION__ENVIRONMENT=testing."""
-    monkeypatch.setenv("MADHAV_APPLICATION__ENVIRONMENT", "testing")
+    """Ensure test environment isolation by setting MAX_APPLICATION__ENVIRONMENT=testing."""
+    monkeypatch.setenv("MAX_APPLICATION__ENVIRONMENT", "testing")
     clear_settings_cache()
     yield
     clear_settings_cache()
@@ -26,7 +26,7 @@ def test_settings() -> Settings:
     """Provide isolated Settings instance for testing."""
     return Settings(
         application=ApplicationSettings(
-            name="MADHAV Test",
+            name="MAX Test",
             environment=Environment.TESTING,
             debug=False,
         ),

@@ -3,12 +3,12 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from madhav.main import app
+from max.main import app
 
 
 @pytest.fixture
 def client() -> TestClient:
-    """Return TestClient instance for Madhav API."""
+    """Return TestClient instance for Max API."""
     return TestClient(app)
 
 

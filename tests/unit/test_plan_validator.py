@@ -2,7 +2,7 @@
 
 import pytest
 
-from madhav.reasoning.domain import (
+from max.reasoning.domain import (
     CompletenessStatus,
     ConstraintClassification,
     Plan,
@@ -10,8 +10,8 @@ from madhav.reasoning.domain import (
     PlanStep,
     ReasoningConstraint,
 )
-from madhav.reasoning.domain.exceptions import CircularDependencyError
-from madhav.reasoning.services import PlanValidator
+from max.reasoning.domain.exceptions import CircularDependencyError
+from max.reasoning.services import PlanValidator
 
 
 def test_validator_valid_plan() -> None:

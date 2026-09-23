@@ -2,15 +2,15 @@
 
 import pytest
 
-from madhav.reasoning.domain import (
+from max.reasoning.domain import (
     PlanStep,
 )
-from madhav.reasoning.domain.exceptions import PlanNotFoundError
-from madhav.reasoning.repositories import (
+from max.reasoning.domain.exceptions import PlanNotFoundError
+from max.reasoning.repositories import (
     InMemoryPlanRepository,
     InMemoryPlanVersionRepository,
 )
-from madhav.reasoning.services import (
+from max.reasoning.services import (
     PlanComparer,
     PlanService,
     PlanValidator,

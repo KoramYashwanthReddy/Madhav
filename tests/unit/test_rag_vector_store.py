@@ -2,10 +2,10 @@
 
 import pytest
 
-from madhav.rag.domain.chunk import DocumentChunk
-from madhav.rag.domain.embedding import EmbeddingModelInfo, EmbeddingVector
-from madhav.rag.domain.query import RetrievalQuery
-from madhav.rag.stores.memory_store import InMemoryVectorStore
+from max.rag.domain.chunk import DocumentChunk
+from max.rag.domain.embedding import EmbeddingModelInfo, EmbeddingVector
+from max.rag.domain.query import RetrievalQuery
+from max.rag.stores.memory_store import InMemoryVectorStore
 
 
 @pytest.mark.asyncio

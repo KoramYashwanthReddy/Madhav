@@ -2,7 +2,7 @@
 
 ## Overview
 
-Madhav Module 10 provides the **Retrieval and RAG Infrastructure**. It is responsible for ingesting, normalizing, chunking, embedding, indexing, searching, and citing knowledge sources across the platform.
+Max Module 10 provides the **Retrieval and RAG Infrastructure**. It is responsible for ingesting, normalizing, chunking, embedding, indexing, searching, and citing knowledge sources across the platform.
 
 > [!IMPORTANT]
 > **Architectural Boundary**: Module 10 is RETRIEVAL infrastructure.
@@ -64,7 +64,7 @@ Madhav Module 10 provides the **Retrieval and RAG Infrastructure**. It is respon
 
 ## Configuration
 
-Subsystem parameters are configured in `MADHAV_RAG__*` environment variables or settings:
+Subsystem parameters are configured in `MAX_RAG__*` environment variables or settings:
 
 | Parameter | Default | Description |
 |---|---|---|

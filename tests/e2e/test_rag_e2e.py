@@ -4,31 +4,31 @@ from datetime import UTC, datetime
 
 import pytest
 
-from madhav.ai.runtime.manager import AIRuntimeManager
-from madhav.context.domain.item import ContextItem
-from madhav.context.domain.policy import ContextPolicy
-from madhav.context.domain.request import ContextRequest
-from madhav.context.services.manager import ContextManager
-from madhav.identity.domain.assistant import AssistantIdentity
-from madhav.identity.domain.context import IdentityContext
-from madhav.identity.domain.owner import OwnerIdentity
-from madhav.identity.domain.profile import PersonalProfile
-from madhav.knowledge.domain.entity import KnowledgeEntity
-from madhav.knowledge.domain.enums import KnowledgeEntityType
-from madhav.memory.domain.content import MemoryContent
-from madhav.memory.domain.memory import Memory
-from madhav.models.services.manager import ModelManager
-from madhav.rag.adapters.knowledge_adapter import KnowledgeRAGAdapter
-from madhav.rag.adapters.memory_adapter import MemoryRAGAdapter
-from madhav.rag.domain.document import DocumentSource
-from madhav.rag.domain.enums import DocumentSourceType
-from madhav.rag.domain.query import RetrievalQuery
-from madhav.rag.providers.dev_provider import DevelopmentEmbeddingProvider
-from madhav.rag.repositories.document_repository import InMemoryDocumentRepository
-from madhav.rag.services.context_builder import RetrievalContextBuilder
-from madhav.rag.services.indexing_service import DocumentIndexingService
-from madhav.rag.services.retrieval_service import RetrievalService
-from madhav.rag.stores.memory_store import InMemoryVectorStore
+from max.ai.runtime.manager import AIRuntimeManager
+from max.context.domain.item import ContextItem
+from max.context.domain.policy import ContextPolicy
+from max.context.domain.request import ContextRequest
+from max.context.services.manager import ContextManager
+from max.identity.domain.assistant import AssistantIdentity
+from max.identity.domain.context import IdentityContext
+from max.identity.domain.owner import OwnerIdentity
+from max.identity.domain.profile import PersonalProfile
+from max.knowledge.domain.entity import KnowledgeEntity
+from max.knowledge.domain.enums import KnowledgeEntityType
+from max.memory.domain.content import MemoryContent
+from max.memory.domain.memory import Memory
+from max.models.services.manager import ModelManager
+from max.rag.adapters.knowledge_adapter import KnowledgeRAGAdapter
+from max.rag.adapters.memory_adapter import MemoryRAGAdapter
+from max.rag.domain.document import DocumentSource
+from max.rag.domain.enums import DocumentSourceType
+from max.rag.domain.query import RetrievalQuery
+from max.rag.providers.dev_provider import DevelopmentEmbeddingProvider
+from max.rag.repositories.document_repository import InMemoryDocumentRepository
+from max.rag.services.context_builder import RetrievalContextBuilder
+from max.rag.services.indexing_service import DocumentIndexingService
+from max.rag.services.retrieval_service import RetrievalService
+from max.rag.stores.memory_store import InMemoryVectorStore
 
 
 @pytest.mark.asyncio
@@ -50,8 +50,8 @@ async def test_end_to_end_rag_to_context_to_ai_runtime_flow() -> None:
     source = DocumentSource(source_type=DocumentSourceType.TEXT, source_reference="doc-001")
     await indexing.create_and_index_document(
         owner_id="owner_1",
-        title="Madhav Architecture Guidelines",
-        content="Madhav follows modular clean architecture with strict subsystem boundaries.",
+        title="Max Architecture Guidelines",
+        content="Max follows modular clean architecture with strict subsystem boundaries.",
         source=source,
     )
 
@@ -95,7 +95,7 @@ async def test_end_to_end_rag_to_context_to_ai_runtime_flow() -> None:
 
     # Register candidate items into custom context source
     identity_ctx = IdentityContext(
-        assistant=AssistantIdentity(name="Madhav"),
+        assistant=AssistantIdentity(name="Max"),
         owner=OwnerIdentity(display_name="Koram Yashwanth"),
         profile=PersonalProfile(),
     )

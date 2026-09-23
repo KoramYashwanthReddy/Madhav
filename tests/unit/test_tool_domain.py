@@ -2,9 +2,9 @@
 
 import pytest
 
-from madhav.tools.domain.enums import ToolCategory, ToolRiskLevel, ToolStatus
-from madhav.tools.domain.exceptions import InvalidToolDefinitionError
-from madhav.tools.domain.tool import (
+from max.tools.domain.enums import ToolCategory, ToolRiskLevel, ToolStatus
+from max.tools.domain.exceptions import InvalidToolDefinitionError
+from max.tools.domain.tool import (
     Tool,
     ToolFieldDescriptor,
     ToolInputSchema,

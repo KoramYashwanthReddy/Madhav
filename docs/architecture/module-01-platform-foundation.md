@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Module 01 provides the core runtime foundation, application lifecycle, request correlation, error handling, structured logging, health monitoring, and developer tooling for the MADHAV Personal AI System. It serves as the baseline upon which all subsequent 40 MADHAV modules are constructed.
+Module 01 provides the core runtime foundation, application lifecycle, request correlation, error handling, structured logging, health monitoring, and developer tooling for the MAX Personal AI System. It serves as the baseline upon which all subsequent 40 MAX modules are constructed.
 
 ---
 
@@ -11,7 +11,7 @@ Module 01 provides the core runtime foundation, application lifecycle, request c
 - **Application Composition**: Application factory pattern (`create_app()`) creating FastAPI instances with lifespan lifecycle hooks.
 - **Request Correlation**: Generation and propagation of unique correlation IDs (`X-Request-ID`) via context variables across standard logs and API responses.
 - **Structured Logging**: JSON-formatted logging emitting standardized ISO-8601 timestamps, log level, service identity, correlation ID, and automatic masking of sensitive credentials.
-- **Unified Exception Architecture**: Hierarchical exception classes (`MadhavException`, `ApplicationError`, `ValidationError`, `NotFoundError`, `InternalError`) mapped to standardized JSON error responses.
+- **Unified Exception Architecture**: Hierarchical exception classes (`MaxException`, `ApplicationError`, `ValidationError`, `NotFoundError`, `InternalError`) mapped to standardized JSON error responses.
 - **Health & Readiness Endpoints**: Liveness (`/health`), readiness (`/ready`), and service identity (`/`) endpoints.
 - **Base Interfaces**: Extensible runtime protocols for `ServiceLifecycle` and `HealthCheckProvider`.
 - **Quality & CI Infrastructure**: Strict MyPy typing, Ruff linter/formatter rules, Pytest test suite, verification scripts, and GitHub Actions workflow.
@@ -30,7 +30,7 @@ Module 01 provides the core runtime foundation, application lifecycle, request c
 ## 4. Package Structure
 
 ```
-src/madhav/
+src/max/
 ├── __init__.py           # Package exports
 ├── main.py               # Uvicorn entry point
 ├── api/
@@ -121,7 +121,7 @@ Unhandled and domain exceptions are intercepted centrally by FastAPI exception h
 ```mermaid
 graph TD
     ExceptionRaised["Exception Raised in Route Handler"] --> RouterHandler{"Exception Type?"}
-    RouterHandler -->|MadhavException| CustomHandler["madhav_exception_handler"]
+    RouterHandler -->|MaxException| CustomHandler["max_exception_handler"]
     RouterHandler -->|RequestValidationError| ValHandler["validation_exception_handler"]
     RouterHandler -->|HTTPException| HTTPHandler["http_exception_handler"]
     RouterHandler -->|Unhandled Exception| GenericHandler["unhandled_exception_handler"]

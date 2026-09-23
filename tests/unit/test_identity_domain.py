@@ -1,16 +1,16 @@
 """Unit tests for Identity domain models, context, and exceptions."""
 
-from madhav.identity.domain.assistant import AssistantIdentity
-from madhav.identity.domain.context import IdentityContext
-from madhav.identity.domain.enums import ConfirmationPreference, ResponseStyle, Verbosity
-from madhav.identity.domain.owner import OwnerIdentity
-from madhav.identity.domain.preferences import (
+from max.identity.domain.assistant import AssistantIdentity
+from max.identity.domain.context import IdentityContext
+from max.identity.domain.enums import ConfirmationPreference, ResponseStyle, Verbosity
+from max.identity.domain.owner import OwnerIdentity
+from max.identity.domain.preferences import (
     CommunicationPreferences,
     LocalePreferences,
     UserPreferences,
 )
-from madhav.identity.domain.profile import PersonalProfile
-from madhav.identity.exceptions import (
+from max.identity.domain.profile import PersonalProfile
+from max.identity.exceptions import (
     IdentityNotFoundError,
     InvalidPreferenceError,
     InvalidProfileError,
@@ -20,8 +20,8 @@ from madhav.identity.exceptions import (
 def test_assistant_identity_defaults() -> None:
     """Verify default values for assistant identity."""
     assistant = AssistantIdentity()
-    assert assistant.name == "Madhav"
-    assert assistant.display_name == "MADHAV Personal AI"
+    assert assistant.name == "Max"
+    assert assistant.display_name == "MAX Personal AI"
     assert len(assistant.id) > 0
     assert "Platform Foundation" in assistant.capabilities_summary
 
@@ -35,12 +35,12 @@ def test_owner_identity_partial_support() -> None:
     assert owner.timezone == "UTC"
 
     configured_owner = OwnerIdentity(
-        display_name="Madhav Owner",
-        preferred_name="Madhav User",
+        display_name="Max Owner",
+        preferred_name="Max User",
         email="user@example.com",
         timezone="Asia/Kolkata",
     )
-    assert configured_owner.display_name == "Madhav Owner"
+    assert configured_owner.display_name == "Max Owner"
     assert configured_owner.timezone == "Asia/Kolkata"
 
 

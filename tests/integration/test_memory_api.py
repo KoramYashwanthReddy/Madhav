@@ -3,9 +3,9 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from madhav.main import app
-from madhav.memory.api.routes import set_memory_service
-from madhav.memory.services.memory_service import MemoryService
+from max.main import app
+from max.memory.api.routes import set_memory_service
+from max.memory.services.memory_service import MemoryService
 
 
 @pytest.fixture(autouse=True)

@@ -2,15 +2,15 @@
 
 import pytest
 
-from madhav.ai.runtime.manager import AIRuntimeManager
-from madhav.context.domain.policy import ContextPolicy
-from madhav.context.domain.request import ContextRequest
-from madhav.context.services.manager import ContextManager
-from madhav.identity.domain.assistant import AssistantIdentity
-from madhav.identity.domain.context import IdentityContext
-from madhav.identity.domain.owner import OwnerIdentity
-from madhav.identity.domain.profile import PersonalProfile
-from madhav.models.services.manager import ModelManager
+from max.ai.runtime.manager import AIRuntimeManager
+from max.context.domain.policy import ContextPolicy
+from max.context.domain.request import ContextRequest
+from max.context.services.manager import ContextManager
+from max.identity.domain.assistant import AssistantIdentity
+from max.identity.domain.context import IdentityContext
+from max.identity.domain.owner import OwnerIdentity
+from max.identity.domain.profile import PersonalProfile
+from max.models.services.manager import ModelManager
 
 
 @pytest.mark.asyncio
@@ -18,7 +18,7 @@ async def test_end_to_end_context_to_ai_runtime_flow() -> None:
     """Verify end-to-end integration across Modules 03, 06, 05, and 04 completely offline."""
     # 1. Setup Module 03 Identity Context
     identity_ctx = IdentityContext(
-        assistant=AssistantIdentity(name="Madhav"),
+        assistant=AssistantIdentity(name="Max"),
         owner=OwnerIdentity(display_name="Koram Yashwanth", preferred_name="Yashwanth"),
         profile=PersonalProfile(),
     )
@@ -37,7 +37,7 @@ async def test_end_to_end_context_to_ai_runtime_flow() -> None:
 
     # 4. Construct ContextRequest with user request and identity context
     ctx_request = ContextRequest(
-        user_request="Hello Madhav",
+        user_request="Hello Max",
         identity_context=identity_ctx,
         model_reference="development-stub",
         policy=ContextPolicy.default(),

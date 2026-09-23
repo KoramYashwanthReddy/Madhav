@@ -3,10 +3,10 @@
 import pytest
 from httpx import ASGITransport, AsyncClient
 
-from madhav.config.enums import Environment
-from madhav.config.sections import APISettings, ApplicationSettings, CORSSettings, FeatureFlags
-from madhav.config.settings import Settings
-from madhav.core.application import create_app
+from max.config.enums import Environment
+from max.config.sections import APISettings, ApplicationSettings, CORSSettings, FeatureFlags
+from max.config.settings import Settings
+from max.core.application import create_app
 
 
 @pytest.mark.asyncio

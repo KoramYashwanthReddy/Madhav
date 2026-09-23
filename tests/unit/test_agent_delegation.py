@@ -2,15 +2,15 @@
 
 import pytest
 
-from madhav.agents.domain.agent import AgentLimits
-from madhav.agents.domain.exceptions import (
+from max.agents.domain.agent import AgentLimits
+from max.agents.domain.exceptions import (
     DelegationCycleError,
     DelegationLimitExceededError,
 )
-from madhav.agents.repositories.agent_repository import InMemoryAgentRepository
-from madhav.agents.repositories.delegation_repository import InMemoryDelegationRepository
-from madhav.agents.services.agent_service import AgentService
-from madhav.agents.services.delegation_service import AgentDelegationService
+from max.agents.repositories.agent_repository import InMemoryAgentRepository
+from max.agents.repositories.delegation_repository import InMemoryDelegationRepository
+from max.agents.services.agent_service import AgentService
+from max.agents.services.delegation_service import AgentDelegationService
 
 
 @pytest.fixture

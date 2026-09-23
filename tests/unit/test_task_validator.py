@@ -2,14 +2,14 @@
 
 import pytest
 
-from madhav.config.sections import TaskSettings
-from madhav.tasks.domain.exceptions import (
+from max.config.sections import TaskSettings
+from max.tasks.domain.exceptions import (
     CircularTaskDependencyError,
     TaskHierarchyError,
     TaskValidationError,
 )
-from madhav.tasks.domain.task import Task
-from madhav.tasks.services.validator import TaskValidator
+from max.tasks.domain.task import Task
+from max.tasks.services.validator import TaskValidator
 
 
 def test_validate_task_field_limits() -> None:

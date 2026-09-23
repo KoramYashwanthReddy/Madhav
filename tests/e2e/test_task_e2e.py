@@ -1,9 +1,9 @@
 """End-to-End tests for Module 12 Task Engine."""
 
-from madhav.reasoning.domain.enums import CompletenessStatus, PlanStatus
-from madhav.reasoning.domain.plan import Plan, PlanDependency, PlanStep
-from madhav.tasks.domain.enums import TaskReadinessStatus, TaskStatus
-from madhav.tasks.services.task_service import TaskService
+from max.reasoning.domain.enums import CompletenessStatus, PlanStatus
+from max.reasoning.domain.plan import Plan, PlanDependency, PlanStep
+from max.tasks.domain.enums import TaskReadinessStatus, TaskStatus
+from max.tasks.services.task_service import TaskService
 
 
 def test_e2e_plan_to_task_workflow() -> None:

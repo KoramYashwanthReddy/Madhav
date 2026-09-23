@@ -2,7 +2,7 @@
 
 ## Executive Overview
 
-The **Task Engine** (Module 12) is the task management layer of the Madhav personal AI assistant runtime.
+The **Task Engine** (Module 12) is the task management layer of the Max personal AI assistant runtime.
 
 Module 11 (**Reasoning & Planning**) answers:
 > *"What should happen?"* (Formulating goals, steps, dependencies, constraints, and plans)

@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Module 02 establishes a centralized, strongly typed, environment-aware configuration framework for the MADHAV Personal AI platform. It replaces direct `os.getenv()` calls across modules with a single source of truth (`Settings`), providing environment resolution, strict validation, secret redaction, and seamless FastAPI integration.
+Module 02 establishes a centralized, strongly typed, environment-aware configuration framework for the MAX Personal AI platform. It replaces direct `os.getenv()` calls across modules with a single source of truth (`Settings`), providing environment resolution, strict validation, secret redaction, and seamless FastAPI integration.
 
 ---
 
@@ -10,7 +10,7 @@ Module 02 establishes a centralized, strongly typed, environment-aware configura
 
 - **Strongly Typed Settings**: Uses `pydantic-settings` to parse, validate, and structure configuration settings across 7 distinct categories.
 - **Environment Precedence**: Enforces a strict 5-tier configuration loading order (`defaults -> environment-specific -> .env -> environment variables -> runtime overrides`).
-- **Secret Masking & Redaction**: Protects secret credentials (`SecretStr`) from leaking into logs, diagnostics (`python -m madhav.config`), or API responses via `redacted()` / `safe_dict()`.
+- **Secret Masking & Redaction**: Protects secret credentials (`SecretStr`) from leaking into logs, diagnostics (`python -m max.config`), or API responses via `redacted()` / `safe_dict()`.
 - **Validation Boundaries**: Enforces valid ports (1-65535), log levels, and production safety constraints (`debug=False` required, CORS origin wildcard prohibited when credentials are enabled).
 - **FastAPI Integration**: Dynamically configures application titles, docs (`/docs`, `/redoc`), OpenAPI schemas, CORS middleware, and structured logging based on active settings.
 - **Deterministic Test Isolation**: Autouse fixtures enforce `Environment.TESTING` during Pytest runs, preventing developer `.env` pollution.
@@ -20,9 +20,9 @@ Module 02 establishes a centralized, strongly typed, environment-aware configura
 ## 3. Package Structure
 
 ```
-src/madhav/config/
+src/max/config/
 ├── __init__.py           # Exports Settings, get_settings, Environment, ConfigurationError
-├── __main__.py          # CLI diagnostic entry point (python -m madhav.config)
+├── __main__.py          # CLI diagnostic entry point (python -m max.config)
 ├── enums.py              # Environment (DEVELOPMENT, TESTING, PRODUCTION)
 ├── errors.py             # ConfigurationError exception
 ├── loader.py             # Environment loading strategies
@@ -41,15 +41,15 @@ Configuration settings are resolved following a deterministic hierarchy:
 graph TD
     Defaults["1. Safe Built-in Defaults"] --> EnvDefaults["2. Environment-Specific Defaults"]
     EnvDefaults --> EnvFile["3. Local .env File (Ignored in TESTING)"]
-    EnvFile --> EnvVars["4. Environment Variables (MADHAV_ Prefix)"]
+    EnvFile --> EnvVars["4. Environment Variables (MAX_ Prefix)"]
     EnvVars --> Overrides["5. Explicit Runtime Overrides"]
     Overrides --> SettingsInstance["Validated Root Settings Object"]
 ```
 
 Environment variables use double underscores for nested categories:
-- `MADHAV_APPLICATION__ENVIRONMENT=production`
-- `MADHAV_SERVER__PORT=8000`
-- `MADHAV_LOGGING__LEVEL=INFO`
+- `MAX_APPLICATION__ENVIRONMENT=production`
+- `MAX_SERVER__PORT=8000`
+- `MAX_LOGGING__LEVEL=INFO`
 
 ---
 
@@ -89,7 +89,7 @@ Supported environments are represented by the `Environment` enum:
 Future modules consume settings via `get_settings()` without directly reading `os.getenv(...)`:
 
 ```python
-from madhav.config import get_settings
+from max.config import get_settings
 
 settings = get_settings()
 # Access typed configuration categories:

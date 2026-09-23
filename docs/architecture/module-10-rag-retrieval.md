@@ -2,7 +2,7 @@
 
 ## Subsystem Boundary & Principles
 
-Module 10 is designed as a standalone, provider-decoupled **Retrieval and RAG Foundation** for Madhav.
+Module 10 is designed as a standalone, provider-decoupled **Retrieval and RAG Foundation** for Max.
 
 ### Explicit Constraints
 

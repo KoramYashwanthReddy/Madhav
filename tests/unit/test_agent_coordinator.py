@@ -2,23 +2,23 @@
 
 import pytest
 
-from madhav.agents.domain.agent import AgentCapability
-from madhav.agents.domain.enums import AgentExecutionMode, AgentRole, AgentType
-from madhav.agents.domain.exceptions import AgentInactiveError
-from madhav.agents.domain.run import AgentNextActionType, AgentRunStatus
-from madhav.agents.providers.dev_agent import DevelopmentAgent
-from madhav.agents.repositories.agent_repository import InMemoryAgentRepository
-from madhav.agents.repositories.assignment_repository import InMemoryAssignmentRepository
-from madhav.agents.repositories.delegation_repository import InMemoryDelegationRepository
-from madhav.agents.repositories.run_repository import InMemoryRunRepository
-from madhav.agents.repositories.trace_repository import InMemoryTraceRepository
-from madhav.agents.services.agent_service import AgentService
-from madhav.agents.services.assignment_service import AgentAssignmentService
-from madhav.agents.services.boundaries import DevPermissionGateway, DevToolGateway
-from madhav.agents.services.coordinator import AgentCoordinationRequest, AgentCoordinator
-from madhav.agents.services.delegation_service import AgentDelegationService
-from madhav.agents.services.run_service import AgentRunService
-from madhav.agents.services.trace_service import AgentTraceService
+from max.agents.domain.agent import AgentCapability
+from max.agents.domain.enums import AgentExecutionMode, AgentRole, AgentType
+from max.agents.domain.exceptions import AgentInactiveError
+from max.agents.domain.run import AgentNextActionType, AgentRunStatus
+from max.agents.providers.dev_agent import DevelopmentAgent
+from max.agents.repositories.agent_repository import InMemoryAgentRepository
+from max.agents.repositories.assignment_repository import InMemoryAssignmentRepository
+from max.agents.repositories.delegation_repository import InMemoryDelegationRepository
+from max.agents.repositories.run_repository import InMemoryRunRepository
+from max.agents.repositories.trace_repository import InMemoryTraceRepository
+from max.agents.services.agent_service import AgentService
+from max.agents.services.assignment_service import AgentAssignmentService
+from max.agents.services.boundaries import DevPermissionGateway, DevToolGateway
+from max.agents.services.coordinator import AgentCoordinationRequest, AgentCoordinator
+from max.agents.services.delegation_service import AgentDelegationService
+from max.agents.services.run_service import AgentRunService
+from max.agents.services.trace_service import AgentTraceService
 
 
 @pytest.fixture

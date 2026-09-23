@@ -2,10 +2,10 @@
 
 from uuid import uuid4
 
-from madhav.conversation.domain.conversation import Conversation
-from madhav.conversation.domain.enums import ConversationStatus, MessageRole, MessageStatus
-from madhav.conversation.domain.message import Message
-from madhav.conversation.services.title_generator import DeterministicTitleGenerator
+from max.conversation.domain.conversation import Conversation
+from max.conversation.domain.enums import ConversationStatus, MessageRole, MessageStatus
+from max.conversation.domain.message import Message
+from max.conversation.services.title_generator import DeterministicTitleGenerator
 
 
 def test_conversation_domain_defaults() -> None:
@@ -27,13 +27,13 @@ def test_message_domain_creation() -> None:
         conversation_id=conv_id,
         sequence=1,
         role=MessageRole.USER,
-        content="Hello Madhav",
+        content="Hello Max",
         status=MessageStatus.COMPLETED,
     )
     assert msg.conversation_id == conv_id
     assert msg.sequence == 1
     assert msg.role == MessageRole.USER
-    assert msg.content == "Hello Madhav"
+    assert msg.content == "Hello Max"
     assert msg.status == MessageStatus.COMPLETED
 
 

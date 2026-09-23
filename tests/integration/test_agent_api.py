@@ -4,7 +4,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from madhav.api.router import register_routers
+from max.api.router import register_routers
 
 
 @pytest.fixture

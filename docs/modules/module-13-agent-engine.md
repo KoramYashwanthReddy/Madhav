@@ -1,7 +1,7 @@
 # Module 13 — Agent Engine
 
 ## 1. Purpose
-The Agent Engine acts as the coordination and orchestration layer of the Madhav Personal AI Runtime. It represents logical agents, roles, capabilities, limits, assignments, runs, execution state transitions, operational event traces, and sub-task delegations.
+The Agent Engine acts as the coordination and orchestration layer of the Max Personal AI Runtime. It represents logical agents, roles, capabilities, limits, assignments, runs, execution state transitions, operational event traces, and sub-task delegations.
 
 It bridges Module 11 (Reasoning & Planning), Module 12 (Task Engine), Module 04 (AI Runtime), and Module 06 (Context Management), while strictly enforcing boundaries against Tool execution (Module 14) and Permission checking (Module 15).
 
@@ -130,12 +130,12 @@ Domain exceptions extending `AgentError`:
 
 ## 17. Configuration
 Configuration parameters in `AgentSettings`:
-- `MADHAV_AGENT_ENABLED` (default: True)
-- `MADHAV_AGENT_MAX_CONCURRENT_RUNS` (default: 10)
-- `MADHAV_AGENT_DEFAULT_MAX_RETRIES` (default: 3)
-- `MADHAV_AGENT_MAX_DELEGATION_DEPTH` (default: 5)
-- `MADHAV_AGENT_MAX_DELEGATIONS` (default: 20)
-- `MADHAV_AGENT_DEFAULT_EXECUTION_MODE` (default: "DRY_RUN")
+- `MAX_AGENT_ENABLED` (default: True)
+- `MAX_AGENT_MAX_CONCURRENT_RUNS` (default: 10)
+- `MAX_AGENT_DEFAULT_MAX_RETRIES` (default: 3)
+- `MAX_AGENT_MAX_DELEGATION_DEPTH` (default: 5)
+- `MAX_AGENT_MAX_DELEGATIONS` (default: 20)
+- `MAX_AGENT_DEFAULT_EXECUTION_MODE` (default: "DRY_RUN")
 
 ## 18. Security
 Capabilities are not permissions. No shell execution, arbitrary file access, network requests, or system actions are permitted in Module 13.

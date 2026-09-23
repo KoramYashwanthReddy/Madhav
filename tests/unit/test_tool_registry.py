@@ -2,17 +2,17 @@
 
 import pytest
 
-from madhav.tools.domain.enums import ToolCapability, ToolCategory, ToolStatus
-from madhav.tools.domain.exceptions import (
+from max.tools.domain.enums import ToolCapability, ToolCategory, ToolStatus
+from max.tools.domain.exceptions import (
     DuplicateToolError,
     InvalidToolDefinitionError,
     ToolInactiveError,
     ToolNotFoundError,
 )
-from madhav.tools.repositories.tool_repository import InMemoryToolRepository
-from madhav.tools.services.discovery_service import ToolDiscoveryService
-from madhav.tools.services.registry import ToolRegistryService
-from madhav.tools.services.resolver import ToolResolver
+from max.tools.repositories.tool_repository import InMemoryToolRepository
+from max.tools.services.discovery_service import ToolDiscoveryService
+from max.tools.services.registry import ToolRegistryService
+from max.tools.services.resolver import ToolResolver
 
 
 @pytest.fixture

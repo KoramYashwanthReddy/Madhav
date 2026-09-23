@@ -2,16 +2,16 @@
 
 import pytest
 
-from madhav.identity.domain.enums import ResponseStyle
-from madhav.identity.exceptions import InvalidPreferenceError, InvalidProfileError
-from madhav.identity.repositories.memory import InMemoryIdentityRepository
-from madhav.identity.schemas.owner import OwnerIdentityUpdate
-from madhav.identity.schemas.preferences import (
+from max.identity.domain.enums import ResponseStyle
+from max.identity.exceptions import InvalidPreferenceError, InvalidProfileError
+from max.identity.repositories.memory import InMemoryIdentityRepository
+from max.identity.schemas.owner import OwnerIdentityUpdate
+from max.identity.schemas.preferences import (
     CommunicationPreferencesUpdate,
     LocalePreferencesUpdate,
     UserPreferencesUpdate,
 )
-from madhav.identity.services.identity_service import IdentityService
+from max.identity.services.identity_service import IdentityService
 
 
 @pytest.fixture
@@ -25,7 +25,7 @@ def identity_service() -> IdentityService:
 async def test_get_and_update_assistant(identity_service: IdentityService) -> None:
     """Test retrieving and updating assistant identity."""
     assistant = await identity_service.get_assistant()
-    assert assistant.name == "Madhav"
+    assert assistant.name == "Max"
 
 
 @pytest.mark.asyncio

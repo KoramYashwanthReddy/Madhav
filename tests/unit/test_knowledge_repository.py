@@ -4,18 +4,18 @@ from datetime import UTC, datetime
 
 import pytest
 
-from madhav.knowledge.domain.collection import KnowledgeCollection
-from madhav.knowledge.domain.entity import KnowledgeEntity
-from madhav.knowledge.domain.enums import (
+from max.knowledge.domain.collection import KnowledgeCollection
+from max.knowledge.domain.entity import KnowledgeEntity
+from max.knowledge.domain.enums import (
     KnowledgeEntityType,
     KnowledgeRelationType,
     KnowledgeStatus,
 )
-from madhav.knowledge.domain.fact import KnowledgeFact
-from madhav.knowledge.domain.filter import KnowledgeSearchFilter
-from madhav.knowledge.domain.relation import KnowledgeRelation
-from madhav.knowledge.domain.version import KnowledgeVersion
-from madhav.knowledge.repositories.memory import InMemoryKnowledgeRepository
+from max.knowledge.domain.fact import KnowledgeFact
+from max.knowledge.domain.filter import KnowledgeSearchFilter
+from max.knowledge.domain.relation import KnowledgeRelation
+from max.knowledge.domain.version import KnowledgeVersion
+from max.knowledge.repositories.memory import InMemoryKnowledgeRepository
 
 
 @pytest.mark.asyncio
@@ -75,7 +75,7 @@ async def test_repository_fact_and_relation_operations() -> None:
         KnowledgeEntity(
             owner_id="user_1",
             type=KnowledgeEntityType.PROJECT,
-            name="Madhav",
+            name="Max",
             created_at=now,
             updated_at=now,
         )

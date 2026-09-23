@@ -2,13 +2,13 @@
 
 import pytest
 
-from madhav.agents.domain.agent import ToolRequestIntent
-from madhav.tools.domain.enums import ToolInvocationStatus
-from madhav.tools.repositories.invocation_repository import InMemoryToolInvocationRepository
-from madhav.tools.repositories.tool_repository import InMemoryToolRepository
-from madhav.tools.services.agent_integration import AgentToolIntegrationService
-from madhav.tools.services.invocation_service import ToolInvocationService
-from madhav.tools.services.registry import ToolRegistryService
+from max.agents.domain.agent import ToolRequestIntent
+from max.tools.domain.enums import ToolInvocationStatus
+from max.tools.repositories.invocation_repository import InMemoryToolInvocationRepository
+from max.tools.repositories.tool_repository import InMemoryToolRepository
+from max.tools.services.agent_integration import AgentToolIntegrationService
+from max.tools.services.invocation_service import ToolInvocationService
+from max.tools.services.registry import ToolRegistryService
 
 
 @pytest.fixture

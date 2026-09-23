@@ -3,7 +3,7 @@
 import pytest
 from httpx import AsyncClient
 
-from madhav.core.request_id import is_valid_request_id
+from max.core.request_id import is_valid_request_id
 
 
 def test_is_valid_request_id() -> None:

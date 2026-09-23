@@ -2,7 +2,7 @@
 
 import pytest
 
-from madhav.conversation.services.conversation_service import ConversationService
+from max.conversation.services.conversation_service import ConversationService
 
 
 @pytest.mark.asyncio
@@ -21,12 +21,12 @@ async def test_end_to_end_multi_turn_conversation_flow() -> None:
     # 2. Turn 1: Send initial user message
     turn1 = await service.send_message(
         conversation_id=conv.conversation_id,
-        content="Hello Madhav, I am working on building a modular AI system.",
+        content="Hello Max, I am working on building a modular AI system.",
         owner_id="e2e_owner",
     )
 
     assert (
-        turn1.user_message.content == "Hello Madhav, I am working on building a modular AI system."
+        turn1.user_message.content == "Hello Max, I am working on building a modular AI system."
     )
     assert turn1.assistant_message.status.value == "completed"
     assert len(turn1.assistant_message.content) > 0

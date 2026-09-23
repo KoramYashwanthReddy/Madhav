@@ -4,22 +4,22 @@ from datetime import UTC, datetime
 
 import pytest
 
-from madhav.knowledge.domain.entity import KnowledgeEntity
-from madhav.knowledge.domain.enums import KnowledgeEntityType
-from madhav.knowledge.domain.fact import KnowledgeFact
-from madhav.memory.domain.content import MemoryContent
-from madhav.memory.domain.memory import Memory
-from madhav.rag.adapters.knowledge_adapter import KnowledgeRAGAdapter
-from madhav.rag.adapters.memory_adapter import MemoryRAGAdapter
-from madhav.rag.domain.document import DocumentSource
-from madhav.rag.domain.enums import DocumentSourceType, DocumentStatus
-from madhav.rag.domain.query import RetrievalQuery
-from madhav.rag.providers.dev_provider import DevelopmentEmbeddingProvider
-from madhav.rag.repositories.document_repository import InMemoryDocumentRepository
-from madhav.rag.services.context_builder import RetrievalContextBuilder
-from madhav.rag.services.indexing_service import DocumentIndexingService
-from madhav.rag.services.retrieval_service import RetrievalService
-from madhav.rag.stores.memory_store import InMemoryVectorStore
+from max.knowledge.domain.entity import KnowledgeEntity
+from max.knowledge.domain.enums import KnowledgeEntityType
+from max.knowledge.domain.fact import KnowledgeFact
+from max.memory.domain.content import MemoryContent
+from max.memory.domain.memory import Memory
+from max.rag.adapters.knowledge_adapter import KnowledgeRAGAdapter
+from max.rag.adapters.memory_adapter import MemoryRAGAdapter
+from max.rag.domain.document import DocumentSource
+from max.rag.domain.enums import DocumentSourceType, DocumentStatus
+from max.rag.domain.query import RetrievalQuery
+from max.rag.providers.dev_provider import DevelopmentEmbeddingProvider
+from max.rag.repositories.document_repository import InMemoryDocumentRepository
+from max.rag.services.context_builder import RetrievalContextBuilder
+from max.rag.services.indexing_service import DocumentIndexingService
+from max.rag.services.retrieval_service import RetrievalService
+from max.rag.stores.memory_store import InMemoryVectorStore
 
 
 @pytest.fixture
@@ -108,7 +108,7 @@ async def test_retrieval_context_builder(rag_components) -> None:
     await indexing.create_and_index_document(
         owner_id="u1",
         title="Architecture Doc",
-        content="Madhav system uses modular architecture.",
+        content="Max system uses modular architecture.",
         source=source,
     )
 

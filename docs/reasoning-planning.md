@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Reasoning & Planning Engine provides Madhav with structured goal understanding, constraint analysis, dependency tracking, plan synthesis, plan validation, version control, and revision capability. 
+The Reasoning & Planning Engine provides Max with structured goal understanding, constraint analysis, dependency tracking, plan synthesis, plan validation, version control, and revision capability. 
 
 > [!IMPORTANT]
 > **NON-NEGOTIABLE ARCHITECTURAL RULE:**

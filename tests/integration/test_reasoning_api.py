@@ -2,7 +2,7 @@
 
 from fastapi.testclient import TestClient
 
-from madhav.main import create_app
+from max.main import create_app
 
 
 def test_reasoning_api_flow() -> None:

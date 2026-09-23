@@ -3,12 +3,12 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from madhav.main import app
+from max.main import app
 
 
 @pytest.fixture
 def client() -> TestClient:
-    """Return a TestClient instance for Madhav API."""
+    """Return a TestClient instance for Max API."""
     return TestClient(app)
 
 
@@ -34,8 +34,8 @@ class TestAIRuntimeEndpoints:
     def test_post_ai_generate_success(self, client: TestClient) -> None:
         payload = {
             "messages": [
-                {"role": "system", "content": "You are Madhav AI."},
-                {"role": "user", "content": "Hello Madhav"},
+                {"role": "system", "content": "You are Max AI."},
+                {"role": "user", "content": "Hello Max"},
             ],
             "generation": {
                 "temperature": 0.7,

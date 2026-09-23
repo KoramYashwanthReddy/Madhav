@@ -4,14 +4,14 @@ from datetime import timedelta
 
 import pytest
 
-from madhav.common.clock import DeterministicClock
-from madhav.memory.domain.enums import MemoryImportance, MemoryType
-from madhav.memory.exceptions import (
+from max.common.clock import DeterministicClock
+from max.memory.domain.enums import MemoryImportance, MemoryType
+from max.memory.exceptions import (
     DuplicateMemoryError,
     MemoryOwnershipError,
     MemoryValidationError,
 )
-from madhav.memory.services.memory_service import MemoryService
+from max.memory.services.memory_service import MemoryService
 
 
 @pytest.mark.asyncio
@@ -23,7 +23,7 @@ async def test_service_creation_and_access_tracking() -> None:
     mem = await service.create_memory(
         owner_id="user_1",
         type=MemoryType.FACT,
-        text="Madhav is a modular personal AI system",
+        text="Max is a modular personal AI system",
         importance=MemoryImportance.HIGH,
     )
     assert mem.last_accessed_at is None

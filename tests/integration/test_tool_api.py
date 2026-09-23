@@ -3,7 +3,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from madhav.main import app
+from max.main import app
 
 
 @pytest.fixture

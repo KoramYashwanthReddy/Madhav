@@ -2,23 +2,23 @@
 
 import pytest
 
-from madhav.context.services.manager import ContextManager
-from madhav.conversation.repositories.memory import InMemoryConversationRepository
-from madhav.conversation.services.conversation_service import ConversationService
-from madhav.knowledge.repositories.memory import InMemoryKnowledgeRepository
-from madhav.knowledge.services.knowledge_service import KnowledgeService
-from madhav.memory.repositories import InMemoryMemoryRepository
-from madhav.memory.services import MemoryService
-from madhav.rag.repositories.document_repository import InMemoryDocumentRepository
-from madhav.reasoning.domain import (
+from max.context.services.manager import ContextManager
+from max.conversation.repositories.memory import InMemoryConversationRepository
+from max.conversation.services.conversation_service import ConversationService
+from max.knowledge.repositories.memory import InMemoryKnowledgeRepository
+from max.knowledge.services.knowledge_service import KnowledgeService
+from max.memory.repositories import InMemoryMemoryRepository
+from max.memory.services import MemoryService
+from max.rag.repositories.document_repository import InMemoryDocumentRepository
+from max.reasoning.domain import (
     ReasoningMode,
     ReasoningObjective,
     ReasoningRequest,
     ReasoningStatus,
 )
-from madhav.reasoning.providers import DevelopmentReasoningProvider
-from madhav.reasoning.repositories import InMemoryReasoningRepository
-from madhav.reasoning.services import ReasoningService
+from max.reasoning.providers import DevelopmentReasoningProvider
+from max.reasoning.repositories import InMemoryReasoningRepository
+from max.reasoning.services import ReasoningService
 
 
 @pytest.mark.asyncio

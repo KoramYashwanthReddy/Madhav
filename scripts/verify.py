@@ -23,7 +23,7 @@ def run_step(step_name: str, command: list[str]) -> bool:
 def main() -> None:
     """Run full foundation verification suite."""
     steps: list[tuple[str, list[str]]] = [
-        ("Configuration Diagnostics", [sys.executable, "-m", "madhav.config"]),
+        ("Configuration Diagnostics", [sys.executable, "-m", "max.config"]),
         ("Ruff Linter", [sys.executable, "-m", "ruff", "check", "."]),
         ("MyPy Type Checker", [sys.executable, "-m", "mypy", "src"]),
         ("Pytest Test Suite", [sys.executable, "-m", "pytest"]),

@@ -1,4 +1,4 @@
-"""Developer server runner script for MADHAV platform foundation."""
+"""Developer server runner script for MAX platform foundation."""
 
 import subprocess
 import sys
@@ -10,14 +10,14 @@ def main() -> None:
         sys.executable,
         "-m",
         "uvicorn",
-        "madhav.main:app",
+        "max.main:app",
         "--reload",
         "--host",
         "127.0.0.1",
         "--port",
         "8000",
     ]
-    print(f"Starting MADHAV dev server: {' '.join(cmd)}")
+    print(f"Starting MAX dev server: {' '.join(cmd)}")
     try:
         subprocess.run(cmd, check=True)
     except KeyboardInterrupt:

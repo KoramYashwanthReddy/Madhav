@@ -2,12 +2,12 @@
 
 import pytest
 
-from madhav.context.domain.policy import ContextPolicy
-from madhav.context.domain.request import ContextRequest
-from madhav.context.services.manager import ContextManager
-from madhav.memory.domain.enums import MemoryImportance, MemoryType
-from madhav.memory.services.memory_service import MemoryService
-from madhav.memory.sources.context import MemoryContextSource
+from max.context.domain.policy import ContextPolicy
+from max.context.domain.request import ContextRequest
+from max.context.services.manager import ContextManager
+from max.memory.domain.enums import MemoryImportance, MemoryType
+from max.memory.services.memory_service import MemoryService
+from max.memory.sources.context import MemoryContextSource
 
 
 @pytest.mark.asyncio

@@ -4,20 +4,20 @@ from datetime import UTC, datetime
 
 import pytest
 
-from madhav.common.clock import DeterministicClock
-from madhav.knowledge.domain.enums import (
+from max.common.clock import DeterministicClock
+from max.knowledge.domain.enums import (
     FactValueType,
     KnowledgeEntityType,
     KnowledgeRelationType,
 )
-from madhav.knowledge.exceptions import (
+from max.knowledge.exceptions import (
     DuplicateKnowledgeError,
     InvalidFactValueError,
     InvalidKnowledgeRelationError,
     KnowledgeOwnershipError,
 )
-from madhav.knowledge.repositories.memory import InMemoryKnowledgeRepository
-from madhav.knowledge.services.knowledge_service import KnowledgeService
+from max.knowledge.repositories.memory import InMemoryKnowledgeRepository
+from max.knowledge.services.knowledge_service import KnowledgeService
 
 
 @pytest.fixture
@@ -84,12 +84,12 @@ async def test_fact_creation_and_value_validation(service: KnowledgeService) -> 
     ent = await service.create_entity(
         owner_id="user_1",
         type=KnowledgeEntityType.PROJECT,
-        name="Madhav",
+        name="Max",
     )
     fact = await service.create_fact(
         owner_id="user_1",
         entity_id=ent.id,
-        subject="Madhav",
+        subject="Max",
         predicate="uses_language",
         object="Python",
         value="Python 3.12",
@@ -102,7 +102,7 @@ async def test_fact_creation_and_value_validation(service: KnowledgeService) -> 
         await service.create_fact(
             owner_id="user_1",
             entity_id=ent.id,
-            subject="Madhav",
+            subject="Max",
             predicate="version",
             object="1.0",
             value="not_a_number",
@@ -115,12 +115,12 @@ async def test_relation_creation_and_traversal(service: KnowledgeService) -> Non
     e1 = await service.create_entity(
         owner_id="user_1",
         type=KnowledgeEntityType.PERSON,
-        name="Madhav User",
+        name="Max User",
     )
     e2 = await service.create_entity(
         owner_id="user_1",
         type=KnowledgeEntityType.PROJECT,
-        name="Madhav Engine",
+        name="Max Engine",
     )
     rel = await service.create_relation(
         owner_id="user_1",
@@ -145,12 +145,12 @@ async def test_knowledge_summary_projection(service: KnowledgeService) -> None:
     e1 = await service.create_entity(
         owner_id="user_1",
         type=KnowledgeEntityType.PROJECT,
-        name="Madhav App",
+        name="Max App",
     )
     await service.create_fact(
         owner_id="user_1",
         entity_id=e1.id,
-        subject="Madhav App",
+        subject="Max App",
         predicate="status",
         object="Active Development",
         value="Active Development",

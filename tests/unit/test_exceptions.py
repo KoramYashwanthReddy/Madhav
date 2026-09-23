@@ -4,20 +4,20 @@ import pytest
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
-from madhav.core.error_handlers import register_exception_handlers
-from madhav.core.exceptions import (
+from max.core.error_handlers import register_exception_handlers
+from max.core.exceptions import (
     ApplicationError,
     InternalError,
-    MadhavException,
+    MaxException,
     NotFoundError,
     ValidationError,
 )
-from madhav.core.request_id import RequestIDMiddleware
+from max.core.request_id import RequestIDMiddleware
 
 
 def test_exception_classes_hierarchy() -> None:
     """Verify custom exception attributes and default status codes."""
-    base_exc = MadhavException("Custom error", code="CUSTOM_CODE", status_code=418)
+    base_exc = MaxException("Custom error", code="CUSTOM_CODE", status_code=418)
     assert base_exc.message == "Custom error"
     assert base_exc.code == "CUSTOM_CODE"
     assert base_exc.status_code == 418
@@ -41,7 +41,7 @@ def test_exception_classes_hierarchy() -> None:
 
 @pytest.mark.asyncio
 async def test_custom_exception_handler_response() -> None:
-    """Test custom MadhavException handled into standard ErrorResponse structure."""
+    """Test custom MaxException handled into standard ErrorResponse structure."""
     test_app = FastAPI()
     test_app.add_middleware(RequestIDMiddleware)
     register_exception_handlers(test_app)

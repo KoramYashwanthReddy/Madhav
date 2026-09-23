@@ -5,18 +5,18 @@ from datetime import UTC, datetime, timedelta
 import pytest
 from pydantic import ValidationError
 
-from madhav.knowledge.domain.collection import KnowledgeCollection
-from madhav.knowledge.domain.entity import KnowledgeEntity
-from madhav.knowledge.domain.enums import (
+from max.knowledge.domain.collection import KnowledgeCollection
+from max.knowledge.domain.entity import KnowledgeEntity
+from max.knowledge.domain.enums import (
     FactValueType,
     KnowledgeConfidence,
     KnowledgeEntityType,
     KnowledgeRelationType,
     KnowledgeSourceType,
 )
-from madhav.knowledge.domain.fact import KnowledgeFact
-from madhav.knowledge.domain.relation import KnowledgeRelation
-from madhav.knowledge.domain.version import KnowledgeVersion
+from max.knowledge.domain.fact import KnowledgeFact
+from max.knowledge.domain.relation import KnowledgeRelation
+from max.knowledge.domain.version import KnowledgeVersion
 
 
 def test_entity_domain_creation_and_validation() -> None:
@@ -24,14 +24,14 @@ def test_entity_domain_creation_and_validation() -> None:
     entity = KnowledgeEntity(
         owner_id="user_123",
         type=KnowledgeEntityType.PROJECT,
-        name="Madhav",
+        name="Max",
         description="Modular Personal AI Runtime",
         confidence=KnowledgeConfidence.HIGH,
         created_at=now,
         updated_at=now,
     )
     assert entity.id.startswith("ent_")
-    assert entity.name == "Madhav"
+    assert entity.name == "Max"
     assert entity.type == KnowledgeEntityType.PROJECT
     assert entity.is_active is True
 
@@ -114,7 +114,7 @@ def test_version_domain() -> None:
         target_id="ent_123",
         target_type="entity",
         version_number=1,
-        snapshot={"name": "Madhav"},
+        snapshot={"name": "Max"},
         changed_at=now,
     )
     assert version.version_id.startswith("ver_")

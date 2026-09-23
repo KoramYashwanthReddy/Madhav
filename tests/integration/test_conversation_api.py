@@ -3,9 +3,9 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from madhav.conversation.api.routes import set_conversation_service
-from madhav.conversation.services.conversation_service import ConversationService
-from madhav.main import app
+from max.conversation.api.routes import set_conversation_service
+from max.conversation.services.conversation_service import ConversationService
+from max.main import app
 
 
 @pytest.fixture(autouse=True)
@@ -53,18 +53,18 @@ def test_api_conversation_turn_execution() -> None:
     # Send message / execute turn
     turn_resp = client.post(
         f"/api/v1/conversations/{conv_id}/messages",
-        json={"content": "Hello Madhav, what is FastAPI?"},
+        json={"content": "Hello Max, what is FastAPI?"},
     )
     assert turn_resp.status_code == 200
     turn_data = turn_resp.json()
 
-    assert turn_data["user_message"]["content"] == "Hello Madhav, what is FastAPI?"
+    assert turn_data["user_message"]["content"] == "Hello Max, what is FastAPI?"
     assert turn_data["user_message"]["role"] == "user"
     assert turn_data["assistant_message"]["role"] == "assistant"
     assert len(turn_data["assistant_message"]["content"]) > 0
 
     # Verify title auto-generated
-    assert turn_data["conversation"]["title"] == "Hello Madhav, what is FastAPI?"
+    assert turn_data["conversation"]["title"] == "Hello Max, what is FastAPI?"
 
     # List messages
     msgs_resp = client.get(f"/api/v1/conversations/{conv_id}/messages")

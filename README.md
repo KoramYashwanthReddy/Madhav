@@ -1,18 +1,18 @@
-# MADHAV
+# MAX
 
-MADHAV is a long-term, production-quality personal AI system engineered for privacy, extensibility, testability, and multi-modal intelligence.
+MAX is a long-term, production-quality personal AI system engineered for privacy, extensibility, testability, and multi-modal intelligence.
 
 ---
 
-## What is MADHAV?
+## What is MAX?
 
-MADHAV is an autonomous personal AI platform designed to manage personal knowledge, reason across complex multi-step workflows, execute computer automation tasks, integrate with developer ecosystems, and adapt continuously to personal user profiles.
+MAX is an autonomous personal AI platform designed to manage personal knowledge, reason across complex multi-step workflows, execute computer automation tasks, integrate with developer ecosystems, and adapt continuously to personal user profiles.
 
 ---
 
 ## Vision
 
-The complete MADHAV architecture encompasses 41 distinct modules ranging from platform foundation and context management to computer control, proactive intelligence, and multi-modal autonomous systems. MADHAV aims to provide a secure, self-hosted, personal intelligence companion.
+The complete MAX architecture encompasses 41 distinct modules ranging from platform foundation and context management to computer control, proactive intelligence, and multi-modal autonomous systems. MAX aims to provide a secure, self-hosted, personal intelligence companion.
 
 ---
 
@@ -27,8 +27,8 @@ This repository implements **Module 01: Platform Foundation**, **Module 02: Conf
 ## Architecture Philosophy
 
 1. **Strict Modular Isolation**: Each module builds clean abstractions without early coupling to future features.
-2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `madhav.config` instead of directly accessing `os.getenv()`.
-3. **Identity Decoupled from Authentication**: Identity defines *"Who Madhav is serving"* (`IdentityContext`) and operates independently from authentication mechanisms.
+2. **Centralized Strongly Typed Settings**: All application modules consume runtime settings from `max.config` instead of directly accessing `os.getenv()`.
+3. **Identity Decoupled from Authentication**: Identity defines *"Who Max is serving"* (`IdentityContext`) and operates independently from authentication mechanisms.
 4. **Provider-Neutral AI Runtime**: Inference execution is decoupled from specific LLM vendors via `ModelRuntime` protocols and runtime registries, operating with an offline `StubModelRuntime` by default.
 5. **Model Registry & Governance**: Model metadata, capabilities, artifacts, hardware requirements, and lifecycle state management operate via provider-neutral `ModelManager` abstractions.
 6. **Type Safety & Predictability**: Mandatory type annotations across all modules, verified via MyPy in strict mode.
@@ -53,9 +53,9 @@ This repository implements **Module 01: Platform Foundation**, **Module 02: Conf
 ## Project Structure
 
 ```
-Madhav/
+Max/
 ├── src/
-│   └── madhav/
+│   └── max/
 │       ├── __init__.py
 │       ├── main.py
 │       ├── version.py
@@ -146,7 +146,7 @@ Madhav/
 
 ## Configuration
 
-MADHAV uses a centralized, strongly typed configuration system powered by `pydantic-settings`.
+MAX uses a centralized, strongly typed configuration system powered by `pydantic-settings`.
 
 ### Supported Environments
 - `development` (Default): Local defaults, interactive docs (`/docs`, `/redoc`), hot reload support.
@@ -158,7 +158,7 @@ MADHAV uses a centralized, strongly typed configuration system powered by `pydan
 ## Identity & Personal Profile
 
 Module 03 introduces the identity domain contract and profile subsystem under `/api/v1/identity`:
-- **Assistant Identity**: `GET /api/v1/identity/assistant` (Default name `"Madhav"`).
+- **Assistant Identity**: `GET /api/v1/identity/assistant` (Default name `"Max"`).
 - **Owner Identity**: `GET /api/v1/identity/owner` (Partial profile support, zero fake personal data).
 - **Personal Profile**: `GET /api/v1/identity/profile` & `PUT /api/v1/identity/profile`.
 - **Safe Identity Summary**: `GET /api/v1/identity/summary` (Non-sensitive profile fields for safe logging).
@@ -254,7 +254,7 @@ uv run python scripts/verify.py
 
 ## Module Development Strategy
 
-MADHAV is built sequentially across 41 modules:
+MAX is built sequentially across 41 modules:
 - **01. Platform Foundation** [COMPLETED]
 - **02. Configuration & Environment** [COMPLETED]
 - **03. Identity & Personal Profile** [COMPLETED]

@@ -2,21 +2,21 @@
 
 import pytest
 
-from madhav.reasoning.domain.enums import (
+from max.reasoning.domain.enums import (
     CompletenessStatus,
     PlanStatus,
 )
-from madhav.reasoning.domain.plan import Plan, PlanDependency, PlanStep
-from madhav.tasks.domain.enums import (
+from max.reasoning.domain.plan import Plan, PlanDependency, PlanStep
+from max.tasks.domain.enums import (
     TaskPriority,
     TaskReadinessStatus,
     TaskStatus,
     TaskType,
 )
-from madhav.tasks.domain.exceptions import (
+from max.tasks.domain.exceptions import (
     TaskRetryNotAllowedError,
 )
-from madhav.tasks.services.task_service import TaskService
+from max.tasks.services.task_service import TaskService
 
 
 def test_task_crud_and_lifecycle() -> None:

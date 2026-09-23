@@ -5,19 +5,19 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from madhav.ai.domain.enums import AIRole, FinishReason, RuntimeHealthStatus
-from madhav.ai.domain.messages import AIMessage
-from madhav.ai.domain.requests import AIRequest
-from madhav.ai.domain.responses import AIResponse
-from madhav.ai.exceptions import (
+from max.ai.domain.enums import AIRole, FinishReason, RuntimeHealthStatus
+from max.ai.domain.messages import AIMessage
+from max.ai.domain.requests import AIRequest
+from max.ai.domain.responses import AIResponse
+from max.ai.exceptions import (
     AIInferenceCancelledError,
     AIInferenceTimeoutError,
     AIRuntimeError,
     AIRuntimeUnavailableError,
 )
-from madhav.ai.runtime.manager import AIRuntimeManager
-from madhav.ai.runtime.registry import RuntimeRegistry
-from madhav.ai.runtime.stub import StubModelRuntime
+from max.ai.runtime.manager import AIRuntimeManager
+from max.ai.runtime.registry import RuntimeRegistry
+from max.ai.runtime.stub import StubModelRuntime
 
 
 class TestStubModelRuntime:
@@ -26,7 +26,7 @@ class TestStubModelRuntime:
     @pytest.mark.asyncio
     async def test_stub_generate_success(self) -> None:
         runtime = StubModelRuntime()
-        request = AIRequest(messages=[AIMessage(role=AIRole.USER, content="Hello Madhav")])
+        request = AIRequest(messages=[AIMessage(role=AIRole.USER, content="Hello Max")])
         response = await runtime.generate(request)
 
         assert isinstance(response, AIResponse)

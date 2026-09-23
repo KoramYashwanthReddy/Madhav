@@ -5,16 +5,16 @@ from pathlib import Path
 
 import pytest
 
-from madhav.models.domain.artifact import ModelArtifact
-from madhav.models.domain.enums import ModelFormat, ModelLifecycleState, ModelProvider
-from madhav.models.domain.identity import ModelIdentifier
-from madhav.models.domain.model import Model
-from madhav.models.exceptions import (
+from max.models.domain.artifact import ModelArtifact
+from max.models.domain.enums import ModelFormat, ModelLifecycleState, ModelProvider
+from max.models.domain.identity import ModelIdentifier
+from max.models.domain.model import Model
+from max.models.exceptions import (
     ModelAlreadyExistsError,
 )
-from madhav.models.services.loaders import DevelopmentModelLoader
-from madhav.models.services.manager import ModelManager
-from madhav.models.services.repositories import InMemoryModelRepository
+from max.models.services.loaders import DevelopmentModelLoader
+from max.models.services.manager import ModelManager
+from max.models.services.repositories import InMemoryModelRepository
 
 
 @pytest.fixture

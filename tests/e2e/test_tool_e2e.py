@@ -1,13 +1,13 @@
-from madhav.tools.domain.enums import ToolCapability, ToolInvocationStatus
-from madhav.tools.domain.invocation import ToolInvocationRequest
-from madhav.tools.repositories.invocation_repository import InMemoryToolInvocationRepository
-from madhav.tools.repositories.tool_repository import InMemoryToolRepository
-from madhav.tools.repositories.trace_repository import InMemoryToolTraceRepository
-from madhav.tools.services.discovery_service import ToolDiscoveryService
-from madhav.tools.services.invocation_service import ToolInvocationService
-from madhav.tools.services.registry import ToolRegistryService
-from madhav.tools.services.resolver import ToolResolver
-from madhav.tools.services.trace_service import ToolTraceService
+from max.tools.domain.enums import ToolCapability, ToolInvocationStatus
+from max.tools.domain.invocation import ToolInvocationRequest
+from max.tools.repositories.invocation_repository import InMemoryToolInvocationRepository
+from max.tools.repositories.tool_repository import InMemoryToolRepository
+from max.tools.repositories.trace_repository import InMemoryToolTraceRepository
+from max.tools.services.discovery_service import ToolDiscoveryService
+from max.tools.services.invocation_service import ToolInvocationService
+from max.tools.services.registry import ToolRegistryService
+from max.tools.services.resolver import ToolResolver
+from max.tools.services.trace_service import ToolTraceService
 
 
 def test_tool_registry_full_e2e_acceptance_flow() -> None:

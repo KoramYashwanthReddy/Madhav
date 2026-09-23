@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-The Conversation Engine manages structured, stateful conversation threads, chronological message histories, message sequence generation, deterministic title generation, and turn orchestration for the MADHAV Personal AI System.
+The Conversation Engine manages structured, stateful conversation threads, chronological message histories, message sequence generation, deterministic title generation, and turn orchestration for the MAX Personal AI System.
 
 It serves as the definitive source of active conversational context and historical turns without blurring boundaries into long-term memory, knowledge retrieval, or reasoning engines.
 
@@ -151,7 +151,7 @@ No external database drivers (SQLAlchemy, Alembic, PostgreSQL) are added in Modu
 
 ## 9. Integration with Modules 01-06
 
-1. **Module 01 Platform Foundation**: Reuses `MadhavException`, standard `APIResponse[T]`, request IDs, and logging.
+1. **Module 01 Platform Foundation**: Reuses `MaxException`, standard `APIResponse[T]`, request IDs, and logging.
 2. **Module 02 Configuration**: Uses `ConversationSettings` from global `Settings`.
 3. **Module 03 Identity**: References `owner_id` and gets `IdentityContext` snapshot from `IdentityService`.
 4. **Module 04 AI Runtime**: Executes inference via `AIRuntimeManager.generate(ai_request)`.

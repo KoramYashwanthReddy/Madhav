@@ -2,19 +2,19 @@
 
 import pytest
 
-from madhav.context.domain.policy import ContextPolicy
-from madhav.context.domain.request import ContextRequest
-from madhav.context.services.manager import ContextManager
-from madhav.knowledge.domain.enums import (
+from max.context.domain.policy import ContextPolicy
+from max.context.domain.request import ContextRequest
+from max.context.services.manager import ContextManager
+from max.knowledge.domain.enums import (
     KnowledgeEntityType,
     KnowledgeRelationType,
     KnowledgeSourceType,
 )
-from madhav.knowledge.repositories.memory import InMemoryKnowledgeRepository
-from madhav.knowledge.services.knowledge_service import KnowledgeService
-from madhav.knowledge.sources.context import PersonalKnowledgeContextSource
-from madhav.memory.domain.enums import MemoryType
-from madhav.memory.services.memory_service import MemoryService
+from max.knowledge.repositories.memory import InMemoryKnowledgeRepository
+from max.knowledge.services.knowledge_service import KnowledgeService
+from max.knowledge.sources.context import PersonalKnowledgeContextSource
+from max.memory.domain.enums import MemoryType
+from max.memory.services.memory_service import MemoryService
 
 
 @pytest.mark.asyncio
@@ -41,7 +41,7 @@ async def test_end_to_end_memory_to_knowledge_to_context_flow() -> None:
     mem = await memory_service.create_memory(
         owner_id="e2e_owner",
         type=MemoryType.FACT,
-        text="The user is developing Madhav Personal AI runtime using Python 3.12.",
+        text="The user is developing Max Personal AI runtime using Python 3.12.",
     )
 
     # 2. Create Knowledge Entities in Personal Knowledge Engine (Module 09)
@@ -55,7 +55,7 @@ async def test_end_to_end_memory_to_knowledge_to_context_flow() -> None:
     e_project = await knowledge_service.create_entity(
         owner_id="e2e_owner",
         type=KnowledgeEntityType.PROJECT,
-        name="Madhav AI",
+        name="Max AI",
         description="Personal Modular AI Companion",
     )
 
@@ -70,7 +70,7 @@ async def test_end_to_end_memory_to_knowledge_to_context_flow() -> None:
     fact = await knowledge_service.create_fact(
         owner_id="e2e_owner",
         entity_id=e_project.id,
-        subject="Madhav AI",
+        subject="Max AI",
         predicate="uses_language",
         object="Python",
         value="Python 3.12",
@@ -105,7 +105,7 @@ async def test_end_to_end_memory_to_knowledge_to_context_flow() -> None:
 
     # 8. Build ContextPackage
     ctx_req = ContextRequest(
-        user_request="Summarize the core technologies used by Madhav AI.",
+        user_request="Summarize the core technologies used by Max AI.",
         policy=ContextPolicy.full(),
     )
     package = await context_manager.build_context(ctx_req)
@@ -113,11 +113,11 @@ async def test_end_to_end_memory_to_knowledge_to_context_flow() -> None:
     # Verify Knowledge ContextItem is present
     know_items = [item for item in package.items if item.category.value == "knowledge"]
     assert len(know_items) == 1
-    assert "Madhav AI" in know_items[0].content
+    assert "Max AI" in know_items[0].content
     assert "uses_language" in know_items[0].content
 
     # 9. Prepare AIRequest for Module 04 AI Runtime
     ai_request = await context_manager.prepare_ai_request(ctx_req)
     bg_messages = [msg for msg in ai_request.messages if "Contextual Background:" in msg.content]
     assert len(bg_messages) == 1
-    assert "Madhav AI" in bg_messages[0].content
+    assert "Max AI" in bg_messages[0].content

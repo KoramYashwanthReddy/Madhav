@@ -3,8 +3,8 @@
 import json
 import logging
 
-from madhav.core.logging import JSONLogFormatter, mask_sensitive_data
-from madhav.core.request_id import set_request_id
+from max.core.logging import JSONLogFormatter, mask_sensitive_data
+from max.core.request_id import set_request_id
 
 
 def test_mask_sensitive_data() -> None:
@@ -25,7 +25,7 @@ def test_json_log_formatter() -> None:
     set_request_id("test-req-id-12345")
     formatter = JSONLogFormatter()
     record = logging.LogRecord(
-        name="madhav.test",
+        name="max.test",
         level=logging.INFO,
         pathname="test.py",
         lineno=10,
@@ -38,8 +38,8 @@ def test_json_log_formatter() -> None:
     log_json = json.loads(formatted_output)
 
     assert log_json["level"] == "INFO"
-    assert log_json["logger"] == "madhav.test"
+    assert log_json["logger"] == "max.test"
     assert log_json["message"] == "Test structured log output"
-    assert log_json["service"] == "madhav"
+    assert log_json["service"] == "max"
     assert log_json["request_id"] == "test-req-id-12345"
     assert "timestamp" in log_json

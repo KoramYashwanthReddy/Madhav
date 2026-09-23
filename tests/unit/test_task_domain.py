@@ -2,10 +2,10 @@
 
 import pytest
 
-from madhav.tasks.domain.enums import TaskPriority, TaskSource, TaskStatus
-from madhav.tasks.domain.exceptions import InvalidTaskStateTransitionError
-from madhav.tasks.domain.task import Task, TaskFailure, TaskResult
-from madhav.tasks.services.state_machine import TaskStateMachine
+from max.tasks.domain.enums import TaskPriority, TaskSource, TaskStatus
+from max.tasks.domain.exceptions import InvalidTaskStateTransitionError
+from max.tasks.domain.task import Task, TaskFailure, TaskResult
+from max.tasks.services.state_machine import TaskStateMachine
 
 
 def test_task_creation_defaults() -> None:

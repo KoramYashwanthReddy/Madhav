@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-The Memory Engine provides persistent long-term memory infrastructure for the MADHAV Personal AI System. It enables explicit memory creation, deterministic duplicate detection, lifecycle state management (`ACTIVE`, `ARCHIVED`, `EXPIRED`, `DELETED`), access tracking (`last_accessed_at`), search filtering, and integration with Module 06 Context Management via `MemoryContextSource`.
+The Memory Engine provides persistent long-term memory infrastructure for the MAX Personal AI System. It enables explicit memory creation, deterministic duplicate detection, lifecycle state management (`ACTIVE`, `ARCHIVED`, `EXPIRED`, `DELETED`), access tracking (`last_accessed_at`), search filtering, and integration with Module 06 Context Management via `MemoryContextSource`.
 
 It maintains a clean boundary separating memory storage from conversation histories, personal knowledge bases, RAG/vector search, and AI reasoning loops.
 

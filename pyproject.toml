@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "madhav"
+name = "max"
 version = "0.1.0"
-description = "MADHAV Personal AI System — Platform Foundation"
+description = "MAX Personal AI System — Platform Foundation"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [
-    { name = "MADHAV Core Team" }
+    { name = "MAX Core Team" }
 ]
 dependencies = [
     "fastapi>=0.110.0",
@@ -52,7 +52,7 @@ ignore = ["N818", "B008", "E501"]
 [tool.mypy]
 python_version = "3.12"
 mypy_path = "src"
-packages = ["madhav"]
+packages = ["max"]
 strict = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true

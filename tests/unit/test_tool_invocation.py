@@ -2,23 +2,23 @@
 
 import pytest
 
-from madhav.tools.domain.enums import ToolInvocationStatus
-from madhav.tools.domain.exceptions import (
+from max.tools.domain.enums import ToolInvocationStatus
+from max.tools.domain.exceptions import (
     ToolArgumentValidationError,
     ToolOutputValidationError,
 )
-from madhav.tools.domain.invocation import ToolInvocationRequest
-from madhav.tools.domain.tool import (
+from max.tools.domain.invocation import ToolInvocationRequest
+from max.tools.domain.tool import (
     ToolFieldDescriptor,
     ToolInputSchema,
     ToolOutputSchema,
 )
-from madhav.tools.repositories.invocation_repository import InMemoryToolInvocationRepository
-from madhav.tools.repositories.tool_repository import InMemoryToolRepository
-from madhav.tools.services.invocation_service import ToolInvocationService
-from madhav.tools.services.registry import ToolRegistryService
-from madhav.tools.validators.argument_validator import ToolArgumentValidator
-from madhav.tools.validators.output_validator import ToolOutputValidator
+from max.tools.repositories.invocation_repository import InMemoryToolInvocationRepository
+from max.tools.repositories.tool_repository import InMemoryToolRepository
+from max.tools.services.invocation_service import ToolInvocationService
+from max.tools.services.registry import ToolRegistryService
+from max.tools.validators.argument_validator import ToolArgumentValidator
+from max.tools.validators.output_validator import ToolOutputValidator
 
 
 @pytest.fixture
@@ -81,12 +81,12 @@ def test_dev_tool_echo_invocation(inv_service) -> None:
     """Test safe execution of echo.test development tool."""
     req = ToolInvocationRequest(
         tool_name="echo.test",
-        arguments={"message": "Hello Madhav"},
+        arguments={"message": "Hello Max"},
     )
 
     result = inv_service.invoke_tool(req)
     assert result.status == ToolInvocationStatus.COMPLETED
-    assert result.output == {"message": "Hello Madhav"}
+    assert result.output == {"message": "Hello Max"}
     assert result.duration_seconds >= 0.0
 
 

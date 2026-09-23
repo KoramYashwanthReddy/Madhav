@@ -1,7 +1,7 @@
 # Module 14 — Tool Registry
 
 ## 1. Purpose
-The Tool Registry is responsible for representing, discovering, versioning, resolving, schema-validating, and orchestrating tool invocation requests in the Madhav Personal AI system.
+The Tool Registry is responsible for representing, discovering, versioning, resolving, schema-validating, and orchestrating tool invocation requests in the Max Personal AI system.
 
 It acts as an abstraction and coordination boundary between AI Agents (Module 13) and future Permission (Module 15) and Execution (Modules 16+) layers.
 

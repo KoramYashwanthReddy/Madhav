@@ -4,10 +4,10 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from madhav.api.router import register_routers
-from madhav.reasoning.domain.enums import CompletenessStatus, PlanStatus
-from madhav.reasoning.domain.plan import Plan, PlanStep
-from madhav.tasks.api.routes import get_plan_repository
+from max.api.router import register_routers
+from max.reasoning.domain.enums import CompletenessStatus, PlanStatus
+from max.reasoning.domain.plan import Plan, PlanStep
+from max.tasks.api.routes import get_plan_repository
 
 
 @pytest.fixture

@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-The Model Management module provides a provider-neutral model registry, artifact inventory, hardware requirement validation, lifecycle tracking, loader abstraction, and resolution service within the MADHAV Personal AI platform.
+The Model Management module provides a provider-neutral model registry, artifact inventory, hardware requirement validation, lifecycle tracking, loader abstraction, and resolution service within the MAX Personal AI platform.
 
 It answers fundamental model governance questions:
 - *What models exist and what are their metadata properties?*
@@ -15,7 +15,7 @@ It answers fundamental model governance questions:
 
 ### Responsibilities
 - **Model Registry & Indexing**: Indexing model definitions, metadata, identifiers, and semantic versions.
-- **Artifact & Location Management**: Tracking model storage formats (`GGUF`, `SAFETENSORS`, `ONNX`, `API`), paths, and checksum integrity (`SHA-256`). Safe path handling prevents path traversal outside the configured model root (`MADHAV_MODEL_DIRECTORY`).
+- **Artifact & Location Management**: Tracking model storage formats (`GGUF`, `SAFETENSORS`, `ONNX`, `API`), paths, and checksum integrity (`SHA-256`). Safe path handling prevents path traversal outside the configured model root (`MAX_MODEL_DIRECTORY`).
 - **Lifecycle Management**: Validating and enforcing state transitions across `REGISTERED`, `AVAILABLE`, `LOADING`, `LOADED`, `UNLOADING`, `UNAVAILABLE`, and `FAILED`.
 - **Loader Abstraction**: Provider-neutral `ModelLoader` interface with async concurrency protection preventing race conditions.
 - **Runtime Compatibility**: Verifying model requirements against hardware profiles and checking capability compatibility against Module 04 `ModelRuntime` backends.

@@ -2,19 +2,19 @@
 
 import pytest
 
-from madhav.ai.domain.capabilities import RuntimeCapabilities, RuntimeStatus
-from madhav.ai.domain.enums import AIRole, RuntimeHealthStatus
-from madhav.ai.domain.messages import AIMessage
-from madhav.ai.domain.parameters import GenerationParameters
-from madhav.ai.domain.requests import AIRequest
-from madhav.ai.domain.usage import AIUsage
+from max.ai.domain.capabilities import RuntimeCapabilities, RuntimeStatus
+from max.ai.domain.enums import AIRole, RuntimeHealthStatus
+from max.ai.domain.messages import AIMessage
+from max.ai.domain.parameters import GenerationParameters
+from max.ai.domain.requests import AIRequest
+from max.ai.domain.usage import AIUsage
 
 
 def test_ai_message_validation() -> None:
     """Verify AIMessage creation and empty content validation."""
-    msg = AIMessage(role=AIRole.USER, content="Hello Madhav")
+    msg = AIMessage(role=AIRole.USER, content="Hello Max")
     assert msg.role == AIRole.USER
-    assert msg.content == "Hello Madhav"
+    assert msg.content == "Hello Max"
 
     with pytest.raises(ValueError) as exc_info:
         AIMessage(role=AIRole.USER, content="   ")

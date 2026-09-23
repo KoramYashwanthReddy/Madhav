@@ -108,8 +108,8 @@ graph TD
 
 ## 6. Integration with Modules 01–05
 
-- **Module 01**: Extends central exception hierarchy (`MadhavException`) with module-specific `ContextError` types.
-- **Module 02**: Configured via `ContextManagementSettings` mounted in root `Settings` (`MADHAV_CONTEXT_DEFAULT_MAX_TOKENS`, `MADHAV_CONTEXT_RESERVED_OUTPUT_TOKENS`, `MADHAV_CONTEXT_SAFETY_MARGIN_TOKENS`, `MADHAV_CONTEXT_MAX_ITEMS`, `MADHAV_CONTEXT_MAX_ITEM_TOKENS`, `MADHAV_CONTEXT_DEBUG_ENABLED`).
+- **Module 01**: Extends central exception hierarchy (`MaxException`) with module-specific `ContextError` types.
+- **Module 02**: Configured via `ContextManagementSettings` mounted in root `Settings` (`MAX_CONTEXT_DEFAULT_MAX_TOKENS`, `MAX_CONTEXT_RESERVED_OUTPUT_TOKENS`, `MAX_CONTEXT_SAFETY_MARGIN_TOKENS`, `MAX_CONTEXT_MAX_ITEMS`, `MAX_CONTEXT_MAX_ITEM_TOKENS`, `MAX_CONTEXT_DEBUG_ENABLED`).
 - **Module 03**: Consumes `IdentityContext` safely via `IdentityProjection`.
 - **Module 04**: Converts selected context items into `AIMessage` list and builds `AIRequest` for `AIRuntimeManager.execute()`.
 - **Module 05**: Queries `ModelManager` to read model `requirements.context_length` dynamically.

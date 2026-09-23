@@ -2,13 +2,13 @@
 
 import pytest
 
-from madhav.conversation.domain.enums import MessageRole
-from madhav.conversation.exceptions import (
+from max.conversation.domain.enums import MessageRole
+from max.conversation.exceptions import (
     ConversationArchivedError,
     ConversationDeletedError,
     MessageValidationError,
 )
-from madhav.conversation.services.conversation_service import ConversationService
+from max.conversation.services.conversation_service import ConversationService
 
 
 @pytest.mark.asyncio

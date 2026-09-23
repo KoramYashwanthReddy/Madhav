@@ -1,25 +1,25 @@
-"""Unit tests for MADHAV configuration and environment system."""
+"""Unit tests for MAX configuration and environment system."""
 
 import pytest
 
-from madhav.common.types import LogLevel
-from madhav.config.enums import Environment
-from madhav.config.errors import ConfigurationError
-from madhav.config.sections import (
+from max.common.types import LogLevel
+from max.config.enums import Environment
+from max.config.errors import ConfigurationError
+from max.config.sections import (
     ApplicationSettings,
     CORSSettings,
     FeatureFlags,
     LoggingSettings,
     ServerSettings,
 )
-from madhav.config.settings import Settings, clear_settings_cache, get_settings
+from max.config.settings import Settings, clear_settings_cache, get_settings
 
 
 def test_default_settings() -> None:
     """Verify built-in default configuration values."""
     settings = Settings(application=ApplicationSettings(environment=Environment.DEVELOPMENT))
-    assert settings.application.name == "MADHAV"
-    assert settings.application.service == "madhav"
+    assert settings.application.name == "MAX"
+    assert settings.application.service == "max"
     assert settings.application.version == "0.1.0"
     assert settings.application.environment == Environment.DEVELOPMENT
     assert settings.application.debug is False
@@ -40,9 +40,9 @@ def test_default_settings() -> None:
 
 def test_env_var_override(monkeypatch: pytest.MonkeyPatch) -> None:
     """Verify environment variables override default settings."""
-    monkeypatch.setenv("MADHAV_SERVER__PORT", "9090")
-    monkeypatch.setenv("MADHAV_LOGGING__LEVEL", "DEBUG")
-    monkeypatch.setenv("MADHAV_APPLICATION__DEBUG", "true")
+    monkeypatch.setenv("MAX_SERVER__PORT", "9090")
+    monkeypatch.setenv("MAX_LOGGING__LEVEL", "DEBUG")
+    monkeypatch.setenv("MAX_APPLICATION__DEBUG", "true")
 
     clear_settings_cache()
     settings = get_settings()
@@ -92,7 +92,7 @@ def test_secret_redaction() -> None:
     safe_data = settings.safe_dict()
 
     assert safe_data["security"]["secret_key"] == "***REDACTED***"
-    assert safe_data["application"]["name"] == "MADHAV"
+    assert safe_data["application"]["name"] == "MAX"
     assert safe_data["server"]["port"] == 8000
 
     redacted_data = settings.redacted()

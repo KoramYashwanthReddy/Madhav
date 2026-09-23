@@ -4,14 +4,14 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from madhav.context.domain.budget import ContextBudget
-from madhav.context.domain.enums import (
+from max.context.domain.budget import ContextBudget
+from max.context.domain.enums import (
     ContextCategory,
     ContextPriority,
 )
-from madhav.context.domain.item import ContextItem
-from madhav.context.domain.policy import ContextPolicy
-from madhav.context.domain.request import ContextRequest
+from max.context.domain.item import ContextItem
+from max.context.domain.policy import ContextPolicy
+from max.context.domain.request import ContextRequest
 
 
 def test_context_priority_from_string() -> None:
@@ -77,8 +77,8 @@ def test_context_policy_presets() -> None:
 
 def test_context_request_validation() -> None:
     """Verify ContextRequest validation."""
-    req = ContextRequest(user_request="Hello Madhav")
-    assert req.user_request == "Hello Madhav"
+    req = ContextRequest(user_request="Hello Max")
+    assert req.user_request == "Hello Max"
 
     with pytest.raises(ValueError, match="cannot be empty"):
         ContextRequest(user_request="")

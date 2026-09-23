@@ -2,10 +2,10 @@
 
 import pytest
 
-from madhav.rag.domain.exceptions import DocumentValidationError, EmbeddingDimensionMismatchError
-from madhav.rag.services.chunker import TextChunker
-from madhav.rag.services.normalizer import TextNormalizer
-from madhav.rag.services.similarity import cosine_similarity
+from max.rag.domain.exceptions import DocumentValidationError, EmbeddingDimensionMismatchError
+from max.rag.services.chunker import TextChunker
+from max.rag.services.normalizer import TextNormalizer
+from max.rag.services.similarity import cosine_similarity
 
 
 def test_text_normalizer_basic() -> None:

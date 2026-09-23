@@ -11,10 +11,10 @@ async def test_root_endpoint(client: AsyncClient) -> None:
     assert response.status_code == 200
     json_data = response.json()
     assert json_data["success"] is True
-    assert json_data["data"]["name"] == "MADHAV"
-    assert json_data["data"]["service"] == "madhav"
+    assert json_data["data"]["name"] == "MAX"
+    assert json_data["data"]["service"] == "max"
     assert json_data["data"]["version"] == "0.1.0"
-    assert json_data["data"]["message"] == "MADHAV platform is running."
+    assert json_data["data"]["message"] == "MAX platform is running."
     assert "request_id" in json_data
     assert "X-Request-ID" in response.headers
 
@@ -27,7 +27,7 @@ async def test_health_endpoint(client: AsyncClient) -> None:
     json_data = response.json()
     assert json_data["success"] is True
     assert json_data["data"]["status"] == "ok"
-    assert json_data["data"]["service"] == "madhav"
+    assert json_data["data"]["service"] == "max"
     assert json_data["data"]["version"] == "0.1.0"
     assert "request_id" in json_data
     assert "X-Request-ID" in response.headers
@@ -41,7 +41,7 @@ async def test_readiness_endpoint(client: AsyncClient) -> None:
     json_data = response.json()
     assert json_data["success"] is True
     assert json_data["data"]["status"] == "ready"
-    assert json_data["data"]["service"] == "madhav"
+    assert json_data["data"]["service"] == "max"
     assert json_data["data"]["version"] == "0.1.0"
     assert "request_id" in json_data
     assert "X-Request-ID" in response.headers
