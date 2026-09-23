@@ -15,6 +15,7 @@ from madhav.config.sections import (
     CORSSettings,
     FeatureFlags,
     IdentitySettings,
+    KnowledgeSettings,
     LoggingSettings,
     MemorySettings,
     ModelManagementSettings,
@@ -24,6 +25,7 @@ from madhav.config.sections import (
 from madhav.config.validators import (
     validate_context_settings,
     validate_conversation_settings,
+    validate_knowledge_settings,
     validate_logging_settings,
     validate_memory_settings,
     validate_production_settings,
@@ -35,7 +37,9 @@ class Settings(BaseSettings):
     """MADHAV Root Configuration Model.
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
-    model management, context management, conversation engine, memory engine, and feature flags.
+    model management, context management, conversation engine, memory engine,
+    personal knowledge engine, and feature flags.
+
     Supports environment variables prefixed with `MADHAV_` and double-underscore nested keys.
     """
 
@@ -60,6 +64,7 @@ class Settings(BaseSettings):
     context: ContextManagementSettings = Field(default_factory=ContextManagementSettings)
     conversation: ConversationSettings = Field(default_factory=ConversationSettings)
     memory: MemorySettings = Field(default_factory=MemorySettings)
+    knowledge: KnowledgeSettings = Field(default_factory=KnowledgeSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -73,6 +78,8 @@ class Settings(BaseSettings):
         validate_context_settings(self.context)
         validate_conversation_settings(self.conversation)
         validate_memory_settings(self.memory)
+        validate_knowledge_settings(self.knowledge)
+
 
     def safe_dict(self) -> dict[str, Any]:
         """Return a dictionary representation with sensitive secrets redacted."""

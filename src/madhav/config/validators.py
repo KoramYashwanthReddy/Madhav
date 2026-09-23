@@ -7,6 +7,7 @@ from madhav.config.sections import (
     ContextManagementSettings,
     ConversationSettings,
     CORSSettings,
+    KnowledgeSettings,
     LoggingSettings,
     MemorySettings,
     SecuritySettings,
@@ -162,3 +163,46 @@ def validate_memory_settings(mem_cfg: MemorySettings) -> None:
                 "default_page_size": mem_cfg.default_page_size,
             },
         )
+
+
+def validate_knowledge_settings(k_cfg: KnowledgeSettings) -> None:
+    """Validate Personal Knowledge Engine subsystem configuration parameters."""
+    if k_cfg.max_entity_name_length <= 0:
+        val = k_cfg.max_entity_name_length
+        raise ConfigurationError(
+            f"Invalid max_entity_name_length: {val}. Must be positive.",
+            details={"max_entity_name_length": val},
+        )
+    if k_cfg.max_description_length <= 0:
+        val = k_cfg.max_description_length
+        raise ConfigurationError(
+            f"Invalid max_description_length: {val}. Must be positive.",
+            details={"max_description_length": val},
+        )
+    if k_cfg.max_fact_value_size <= 0:
+        val = k_cfg.max_fact_value_size
+        raise ConfigurationError(
+            f"Invalid max_fact_value_size: {val}. Must be positive.",
+            details={"max_fact_value_size": val},
+        )
+    if k_cfg.max_metadata_size <= 0:
+        val = k_cfg.max_metadata_size
+        raise ConfigurationError(
+            f"Invalid max_metadata_size: {val}. Must be positive.",
+            details={"max_metadata_size": val},
+        )
+    if k_cfg.default_page_size <= 0:
+        val = k_cfg.default_page_size
+        raise ConfigurationError(
+            f"Invalid default_page_size: {val}. Must be positive.",
+            details={"default_page_size": val},
+        )
+    if k_cfg.max_page_size < k_cfg.default_page_size:
+        raise ConfigurationError(
+            f"Invalid max_page_size: {k_cfg.max_page_size}. Must be >= default_page_size.",
+            details={
+                "max_page_size": k_cfg.max_page_size,
+                "default_page_size": k_cfg.default_page_size,
+            },
+        )
+

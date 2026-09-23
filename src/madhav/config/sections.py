@@ -215,3 +215,33 @@ class MemorySettings(BaseModel):
     max_page_size: int = Field(
         default=200, description="Maximum page size allowed for memory pagination requests"
     )
+
+
+class KnowledgeSettings(BaseModel):
+    """Personal Knowledge subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle Personal Knowledge Engine active state")
+    max_entity_name_length: int = Field(
+        default=255, description="Maximum character length for a knowledge entity name"
+    )
+    max_description_length: int = Field(
+        default=4096, description="Maximum character length for entity/collection description"
+    )
+    max_fact_value_size: int = Field(
+        default=8192, description="Maximum character size for a fact value"
+    )
+    max_metadata_size: int = Field(default=4096, description="Maximum serialized metadata length")
+    duplicate_detection_enabled: bool = Field(
+        default=True, description="Toggle automatic duplicate entity/fact detection on creation"
+    )
+    context_projection_enabled: bool = Field(
+        default=True, description="Toggle projection of active knowledge items to ContextSource"
+    )
+    default_page_size: int = Field(
+        default=50, description="Default page size for knowledge list and search pagination"
+    )
+    max_page_size: int = Field(
+        default=200, description="Maximum page size allowed for knowledge pagination requests"
+    )
+
+
