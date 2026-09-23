@@ -249,9 +249,7 @@ class RAGSettings(BaseModel):
     """RAG & Retrieval subsystem configuration settings."""
 
     enabled: bool = Field(default=True, description="Toggle RAG & Retrieval subsystem active state")
-    chunk_size: int = Field(
-        default=512, description="Target character count for document chunking"
-    )
+    chunk_size: int = Field(default=512, description="Target character count for document chunking")
     chunk_overlap: int = Field(
         default=64, description="Overlapping character count between consecutive chunks"
     )
@@ -276,9 +274,7 @@ class RAGSettings(BaseModel):
     embedding_model: str = Field(
         default="dev-hash-embed-v1", description="Embedding model identifier"
     )
-    embedding_dimensions: int = Field(
-        default=64, description="Vector embedding dimension size"
-    )
+    embedding_dimensions: int = Field(default=64, description="Vector embedding dimension size")
     vector_store_provider: str = Field(
         default="memory", description="Vector store backend provider type ('memory')"
     )
@@ -297,9 +293,7 @@ class ReasoningSettings(BaseModel):
     max_assumptions: int = Field(
         default=20, description="Maximum number of assumptions per reasoning request"
     )
-    max_risks: int = Field(
-        default=20, description="Maximum number of identified risks per plan"
-    )
+    max_risks: int = Field(default=20, description="Maximum number of identified risks per plan")
     max_evidence: int = Field(
         default=50, description="Maximum evidence references attached per result"
     )
@@ -309,9 +303,7 @@ class ReasoningSettings(BaseModel):
     development_provider: str = Field(
         default="deterministic", description="Development reasoning provider type"
     )
-    ai_provider: str = Field(
-        default="runtime", description="AI-backed reasoning provider type"
-    )
+    ai_provider: str = Field(default="runtime", description="AI-backed reasoning provider type")
 
 
 class TaskSettings(BaseModel):
@@ -354,15 +346,11 @@ class AgentSettings(BaseModel):
     max_delegation_depth: int = Field(
         default=5, description="Maximum allowed nesting depth for agent delegations"
     )
-    max_delegations: int = Field(
-        default=10, description="Maximum allowed delegation count per run"
-    )
+    max_delegations: int = Field(default=10, description="Maximum allowed delegation count per run")
     default_execution_mode: str = Field(
         default="DRY_RUN", description="Default execution mode ('DRY_RUN', 'SYNCHRONOUS', etc.)"
     )
-    max_page_size: int = Field(
-        default=100, description="Maximum page size for agent listings"
-    )
+    max_page_size: int = Field(default=100, description="Maximum page size for agent listings")
 
 
 class ToolRegistrySettings(BaseModel):
@@ -381,13 +369,32 @@ class ToolRegistrySettings(BaseModel):
     allow_development_tools: bool = Field(
         default=True, description="Allow safe in-memory development tools"
     )
-    max_page_size: int = Field(
-        default=100, description="Maximum page size for tool listings"
+    max_page_size: int = Field(default=100, description="Maximum page size for tool listings")
+
+
+class SecurityModuleSettings(BaseModel):
+    """Permission & Security subsystem configuration settings."""
+
+    enabled: bool = Field(
+        default=True, description="Toggle Security & Permission Engine active state"
     )
-
-
-
-
-
-
-
+    default_deny: bool = Field(
+        default=True, description="Enforce strict default-deny policy posture"
+    )
+    default_mode: str = Field(
+        default="NORMAL",
+        description="Default security mode ('NORMAL', 'RESTRICTED', 'LOCKDOWN', 'MAINTENANCE')",
+    )
+    approval_timeout: float = Field(
+        default=3600.0, description="Default timeout in seconds for pending approval requests"
+    )
+    max_grant_duration: float = Field(
+        default=86400.0, description="Maximum duration in seconds for permission grants"
+    )
+    emergency_block: bool = Field(
+        default=False, description="Emergency global kill-switch block state"
+    )
+    allow_development_approvals: bool = Field(
+        default=False, description="Allow automatic development approvals for tests"
+    )
+    max_page_size: int = Field(default=100, description="Maximum page size for security listings")

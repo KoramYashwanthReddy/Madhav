@@ -104,8 +104,12 @@ class ToolInvocationResponse(BaseModel):
     client_request_id: str | None = Field(default=None, description="Idempotency key")
     started_at: datetime | None = Field(default=None, description="Start timestamp")
     completed_at: datetime | None = Field(default=None, description="Completion timestamp")
-    output: dict[str, Any] | None = Field(default=None, description="Result output dictionary if completed")
-    failure: ToolInvocationFailure | None = Field(default=None, description="Failure detail if failed")
+    output: dict[str, Any] | None = Field(
+        default=None, description="Result output dictionary if completed"
+    )
+    failure: ToolInvocationFailure | None = Field(
+        default=None, description="Failure detail if failed"
+    )
     duration_seconds: float = Field(default=0.0, description="Execution duration in seconds")
     created_at: datetime = Field(description="Created timestamp")
     updated_at: datetime = Field(description="Updated timestamp")

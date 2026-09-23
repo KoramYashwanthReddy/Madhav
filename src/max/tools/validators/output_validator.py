@@ -16,7 +16,8 @@ class ToolOutputValidator:
 
         if not isinstance(output, dict):
             raise ToolOutputValidationError(
-                tool_id=tool_id, errors=[f"Output must be a dictionary payload, got {type(output).__name__}"]
+                tool_id=tool_id,
+                errors=[f"Output must be a dictionary payload, got {type(output).__name__}"],
             )
 
         field_map = {f.name: f for f in schema.fields}
@@ -35,7 +36,9 @@ class ToolOutputValidator:
 
             if expected_type == "string" and not isinstance(val, str):
                 errors.append(f"Output field '{key}' expected string, got {type(val).__name__}")
-            elif expected_type in ("integer", "int") and (isinstance(val, bool) or not isinstance(val, int)):
+            elif expected_type in ("integer", "int") and (
+                isinstance(val, bool) or not isinstance(val, int)
+            ):
                 errors.append(f"Output field '{key}' expected integer, got {type(val).__name__}")
             elif expected_type in ("number", "float") and not isinstance(val, (int, float)):
                 errors.append(f"Output field '{key}' expected number, got {type(val).__name__}")

@@ -112,9 +112,7 @@ class InMemoryVectorStore(VectorStore):
                 uri=uri_str,
             )
 
-            location_lbl = (
-                f"Paragraph {chunk.metadata.get('paragraph_index', chunk.chunk_index)}"
-            )
+            location_lbl = f"Paragraph {chunk.metadata.get('paragraph_index', chunk.chunk_index)}"
 
             citation = Citation(
                 document_id=chunk.document_id,
@@ -170,9 +168,7 @@ class InMemoryVectorStore(VectorStore):
         allowed_doc_types = query.document_types or query.filters.document_type
         if allowed_doc_types is not None:
             doc_list = (
-                allowed_doc_types
-                if isinstance(allowed_doc_types, list)
-                else [allowed_doc_types]
+                allowed_doc_types if isinstance(allowed_doc_types, list) else [allowed_doc_types]
             )
             allowed_doc_set = {str(t) for t in doc_list}
             chunk_doc_type = str(meta.get("document_type", DocumentType.TEXT))
@@ -183,9 +179,7 @@ class InMemoryVectorStore(VectorStore):
         allowed_src_types = query.source_types or query.filters.source_type
         if allowed_src_types is not None:
             src_list = (
-                allowed_src_types
-                if isinstance(allowed_src_types, list)
-                else [allowed_src_types]
+                allowed_src_types if isinstance(allowed_src_types, list) else [allowed_src_types]
             )
             allowed_src_set = {str(s) for s in src_list}
             chunk_src_type = str(meta.get("source_type", DocumentSourceType.TEXT))

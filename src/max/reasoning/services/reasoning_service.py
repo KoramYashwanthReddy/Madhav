@@ -24,7 +24,6 @@ logger = logging.getLogger(__name__)
 class ReasoningService:
     """Core service managing reasoning request processing and plan creation."""
 
-
     def __init__(
         self,
         reasoning_repository: ReasoningRepository,
@@ -36,7 +35,6 @@ class ReasoningService:
         self.provider = reasoning_provider
         self.plan_service = plan_service or PlanService()
         self.context_manager = context_manager
-
 
     async def execute_reasoning(self, request: ReasoningRequest) -> ReasoningResult:
         """Execute a structured reasoning request.
@@ -168,11 +166,9 @@ class ReasoningService:
             "confidence": conf_val,
         }
 
-
     async def status(self) -> dict[str, Any]:
         """Return diagnostic subsystem status."""
         return {
             "reasoning_enabled": True,
             "provider_info": self.provider.capabilities(),
         }
-

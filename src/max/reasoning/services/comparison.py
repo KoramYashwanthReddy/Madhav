@@ -48,23 +48,23 @@ class PlanComparer:
         # Compare dependencies
         deps1_set = {f"{d.source_step_id}->{d.target_step_id}" for d in plan1.dependencies}
         deps2_set = {f"{d.source_step_id}->{d.target_step_id}" for d in plan2.dependencies}
-        changed_deps = [
-            f"Added dependency {d}" for d in (deps2_set - deps1_set)
-        ] + [f"Removed dependency {d}" for d in (deps1_set - deps2_set)]
+        changed_deps = [f"Added dependency {d}" for d in (deps2_set - deps1_set)] + [
+            f"Removed dependency {d}" for d in (deps1_set - deps2_set)
+        ]
 
         # Compare constraints
         c1_set = {f"{c.type}:{c.description}" for c in plan1.constraints}
         c2_set = {f"{c.type}:{c.description}" for c in plan2.constraints}
-        changed_cst = [
-            f"Added constraint {c}" for c in (c2_set - c1_set)
-        ] + [f"Removed constraint {c}" for c in (c1_set - c2_set)]
+        changed_cst = [f"Added constraint {c}" for c in (c2_set - c1_set)] + [
+            f"Removed constraint {c}" for c in (c1_set - c2_set)
+        ]
 
         # Compare risks
         r1_set = {r.description for r in plan1.risks}
         r2_set = {r.description for r in plan2.risks}
-        changed_rsk = [
-            f"Added risk: {r}" for r in (r2_set - r1_set)
-        ] + [f"Removed risk: {r}" for r in (r1_set - r2_set)]
+        changed_rsk = [f"Added risk: {r}" for r in (r2_set - r1_set)] + [
+            f"Removed risk: {r}" for r in (r1_set - r2_set)
+        ]
 
         return PlanDiff(
             added_steps=added_steps,

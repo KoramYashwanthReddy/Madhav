@@ -54,7 +54,9 @@ class ToolInvocationService:
         self.invocation_repo = invocation_repository or MemoryToolInvocationRepository()
         self.tool_repo = tool_repository or MemoryToolRepository()
         self.trace_service = trace_service or ToolTraceService()
-        self.resolver = resolver or ToolResolver(tool_repository=self.tool_repo, trace_service=self.trace_service)
+        self.resolver = resolver or ToolResolver(
+            tool_repository=self.tool_repo, trace_service=self.trace_service
+        )
         self.permission_gateway = permission_gateway or DevPermissionGateway()
         self.execution_gateway = execution_gateway or DevToolExecutionGateway()
         self.settings = settings or ToolRegistrySettings()
@@ -146,7 +148,9 @@ class ToolInvocationService:
 
         # 3. Pass Permission Boundary (Module 15 extension point)
         try:
-            invocation = self._update_invocation_status(invocation, ToolInvocationStatus.WAITING_PERMISSION)
+            invocation = self._update_invocation_status(
+                invocation, ToolInvocationStatus.WAITING_PERMISSION
+            )
             self.trace_service.record_event(
                 event_type=ToolEventType.PERMISSION_REQUESTED,
                 tool_id=tool.id,
@@ -262,7 +266,11 @@ class ToolInvocationService:
 
         logger.info(
             "Tool invocation completed",
-            extra={"invocation_id": saved_inv.invocation_id, "tool_id": tool.id, "duration": duration},
+            extra={
+                "invocation_id": saved_inv.invocation_id,
+                "tool_id": tool.id,
+                "duration": duration,
+            },
         )
         return result
 
@@ -273,10 +281,16 @@ class ToolInvocationService:
             raise ToolInvocationNotFoundError(invocation_id)
         return inv
 
-    def cancel_invocation(self, invocation_id: str, reason: str = "Cancelled by user") -> ToolInvocation:
+    def cancel_invocation(
+        self, invocation_id: str, reason: str = "Cancelled by user"
+    ) -> ToolInvocation:
         """Cancel an active or pending invocation."""
         inv = self.get_invocation(invocation_id)
-        if inv.status in (ToolInvocationStatus.COMPLETED, ToolInvocationStatus.FAILED, ToolInvocationStatus.CANCELLED):
+        if inv.status in (
+            ToolInvocationStatus.COMPLETED,
+            ToolInvocationStatus.FAILED,
+            ToolInvocationStatus.CANCELLED,
+        ):
             raise ToolInvocationStateError(inv.status.value, ToolInvocationStatus.CANCELLED.value)
 
         completed_at = datetime.utcnow()

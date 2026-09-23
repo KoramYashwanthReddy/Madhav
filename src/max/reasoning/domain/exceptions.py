@@ -101,4 +101,3 @@ class OwnershipError(ReasoningError):
         details: dict[str, Any] | None = None,
     ) -> None:
         super().__init__(message, details=details)
-

@@ -19,9 +19,26 @@ def test_e2e_plan_to_task_workflow() -> None:
         owner_id="e2e_user",
         version=1,
         steps=[
-            PlanStep(sequence=1, step_id="step_prep", title="Prepare Environment", description="Setup configuration"),
-            PlanStep(sequence=2, step_id="step_build", title="Build Application", description="Compile and package", dependencies=["step_prep"]),
-            PlanStep(sequence=3, step_id="step_deploy", title="Deploy Package", description="Push to server", dependencies=["step_build"]),
+            PlanStep(
+                sequence=1,
+                step_id="step_prep",
+                title="Prepare Environment",
+                description="Setup configuration",
+            ),
+            PlanStep(
+                sequence=2,
+                step_id="step_build",
+                title="Build Application",
+                description="Compile and package",
+                dependencies=["step_prep"],
+            ),
+            PlanStep(
+                sequence=3,
+                step_id="step_deploy",
+                title="Deploy Package",
+                description="Push to server",
+                dependencies=["step_build"],
+            ),
         ],
         dependencies=[
             PlanDependency(source_step_id="step_prep", target_step_id="step_build"),
@@ -30,7 +47,6 @@ def test_e2e_plan_to_task_workflow() -> None:
         status=PlanStatus.ACTIVE,
         completeness=CompletenessStatus.COMPLETE,
     )
-
 
     # Step 2: Convert Plan into Tasks
     tasks, deps = service.generate_tasks_from_plan(plan)

@@ -23,11 +23,19 @@ class AgentAssignment(BaseModel):
     task_id: str = Field(description="Assigned Module 12 Task ID")
     plan_id: str | None = Field(default=None, description="Linked Module 11 Plan ID")
     owner_id: str = Field(default="", description="User ID owning the assignment")
-    assigned_at: datetime = Field(default_factory=datetime.utcnow, description="Assignment timestamp")
-    updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last updated timestamp")
+    assigned_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Assignment timestamp"
+    )
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last updated timestamp"
+    )
     status: AssignmentStatus = Field(
         default=AssignmentStatus.ASSIGNED, description="Assignment status"
     )
-    priority: AssignmentPriority = Field(default=AssignmentPriority.NORMAL, description="Task priority label")
+    priority: AssignmentPriority = Field(
+        default=AssignmentPriority.NORMAL, description="Task priority label"
+    )
     reason: str = Field(default="Task assignment", description="Reason for assignment")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary assignment metadata")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Arbitrary assignment metadata"
+    )

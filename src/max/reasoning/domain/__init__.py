@@ -56,7 +56,6 @@ __all__ = [
     "ConstraintClassification",
     "ConstraintType",
     "InvalidPlanStateError",
-
     "MalformedReasoningOutputError",
     "MissingInformation",
     "OwnershipError",

@@ -55,9 +55,7 @@ class RetrievalQuery(BaseModel):
     include_archived: bool = Field(
         default=False, description="Whether to include ARCHIVED documents"
     )
-    include_deleted: bool = Field(
-        default=False, description="Whether to include DELETED documents"
-    )
+    include_deleted: bool = Field(default=False, description="Whether to include DELETED documents")
 
     @model_validator(mode="after")
     def validate_query_fields(self) -> "RetrievalQuery":

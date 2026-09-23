@@ -75,7 +75,11 @@ class InMemoryToolRepository(BaseToolRepository):
 
     def get_latest_by_name(self, name: str) -> Tool | None:
         with self._lock:
-            matches = [t for t in self._tools.values() if t.name == name and t.status != ToolStatus.ARCHIVED]
+            matches = [
+                t
+                for t in self._tools.values()
+                if t.name == name and t.status != ToolStatus.ARCHIVED
+            ]
             if not matches:
                 return None
             # Sort by version descending (basic string comparison or semantic version)
@@ -106,9 +110,7 @@ class InMemoryToolRepository(BaseToolRepository):
             if search_query is not None and search_query.strip():
                 query = search_query.lower().strip()
                 results = [
-                    t
-                    for t in results
-                    if query in t.name.lower() or query in t.description.lower()
+                    t for t in results if query in t.name.lower() or query in t.description.lower()
                 ]
 
             results.sort(key=lambda x: x.created_at, reverse=True)

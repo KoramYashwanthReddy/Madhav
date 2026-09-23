@@ -45,9 +45,7 @@ class PlanStep(BaseModel):
     status: PlanStepStatus = Field(
         default=PlanStepStatus.PENDING, description="Current step status"
     )
-    metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Arbitrary safe metadata"
-    )
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary safe metadata")
 
     @model_validator(mode="after")
     def validate_step(self) -> "PlanStep":
@@ -111,17 +109,13 @@ class PlanVersion(BaseModel):
     previous_version_id: str | None = Field(
         default=None, description="Parent version ID if applicable"
     )
-    snapshot: dict[str, Any] = Field(
-        description="Complete serialized plan state snapshot"
-    )
+    snapshot: dict[str, Any] = Field(description="Complete serialized plan state snapshot")
 
 
 class Plan(BaseModel):
     """Domain model representing a structured sequence of intended planning steps."""
 
-    plan_id: str = Field(
-        default_factory=lambda: str(uuid4()), description="Plan unique identifier"
-    )
+    plan_id: str = Field(default_factory=lambda: str(uuid4()), description="Plan unique identifier")
     owner_id: str = Field(description="Owner user identifier")
     title: str = Field(description="Plan title")
     description: str = Field(description="Plan scope description")
@@ -135,16 +129,13 @@ class Plan(BaseModel):
     constraints: list[ReasoningConstraint] = Field(
         default_factory=list, description="Planning constraints"
     )
-    metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Arbitrary safe metadata"
-    )
+    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary safe metadata")
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC), description="Creation timestamp"
     )
     updated_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC), description="Last update timestamp"
     )
-
 
     @model_validator(mode="after")
     def validate_plan_basics(self) -> "Plan":

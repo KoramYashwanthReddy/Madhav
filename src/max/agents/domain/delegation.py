@@ -23,7 +23,11 @@ class AgentDelegation(BaseModel):
     child_run_id: str | None = Field(default=None, description="Child AgentRun ID")
     task_id: str | None = Field(default=None, description="Delegated Task ID")
     reason: str = Field(default="Subtask delegation", description="Reason for delegation")
-    status: DelegationStatus = Field(default=DelegationStatus.REQUESTED, description="Delegation status")
+    status: DelegationStatus = Field(
+        default=DelegationStatus.REQUESTED, description="Delegation status"
+    )
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
     completed_at: datetime | None = Field(default=None, description="Completion timestamp")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary delegation metadata")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Arbitrary delegation metadata"
+    )

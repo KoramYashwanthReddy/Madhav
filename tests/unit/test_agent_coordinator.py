@@ -153,9 +153,7 @@ def test_coordinator_permission_boundary_scenario(coordinator: AgentCoordinator)
 
 def test_coordinator_inactive_agent_rejected(coordinator: AgentCoordinator) -> None:
     """Verify that coordinating with an inactive or non-existent agent raises appropriate errors."""
-    agent = coordinator.agent_service.create_agent(
-        name="inactive_agent", owner_id="user_123"
-    )
+    agent = coordinator.agent_service.create_agent(name="inactive_agent", owner_id="user_123")
     # Status is CREATED (not active)
 
     request = AgentCoordinationRequest(

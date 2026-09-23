@@ -73,7 +73,10 @@ class AgentService:
             metadata={"owner_id": owner_id},
         )
 
-        logger.info("Agent created", extra={"agent_id": saved.id, "agent_name": saved.name, "owner_id": owner_id})
+        logger.info(
+            "Agent created",
+            extra={"agent_id": saved.id, "agent_name": saved.name, "owner_id": owner_id},
+        )
         return saved
 
     def get_agent(self, agent_id: str) -> Agent:

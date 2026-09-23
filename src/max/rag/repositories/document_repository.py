@@ -57,9 +57,7 @@ class InMemoryDocumentRepository(DocumentRepository):
 
     async def list_documents(self, owner_id: str, skip: int = 0, limit: int = 50) -> list[Document]:
         """List documents owned by owner_id."""
-        matching = [
-            doc for doc in self._documents.values() if doc.owner_id == owner_id
-        ]
+        matching = [doc for doc in self._documents.values() if doc.owner_id == owner_id]
         matching.sort(key=lambda d: d.created_at, reverse=True)
         return matching[skip : skip + limit]
 

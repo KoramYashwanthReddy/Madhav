@@ -38,12 +38,20 @@ class AgentLimits(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     max_tasks_per_run: int = Field(default=10, ge=1, description="Maximum tasks handled per run")
-    max_steps_per_run: int = Field(default=50, ge=1, description="Maximum coordination steps allowed per run")
-    max_delegations: int = Field(default=5, ge=0, description="Maximum sub-delegations allowed per run")
+    max_steps_per_run: int = Field(
+        default=50, ge=1, description="Maximum coordination steps allowed per run"
+    )
+    max_delegations: int = Field(
+        default=5, ge=0, description="Maximum sub-delegations allowed per run"
+    )
     max_retries: int = Field(default=3, ge=0, description="Maximum run retries permitted")
     max_context_items: int = Field(default=20, ge=1, description="Maximum context package items")
-    max_run_duration: float = Field(default=300.0, ge=1.0, description="Maximum run wall-clock duration seconds")
-    max_agent_depth: int = Field(default=5, ge=1, description="Maximum nesting depth for sub-delegations")
+    max_run_duration: float = Field(
+        default=300.0, ge=1.0, description="Maximum run wall-clock duration seconds"
+    )
+    max_agent_depth: int = Field(
+        default=5, ge=1, description="Maximum nesting depth for sub-delegations"
+    )
     max_concurrent_tasks: int = Field(default=5, ge=1, description="Maximum concurrent tasks")
 
 
@@ -54,10 +62,16 @@ class AgentRetryPolicy(BaseModel):
 
     max_retries: int = Field(default=3, ge=0, description="Maximum retries")
     retryable_categories: list[FailureCategory] = Field(
-        default_factory=lambda: [FailureCategory.MODEL_ERROR, FailureCategory.TIMEOUT, FailureCategory.TASK_ERROR],
+        default_factory=lambda: [
+            FailureCategory.MODEL_ERROR,
+            FailureCategory.TIMEOUT,
+            FailureCategory.TASK_ERROR,
+        ],
         description="Failure categories eligible for retry",
     )
-    backoff_strategy: RetryStrategy = Field(default=RetryStrategy.FIXED, description="Backoff strategy")
+    backoff_strategy: RetryStrategy = Field(
+        default=RetryStrategy.FIXED, description="Backoff strategy"
+    )
     initial_delay: float = Field(default=1.0, ge=0.0, description="Initial retry delay in seconds")
     max_delay: float = Field(default=60.0, ge=0.0, description="Maximum backoff cap in seconds")
 
@@ -67,15 +81,25 @@ class AgentConfiguration(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    model_id: str = Field(default="dev-model-v1", description="Module 05 Model identifier reference")
+    model_id: str = Field(
+        default="dev-model-v1", description="Module 05 Model identifier reference"
+    )
     temperature: float = Field(default=0.7, ge=0.0, le=2.0, description="Sampling temperature")
     max_output_tokens: int = Field(default=2048, ge=1, description="Token generation limit")
-    context_policy: str = Field(default="DEFAULT", description="Context Manager package assembly policy")
+    context_policy: str = Field(
+        default="DEFAULT", description="Context Manager package assembly policy"
+    )
     max_concurrent_tasks: int = Field(default=5, ge=1, description="Max concurrent active tasks")
     max_run_duration: float = Field(default=300.0, ge=1.0, description="Run duration cutoff limit")
-    retry_policy: AgentRetryPolicy = Field(default_factory=AgentRetryPolicy, description="Retry policy")
-    delegation_enabled: bool = Field(default=True, description="Whether agent can delegate tasks to other agents")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary safe config metadata")
+    retry_policy: AgentRetryPolicy = Field(
+        default_factory=AgentRetryPolicy, description="Retry policy"
+    )
+    delegation_enabled: bool = Field(
+        default=True, description="Whether agent can delegate tasks to other agents"
+    )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Arbitrary safe config metadata"
+    )
 
 
 class AgentReference(BaseModel):
@@ -83,10 +107,14 @@ class AgentReference(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    reference_type: str = Field(description="Artifact category type (PLAN, TASK, CONVERSATION, MEMORY)")
+    reference_type: str = Field(
+        description="Artifact category type (PLAN, TASK, CONVERSATION, MEMORY)"
+    )
     reference_id: str = Field(description="Unique artifact ID")
     summary: str | None = Field(default=None, description="Optional brief label descriptor")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional reference context")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional reference context"
+    )
 
 
 class ToolRequestIntent(BaseModel):
@@ -100,7 +128,9 @@ class ToolRequestIntent(BaseModel):
     task_id: str | None = Field(default=None, description="Target task ID")
     requested_capability: str = Field(description="Theoretical capability requested")
     tool_name: str = Field(description="Name of requested tool")
-    parameters: dict[str, Any] = Field(default_factory=dict, description="Tool invocation parameters")
+    parameters: dict[str, Any] = Field(
+        default_factory=dict, description="Tool invocation parameters"
+    )
     reason: str = Field(default="Tool capability required", description="Reason for request")
     status: str = Field(default="NOT_IMPLEMENTED", description="Boundary status marker")
     created_at: datetime = Field(default_factory=datetime.utcnow)
@@ -127,17 +157,25 @@ class Agent(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    id: str = Field(default_factory=lambda: f"agent_{uuid4().hex[:12]}", description="Unique agent identifier")
+    id: str = Field(
+        default_factory=lambda: f"agent_{uuid4().hex[:12]}", description="Unique agent identifier"
+    )
     owner_id: str = Field(description="User ID owning the agent")
     name: str = Field(description="Stable agent identifier name (e.g. 'planner', 'researcher')")
     description: str = Field(default="", description="Detailed worker description")
     type: AgentType = Field(default=AgentType.GENERAL, description="Worker type classification")
     role: AgentRole = Field(default=AgentRole.ASSISTANT, description="Assigned functional role")
     status: AgentStatus = Field(default=AgentStatus.CREATED, description="Current lifecycle state")
-    capabilities: list[AgentCapability] = Field(default_factory=list, description="Claimed capabilities")
-    configuration: AgentConfiguration = Field(default_factory=AgentConfiguration, description="Config settings")
+    capabilities: list[AgentCapability] = Field(
+        default_factory=list, description="Claimed capabilities"
+    )
+    configuration: AgentConfiguration = Field(
+        default_factory=AgentConfiguration, description="Config settings"
+    )
     limits: AgentLimits = Field(default_factory=AgentLimits, description="Safety limits")
 
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
-    updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last update timestamp")
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last update timestamp"
+    )
     metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary safe metadata")

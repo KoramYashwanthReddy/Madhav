@@ -38,7 +38,11 @@ class InvalidTaskStateTransitionError(TaskError):
             msg += f" Reason: {reason}"
         super().__init__(
             msg,
-            details={"current_status": current_status, "target_status": target_status, "reason": reason},
+            details={
+                "current_status": current_status,
+                "target_status": target_status,
+                "reason": reason,
+            },
         )
 
 
@@ -73,7 +77,11 @@ class TaskOwnershipError(TaskError):
     def __init__(self, task_id: str, owner_id: str, requesting_owner_id: str) -> None:
         super().__init__(
             f"Task '{task_id}' owned by '{owner_id}' cannot be accessed by '{requesting_owner_id}'.",
-            details={"task_id": task_id, "owner_id": owner_id, "requesting_owner_id": requesting_owner_id},
+            details={
+                "task_id": task_id,
+                "owner_id": owner_id,
+                "requesting_owner_id": requesting_owner_id,
+            },
         )
 
 
@@ -93,7 +101,11 @@ class TaskGroupOwnershipError(TaskError):
     def __init__(self, group_id: str, owner_id: str, requesting_owner_id: str) -> None:
         super().__init__(
             f"Task group '{group_id}' owned by '{owner_id}' cannot be accessed by '{requesting_owner_id}'.",
-            details={"group_id": group_id, "owner_id": owner_id, "requesting_owner_id": requesting_owner_id},
+            details={
+                "group_id": group_id,
+                "owner_id": owner_id,
+                "requesting_owner_id": requesting_owner_id,
+            },
         )
 
 

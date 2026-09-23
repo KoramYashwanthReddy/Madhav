@@ -120,7 +120,6 @@ class AIReasoningProvider(ReasoningProvider):
             fallback_exp = f"Reasoning analysis for '{request.objective.title}'."
             exp_txt = data.get("explanation", fallback_exp)
 
-
             return ReasoningResult(
                 request_id=request.id,
                 status=ReasoningStatus.COMPLETED,
@@ -137,7 +136,6 @@ class AIReasoningProvider(ReasoningProvider):
                 explanation=exp_txt,
                 metadata={"provider": "ai_runtime", "model": self.model_reference},
             )
-
 
         except Exception as exc:
             logger.error("AI reasoning provider execution failed: %s", exc)

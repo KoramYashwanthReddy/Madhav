@@ -1,6 +1,5 @@
 """PersonalKnowledgeContextSource adapter for Module 06 Context Management integration."""
 
-
 from max.context.domain.enums import ContextCategory, ContextPriority, SourceTrustLevel
 from max.context.domain.item import ContextItem
 from max.context.domain.request import ContextRequest
@@ -47,9 +46,9 @@ class PersonalKnowledgeContextSource:
 
         # 1. Process explicit knowledge summaries passed in source_options
         summaries: list[KnowledgeSummary] = []
-        raw_sums = request.source_options.get(
-            "knowledge_summaries"
-        ) or request.source_options.get("summaries")
+        raw_sums = request.source_options.get("knowledge_summaries") or request.source_options.get(
+            "summaries"
+        )
         if raw_sums and isinstance(raw_sums, list):
             for s in raw_sums:
                 if isinstance(s, KnowledgeSummary):

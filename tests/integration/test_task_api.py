@@ -42,7 +42,9 @@ def test_create_and_get_task_api(api_client: TestClient) -> None:
 def test_task_lifecycle_api_endpoints(api_client: TestClient) -> None:
     """Test lifecycle status transition endpoints (start, pause, resume, complete)."""
     # Create task
-    create_res = api_client.post("/api/v1/tasks", json={"owner_id": "u1", "title": "Lifecycle Task"})
+    create_res = api_client.post(
+        "/api/v1/tasks", json={"owner_id": "u1", "title": "Lifecycle Task"}
+    )
     task_id = create_res.json()["id"]
 
     # Start
@@ -95,7 +97,6 @@ def test_convert_plan_to_tasks_api(api_client: TestClient) -> None:
     )
 
     plan_repo._store[plan.plan_id] = plan
-
 
     convert_res = api_client.post(f"/api/v1/plans/{plan.plan_id}/tasks")
     assert convert_res.status_code == 201

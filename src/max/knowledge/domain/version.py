@@ -23,7 +23,6 @@ class KnowledgeVersion(BaseModel):
     )
     change_reason: str | None = Field(default=None, description="Optional change rationale")
 
-
     @field_validator("version_number")
     @classmethod
     def validate_version_number(cls, v: int) -> int:

@@ -44,9 +44,7 @@ class RetrievalService:
         # 2. Adjust top_k and minimum_score within bounds
         effective_top_k = min(query.top_k, self.max_top_k)
         effective_score = (
-            query.minimum_score
-            if query.minimum_score > 0.0
-            else self.default_minimum_score
+            query.minimum_score if query.minimum_score > 0.0 else self.default_minimum_score
         )
 
         adjusted_query = RetrievalQuery(

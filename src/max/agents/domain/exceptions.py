@@ -71,7 +71,11 @@ class InvalidAgentStateTransitionError(AgentError):
             msg += f" Reason: {reason}"
         super().__init__(
             msg,
-            details={"current_status": current_status, "target_status": target_status, "reason": reason},
+            details={
+                "current_status": current_status,
+                "target_status": target_status,
+                "reason": reason,
+            },
         )
 
 
@@ -84,7 +88,11 @@ class InvalidRunStateTransitionError(AgentError):
             msg += f" Reason: {reason}"
         super().__init__(
             msg,
-            details={"current_status": current_status, "target_status": target_status, "reason": reason},
+            details={
+                "current_status": current_status,
+                "target_status": target_status,
+                "reason": reason,
+            },
         )
 
 

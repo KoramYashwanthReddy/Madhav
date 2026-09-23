@@ -122,9 +122,7 @@ class InMemoryKnowledgeRepository(
         async with self._lock:
             return self._match_entities(filter_spec)
 
-    async def count_entities(
-        self, owner_id: str, status: KnowledgeStatus | None = None
-    ) -> int:
+    async def count_entities(self, owner_id: str, status: KnowledgeStatus | None = None) -> int:
         async with self._lock:
             count = 0
             for e in self._entities.values():

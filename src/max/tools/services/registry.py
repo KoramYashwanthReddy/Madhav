@@ -128,7 +128,10 @@ class ToolRegistryService:
             metadata={"owner_id": owner_id},
         )
 
-        logger.info("Tool registered", extra={"tool_id": saved.id, "tool_name": saved.name, "version": saved.version})
+        logger.info(
+            "Tool registered",
+            extra={"tool_id": saved.id, "tool_name": saved.name, "version": saved.version},
+        )
         return saved
 
     def get_tool(self, tool_id: str) -> Tool:
@@ -171,7 +174,9 @@ class ToolRegistryService:
         new_tool = Tool(**updated_dict)
         return self.tool_repo.save(new_tool)
 
-    def transition_tool_status(self, tool_id: str, target_status: ToolStatus, reason: str = "Status update") -> Tool:
+    def transition_tool_status(
+        self, tool_id: str, target_status: ToolStatus, reason: str = "Status update"
+    ) -> Tool:
         """Transition tool lifecycle status."""
         tool = self.get_tool(tool_id)
         ToolStateTransitionValidator.validate_transition(tool.status, target_status, tool.name)

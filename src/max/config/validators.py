@@ -13,6 +13,7 @@ from max.config.sections import (
     MemorySettings,
     RAGSettings,
     ReasoningSettings,
+    SecurityModuleSettings,
     SecuritySettings,
     ServerSettings,
     TaskSettings,
@@ -21,7 +22,6 @@ from max.config.sections import (
 
 
 def validate_server_settings(server: ServerSettings) -> None:
-
     """Validate HTTP server network configuration."""
     if not (1 <= server.port <= 65535):
         raise ConfigurationError(
@@ -354,7 +354,15 @@ def validate_tool_settings(tool_cfg: ToolRegistrySettings) -> None:
         )
 
 
-
-
-
-
+def validate_security_module_settings(sec_module_cfg: SecurityModuleSettings) -> None:
+    """Validate Permission & Security subsystem configuration parameters."""
+    if sec_module_cfg.approval_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid approval_timeout: {sec_module_cfg.approval_timeout}. Must be positive.",
+            details={"approval_timeout": sec_module_cfg.approval_timeout},
+        )
+    if sec_module_cfg.max_grant_duration <= 0:
+        raise ConfigurationError(
+            f"Invalid max_grant_duration: {sec_module_cfg.max_grant_duration}. Must be positive.",
+            details={"max_grant_duration": sec_module_cfg.max_grant_duration},
+        )

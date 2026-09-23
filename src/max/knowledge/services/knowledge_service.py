@@ -452,9 +452,7 @@ class KnowledgeService:
         """Delete fact (default soft delete)."""
         await self.get_fact(fact_id, owner_id)
         now = self._clock.now()
-        result = await self._fact_repo.delete_fact(
-            fact_id, soft_delete=soft_delete, deleted_at=now
-        )
+        result = await self._fact_repo.delete_fact(fact_id, soft_delete=soft_delete, deleted_at=now)
         logger.info("Knowledge fact deleted with ID %s (soft_delete=%s)", fact_id, soft_delete)
         return result
 
@@ -668,9 +666,7 @@ class KnowledgeService:
     async def get_knowledge_summary(self, entity_id: str, owner_id: str) -> KnowledgeSummary:
         """Construct safe aggregated summary view of an entity, active facts, and relations."""
         entity = await self.get_entity(entity_id, owner_id)
-        facts = await self._fact_repo.list_facts_by_entity(
-            entity_id, status=KnowledgeStatus.ACTIVE
-        )
+        facts = await self._fact_repo.list_facts_by_entity(entity_id, status=KnowledgeStatus.ACTIVE)
         out_rels = await self._relation_repo.list_outgoing_relations(
             entity_id, status=KnowledgeStatus.ACTIVE
         )
@@ -693,7 +689,6 @@ class KnowledgeService:
             collection=collection,
             version_count=version_count,
         )
-
 
     # --- Fact Value Validation ---
 
@@ -741,4 +736,3 @@ class KnowledgeService:
                 raise InvalidFactValueError(
                     "Value for JSON value_type must be JSON-serializable object."
                 )
-

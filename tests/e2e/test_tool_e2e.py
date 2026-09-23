@@ -17,7 +17,9 @@ def test_tool_registry_full_e2e_acceptance_flow() -> None:
     trace_repo = InMemoryToolTraceRepository()
 
     trace_svc = ToolTraceService(trace_repo)
-    reg_svc = ToolRegistryService(tool_repository=tool_repo, trace_service=trace_svc, auto_load_dev_tools=True)
+    reg_svc = ToolRegistryService(
+        tool_repository=tool_repo, trace_service=trace_svc, auto_load_dev_tools=True
+    )
     disc_svc = ToolDiscoveryService(tool_repository=tool_repo)
     resolver_svc = ToolResolver(tool_repository=tool_repo, trace_service=trace_svc)
     inv_svc = ToolInvocationService(
@@ -36,7 +38,9 @@ def test_tool_registry_full_e2e_acceptance_flow() -> None:
     assert active_tool.status == "ACTIVE"
 
     # 3. Discover tool using capability = TEXT_TRANSFORMATION
-    descriptors = disc_svc.discover_descriptors_for_capabilities([ToolCapability.TEXT_TRANSFORMATION])
+    descriptors = disc_svc.discover_descriptors_for_capabilities(
+        [ToolCapability.TEXT_TRANSFORMATION]
+    )
     assert any(d.name == "echo.test" for d in descriptors)
 
     # 4. Resolve tool

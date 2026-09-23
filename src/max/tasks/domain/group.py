@@ -14,15 +14,22 @@ class TaskGroup(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    group_id: str = Field(default_factory=lambda: f"grp_{uuid4().hex[:12]}", description="Unique task group ID")
+    group_id: str = Field(
+        default_factory=lambda: f"grp_{uuid4().hex[:12]}", description="Unique task group ID"
+    )
     owner_id: str = Field(description="User ID owning the task group")
     name: str = Field(description="Display name of task group")
     description: str = Field(default="", description="Detailed group description")
-    status: TaskGroupStatus = Field(default=TaskGroupStatus.ACTIVE, description="Current status of group")
+    status: TaskGroupStatus = Field(
+        default=TaskGroupStatus.ACTIVE, description="Current status of group"
+    )
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
-    updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last update timestamp")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary metadata attributes")
-
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last update timestamp"
+    )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Arbitrary metadata attributes"
+    )
 
 
 class TaskGroupSummary(BaseModel):

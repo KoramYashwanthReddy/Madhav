@@ -38,7 +38,9 @@ class ToolArgumentValidator:
             expected_type = field_desc.type.lower()
             if expected_type == "string" and not isinstance(val, str):
                 errors.append(f"Field '{key}' expected string, got {type(val).__name__}")
-            elif expected_type in ("integer", "int") and (isinstance(val, bool) or not isinstance(val, int)):
+            elif expected_type in ("integer", "int") and (
+                isinstance(val, bool) or not isinstance(val, int)
+            ):
                 errors.append(f"Field '{key}' expected integer, got {type(val).__name__}")
             elif expected_type in ("number", "float") and not isinstance(val, (int, float)):
                 errors.append(f"Field '{key}' expected number, got {type(val).__name__}")
@@ -52,9 +54,13 @@ class ToolArgumentValidator:
             # String constraints
             if isinstance(val, str):
                 if field_desc.min_length is not None and len(val) < field_desc.min_length:
-                    errors.append(f"Field '{key}' length {len(val)} < min_length {field_desc.min_length}")
+                    errors.append(
+                        f"Field '{key}' length {len(val)} < min_length {field_desc.min_length}"
+                    )
                 if field_desc.max_length is not None and len(val) > field_desc.max_length:
-                    errors.append(f"Field '{key}' length {len(val)} > max_length {field_desc.max_length}")
+                    errors.append(
+                        f"Field '{key}' length {len(val)} > max_length {field_desc.max_length}"
+                    )
 
             # Numeric constraints
             if isinstance(val, (int, float)) and not isinstance(val, bool):
@@ -66,7 +72,9 @@ class ToolArgumentValidator:
             # Allowed values / enum
             if field_desc.allowed_values is not None and val not in field_desc.allowed_values:
                 allowed_str = ", ".join(repr(a) for a in field_desc.allowed_values)
-                errors.append(f"Field '{key}' value {repr(val)} not in allowed values: [{allowed_str}]")
+                errors.append(
+                    f"Field '{key}' value {repr(val)} not in allowed values: [{allowed_str}]"
+                )
 
         if errors:
             raise ToolArgumentValidationError(tool_id=tool_id, errors=errors)

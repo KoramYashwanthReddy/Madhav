@@ -81,7 +81,9 @@ def get_resolver_service() -> ToolResolver:
     if _resolver_service is None:
         reg_svc = get_registry_service()
         trace_svc = get_trace_service()
-        _resolver_service = ToolResolver(tool_repository=reg_svc.repository, trace_service=trace_svc)
+        _resolver_service = ToolResolver(
+            tool_repository=reg_svc.repository, trace_service=trace_svc
+        )
     return _resolver_service
 
 
@@ -200,7 +202,9 @@ def register_tool(
 def list_tools(
     category: ToolCategory | None = Query(default=None, description="Filter by tool category"),
     capability: ToolCapability | None = Query(default=None, description="Filter by capability"),
-    status_filter: ToolStatus | None = Query(default=None, alias="status", description="Filter by status"),
+    status_filter: ToolStatus | None = Query(
+        default=None, alias="status", description="Filter by status"
+    ),
     search_query: str | None = Query(default=None, alias="q", description="Search keyword query"),
     owner_id: str | None = Query(default=None, description="Filter by owner ID"),
     page: int = Query(default=1, ge=1, description="Page number"),
@@ -414,7 +418,9 @@ def archive_tool(
 # ==================================================
 
 
-@router.post("/invocations", response_model=ToolInvocationResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/invocations", response_model=ToolInvocationResponse, status_code=status.HTTP_201_CREATED
+)
 def create_invocation(
     req: CreateToolInvocationRequest,
     service: ToolInvocationService = Depends(get_invocation_service),
@@ -450,7 +456,9 @@ def list_invocations(
     agent_id: str | None = Query(default=None, description="Filter by agent ID"),
     run_id: str | None = Query(default=None, description="Filter by run ID"),
     task_id: str | None = Query(default=None, description="Filter by task ID"),
-    status_filter: ToolInvocationStatus | None = Query(default=None, alias="status", description="Filter status"),
+    status_filter: ToolInvocationStatus | None = Query(
+        default=None, alias="status", description="Filter status"
+    ),
     page: int = Query(default=1, ge=1, description="Page index"),
     page_size: int = Query(default=50, ge=1, le=100, description="Page size limit"),
     service: ToolInvocationService = Depends(get_invocation_service),

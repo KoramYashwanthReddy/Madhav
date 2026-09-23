@@ -84,7 +84,6 @@ class KnowledgeDuplicateDetector:
                     ),
                 )
 
-
         return KnowledgeDuplicateResult(
             is_duplicate=False,
             matched_entity_id=None,

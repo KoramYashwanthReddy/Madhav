@@ -45,7 +45,6 @@ class PlanValidator:
                     if step.step_id not in adjacency[dep_id]:
                         adjacency[dep_id].append(step.step_id)
 
-
         # Also validate explicit dependencies list
         for dep in plan.dependencies:
             if dep.source_step_id not in step_map:
@@ -79,11 +78,8 @@ class PlanValidator:
                             msg = f"Hard constraint violation: {cnt} steps exceeds {limit}."
                             errors.append(msg)
 
-
-
                     except ValueError:
                         pass
-
 
         # 5. Determine overall completeness status
         if errors:
@@ -127,7 +123,6 @@ class PlanValidator:
                 f"Plan validation failed: {'; '.join(res.errors)}",
                 details={"errors": res.errors, "warnings": res.warnings},
             )
-
 
     @staticmethod
     def _detect_cycle(adjacency: dict[str, list[str]]) -> list[str] | None:

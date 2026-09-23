@@ -40,7 +40,9 @@ class ToolInvocationFailure(BaseModel):
     )
     occurred_at: datetime = Field(default_factory=datetime.utcnow, description="Failure timestamp")
     invocation_id: str | None = Field(default=None, description="Target invocation ID")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Diagnostic context metadata")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Diagnostic context metadata"
+    )
 
 
 class ToolInvocationResult(BaseModel):
@@ -51,11 +53,17 @@ class ToolInvocationResult(BaseModel):
     invocation_id: str = Field(description="Unique invocation identifier")
     tool_id: str = Field(description="Tool ID invoked")
     status: ToolInvocationStatus = Field(description="Final invocation status")
-    output: dict[str, Any] = Field(default_factory=dict, description="Validated output payload dictionary")
-    duration_seconds: float = Field(default=0.0, ge=0.0, description="Invocation duration in seconds")
+    output: dict[str, Any] = Field(
+        default_factory=dict, description="Validated output payload dictionary"
+    )
+    duration_seconds: float = Field(
+        default=0.0, ge=0.0, description="Invocation duration in seconds"
+    )
     metadata: dict[str, Any] = Field(default_factory=dict, description="Outcome metadata")
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Result timestamp")
-    completed_at: datetime = Field(default_factory=datetime.utcnow, description="Completion timestamp")
+    completed_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Completion timestamp"
+    )
 
 
 class ToolInvocation(BaseModel):
@@ -64,7 +72,8 @@ class ToolInvocation(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     invocation_id: str = Field(
-        default_factory=lambda: f"inv_{uuid4().hex[:12]}", description="Unique invocation identifier"
+        default_factory=lambda: f"inv_{uuid4().hex[:12]}",
+        description="Unique invocation identifier",
     )
     tool_id: str = Field(description="Target tool ID")
     tool_version: str = Field(default="1.0.0", description="Target tool version")
@@ -82,14 +91,24 @@ class ToolInvocation(BaseModel):
     )
 
     started_at: datetime | None = Field(default=None, description="Execution start timestamp")
-    completed_at: datetime | None = Field(default=None, description="Execution completion timestamp")
+    completed_at: datetime | None = Field(
+        default=None, description="Execution completion timestamp"
+    )
 
-    result: ToolInvocationResult | None = Field(default=None, description="Result object if completed")
-    failure: ToolInvocationFailure | None = Field(default=None, description="Failure object if failed")
+    result: ToolInvocationResult | None = Field(
+        default=None, description="Result object if completed"
+    )
+    failure: ToolInvocationFailure | None = Field(
+        default=None, description="Failure object if failed"
+    )
 
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
-    updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last update timestamp")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary invocation metadata")
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last update timestamp"
+    )
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Arbitrary invocation metadata"
+    )
 
 
 class ToolInvocationRequest(BaseModel):

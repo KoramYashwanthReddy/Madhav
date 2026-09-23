@@ -37,9 +37,7 @@ class DocumentUpdateRequest(BaseModel):
 
     title: str | None = Field(default=None, description="Optional updated title")
     content: str | None = Field(default=None, description="Optional updated content text")
-    metadata: dict[str, Any] | None = Field(
-        default=None, description="Optional updated metadata"
-    )
+    metadata: dict[str, Any] | None = Field(default=None, description="Optional updated metadata")
     reindex: bool = Field(default=True, description="Whether to trigger automatic reindexing")
 
 
@@ -77,6 +75,4 @@ class RetrievalSearchRequest(BaseModel):
     include_archived: bool = Field(
         default=False, description="Whether to include ARCHIVED documents"
     )
-    include_deleted: bool = Field(
-        default=False, description="Whether to include DELETED documents"
-    )
+    include_deleted: bool = Field(default=False, description="Whether to include DELETED documents")

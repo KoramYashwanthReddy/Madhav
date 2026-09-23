@@ -22,6 +22,7 @@ from max.config.sections import (
     ModelManagementSettings,
     RAGSettings,
     ReasoningSettings,
+    SecurityModuleSettings,
     SecuritySettings,
     ServerSettings,
     TaskSettings,
@@ -37,6 +38,7 @@ from max.config.validators import (
     validate_production_settings,
     validate_rag_settings,
     validate_reasoning_settings,
+    validate_security_module_settings,
     validate_server_settings,
     validate_task_settings,
     validate_tool_settings,
@@ -48,7 +50,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, and feature flags.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, and feature flags.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -80,6 +82,7 @@ class Settings(BaseSettings):
     tasks: TaskSettings = Field(default_factory=TaskSettings)
     agents: AgentSettings = Field(default_factory=AgentSettings)
     tools: ToolRegistrySettings = Field(default_factory=ToolRegistrySettings)
+    security_module: SecurityModuleSettings = Field(default_factory=SecurityModuleSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -99,9 +102,7 @@ class Settings(BaseSettings):
         validate_task_settings(self.tasks)
         validate_agent_settings(self.agents)
         validate_tool_settings(self.tools)
-
-
-
+        validate_security_module_settings(self.security_module)
 
     def safe_dict(self) -> dict[str, Any]:
         """Return a dictionary representation with sensitive secrets redacted."""

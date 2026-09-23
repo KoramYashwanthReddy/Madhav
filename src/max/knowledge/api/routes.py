@@ -60,6 +60,7 @@ def set_knowledge_service(service: KnowledgeService | None) -> None:
 
 # --- ENTITIES ---
 
+
 @router.post("/entities", response_model=KnowledgeEntityResponse, status_code=201)
 async def create_entity(
     req: CreateEntityRequest,
@@ -292,7 +293,6 @@ async def list_entity_relations(
     status: KnowledgeStatus | None = Query(default=KnowledgeStatus.ACTIVE),
     service: KnowledgeService = Depends(get_knowledge_service),
 ) -> list[KnowledgeRelationResponse]:
-
     """List relations associated with an entity."""
     try:
         rels: list[KnowledgeRelationResponse] = []
@@ -315,6 +315,7 @@ async def list_entity_relations(
 
 
 # --- FACTS ---
+
 
 @router.post("/facts", response_model=KnowledgeFactResponse, status_code=201)
 async def create_fact(
@@ -408,6 +409,7 @@ async def delete_fact(
 
 # --- RELATIONS ---
 
+
 @router.post("/relations", response_model=KnowledgeRelationResponse, status_code=201)
 async def create_relation(
     req: CreateRelationRequest,
@@ -466,6 +468,7 @@ async def delete_relation(
 
 
 # --- COLLECTIONS ---
+
 
 @router.post("/collections", response_model=KnowledgeCollectionResponse, status_code=201)
 async def create_collection(
@@ -574,6 +577,7 @@ async def delete_collection(
 
 
 # --- SEARCH ---
+
 
 @router.post("/search", response_model=KnowledgeListResponse[KnowledgeEntityResponse])
 async def search_knowledge(

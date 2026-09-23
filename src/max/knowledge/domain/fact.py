@@ -55,7 +55,6 @@ class KnowledgeFact(BaseModel):
                 "Fact string fields (subject, predicate, object, owner_id) cannot be empty"
             )
 
-
         return s
 
     @property

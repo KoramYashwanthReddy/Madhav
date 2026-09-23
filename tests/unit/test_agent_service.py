@@ -162,9 +162,7 @@ def test_assignment_capability_mismatch_fails(
         )
 
 
-def test_run_service_lifecycle(
-    run_service: AgentRunService, agent_service: AgentService
-) -> None:
+def test_run_service_lifecycle(run_service: AgentRunService, agent_service: AgentService) -> None:
     """Test agent run creation, start, pause, resume, cancel, and retry."""
     agent = agent_service.create_agent(owner_id="user_123", name="runner_agent")
     agent_service.activate_agent(agent.id)

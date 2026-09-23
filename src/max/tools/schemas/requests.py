@@ -26,15 +26,24 @@ class RegisterToolRequest(BaseModel):
     name: str = Field(description="Machine-readable tool name (e.g. 'echo.test')")
     description: str = Field(description="Purpose and usage description")
     version: str = Field(default="1.0.0", description="Semantic version string")
-    category: ToolCategory = Field(default=ToolCategory.UTILITY, description="Category classification")
+    category: ToolCategory = Field(
+        default=ToolCategory.UTILITY, description="Category classification"
+    )
     capabilities: list[ToolCapability] = Field(
-        default_factory=lambda: [ToolCapability.TEXT_TRANSFORMATION], description="Supported capabilities"
+        default_factory=lambda: [ToolCapability.TEXT_TRANSFORMATION],
+        description="Supported capabilities",
     )
     risk_level: ToolRiskLevel = Field(default=ToolRiskLevel.LOW, description="Risk level metadata")
     source: ToolSource = Field(default=ToolSource.USER_DEFINED, description="Tool origin source")
-    input_schema: ToolInputSchema = Field(default_factory=ToolInputSchema, description="Input schema")
-    output_schema: ToolOutputSchema = Field(default_factory=ToolOutputSchema, description="Output schema")
-    configuration: ToolConfiguration = Field(default_factory=ToolConfiguration, description="Configuration")
+    input_schema: ToolInputSchema = Field(
+        default_factory=ToolInputSchema, description="Input schema"
+    )
+    output_schema: ToolOutputSchema = Field(
+        default_factory=ToolOutputSchema, description="Output schema"
+    )
+    configuration: ToolConfiguration = Field(
+        default_factory=ToolConfiguration, description="Configuration"
+    )
     owner_id: str = Field(default="system", description="Owner user ID")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary safe metadata")
 
@@ -46,9 +55,13 @@ class UpdateToolRequest(BaseModel):
 
     description: str | None = Field(default=None, description="Updated description")
     category: ToolCategory | None = Field(default=None, description="Updated category")
-    capabilities: list[ToolCapability] | None = Field(default=None, description="Updated capabilities")
+    capabilities: list[ToolCapability] | None = Field(
+        default=None, description="Updated capabilities"
+    )
     risk_level: ToolRiskLevel | None = Field(default=None, description="Updated risk level")
-    configuration: ToolConfiguration | None = Field(default=None, description="Updated configuration")
+    configuration: ToolConfiguration | None = Field(
+        default=None, description="Updated configuration"
+    )
     metadata: dict[str, Any] | None = Field(default=None, description="Updated metadata")
 
 
@@ -59,7 +72,9 @@ class ResolveToolRequest(BaseModel):
 
     tool_identifier: str = Field(description="Tool ID, name, or name:version reference")
     version: str | None = Field(default=None, description="Optional explicit version requirement")
-    required_capability: ToolCapability | None = Field(default=None, description="Optional capability requirement")
+    required_capability: ToolCapability | None = Field(
+        default=None, description="Optional capability requirement"
+    )
 
 
 class CreateToolInvocationRequest(BaseModel):
@@ -69,7 +84,9 @@ class CreateToolInvocationRequest(BaseModel):
 
     tool_name: str = Field(description="Name or ID of target tool")
     tool_version: str | None = Field(default=None, description="Target version or latest")
-    arguments: dict[str, Any] = Field(default_factory=dict, description="Input arguments dictionary")
+    arguments: dict[str, Any] = Field(
+        default_factory=dict, description="Input arguments dictionary"
+    )
     execution_mode: ToolExecutionMode = Field(
         default=ToolExecutionMode.DRY_RUN, description="Execution mode"
     )

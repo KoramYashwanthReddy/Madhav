@@ -71,5 +71,7 @@ class ToolResolver:
             resolved_at=datetime.utcnow(),
         )
 
-        logger.debug("Tool resolved successfully", extra={"tool_id": tool.id, "tool_name": tool.name})
+        logger.debug(
+            "Tool resolved successfully", extra={"tool_id": tool.id, "tool_name": tool.name}
+        )
         return resolved

@@ -77,8 +77,15 @@ class MemoryAgentRunRepository(BaseAgentRunRepository):
         return sorted_runs[offset : offset + limit], total_count
 
     def count_active_runs_for_agent(self, agent_id: str) -> int:
-        active_states = {AgentRunStatus.RUNNING, AgentRunStatus.INITIALIZING, AgentRunStatus.READY, AgentRunStatus.WAITING}
-        return sum(1 for r in self._runs.values() if r.agent_id == agent_id and r.status in active_states)
+        active_states = {
+            AgentRunStatus.RUNNING,
+            AgentRunStatus.INITIALIZING,
+            AgentRunStatus.READY,
+            AgentRunStatus.WAITING,
+        }
+        return sum(
+            1 for r in self._runs.values() if r.agent_id == agent_id and r.status in active_states
+        )
 
 
 InMemoryRunRepository = MemoryAgentRunRepository

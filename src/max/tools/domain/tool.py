@@ -26,7 +26,9 @@ class ToolFieldDescriptor(BaseModel):
     type: str = Field(default="string", description="JSON/Python data type string")
     required: bool = Field(default=True, description="Whether property is mandatory")
     description: str = Field(default="", description="Human-readable field description")
-    allowed_values: list[Any] | None = Field(default=None, description="Enumerated permitted values")
+    allowed_values: list[Any] | None = Field(
+        default=None, description="Enumerated permitted values"
+    )
     min_length: int | None = Field(default=None, description="Minimum string length")
     max_length: int | None = Field(default=None, description="Maximum string length")
     min_value: float | None = Field(default=None, description="Minimum numeric bound")
@@ -38,8 +40,12 @@ class ToolInputSchema(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    fields: list[ToolFieldDescriptor] = Field(default_factory=list, description="Argument descriptors")
-    allow_additional_properties: bool = Field(default=False, description="Allow undeclared arguments")
+    fields: list[ToolFieldDescriptor] = Field(
+        default_factory=list, description="Argument descriptors"
+    )
+    allow_additional_properties: bool = Field(
+        default=False, description="Allow undeclared arguments"
+    )
 
     def get_required_field_names(self) -> list[str]:
         return [f.name for f in self.fields if f.required]
@@ -53,8 +59,12 @@ class ToolOutputSchema(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    fields: list[ToolFieldDescriptor] = Field(default_factory=list, description="Output properties descriptors")
-    description: str = Field(default="Tool execution result schema", description="Output schema description")
+    fields: list[ToolFieldDescriptor] = Field(
+        default_factory=list, description="Output properties descriptors"
+    )
+    description: str = Field(
+        default="Tool execution result schema", description="Output schema description"
+    )
 
 
 class ToolConfiguration(BaseModel):
@@ -67,7 +77,9 @@ class ToolConfiguration(BaseModel):
     max_input_size_bytes: int = Field(default=1048576, description="Max input payload size")
     max_output_size_bytes: int = Field(default=5242880, description="Max output payload size")
     version_policy: str = Field(default="STRICT", description="Schema version enforcement policy")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Custom configuration key-values")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Custom configuration key-values"
+    )
 
 
 class ToolAvailability(BaseModel):
@@ -75,10 +87,14 @@ class ToolAvailability(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    status: ToolAvailabilityStatus = Field(default=ToolAvailabilityStatus.AVAILABLE, description="Availability state")
+    status: ToolAvailabilityStatus = Field(
+        default=ToolAvailabilityStatus.AVAILABLE, description="Availability state"
+    )
     is_available: bool = Field(default=True, description="Available flag")
     reason: str = Field(default="Tool is operational", description="Reason text")
-    updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last status check timestamp")
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last status check timestamp"
+    )
 
 
 class ToolDescriptor(BaseModel):
@@ -109,25 +125,40 @@ class Tool(BaseModel):
     name: str = Field(description="Unique machine-readable tool name (e.g. 'filesystem.read')")
     version: str = Field(default="1.0.0", description="Semantic version string")
     description: str = Field(description="Clear description of the tool's purpose and usage")
-    category: ToolCategory = Field(default=ToolCategory.UTILITY, description="Category classification")
+    category: ToolCategory = Field(
+        default=ToolCategory.UTILITY, description="Category classification"
+    )
     capabilities: list[ToolCapability] = Field(
-        default_factory=lambda: [ToolCapability.TEXT_TRANSFORMATION], description="Claimed capabilities"
+        default_factory=lambda: [ToolCapability.TEXT_TRANSFORMATION],
+        description="Claimed capabilities",
     )
     status: ToolStatus = Field(default=ToolStatus.REGISTERED, description="Lifecycle status")
     risk_level: ToolRiskLevel = Field(default=ToolRiskLevel.LOW, description="Risk level metadata")
     source: ToolSource = Field(default=ToolSource.BUILT_IN, description="Tool origin source")
 
-    input_schema: ToolInputSchema = Field(default_factory=ToolInputSchema, description="Input arguments schema")
-    output_schema: ToolOutputSchema = Field(default_factory=ToolOutputSchema, description="Output result schema")
+    input_schema: ToolInputSchema = Field(
+        default_factory=ToolInputSchema, description="Input arguments schema"
+    )
+    output_schema: ToolOutputSchema = Field(
+        default_factory=ToolOutputSchema, description="Output result schema"
+    )
 
-    configuration: ToolConfiguration = Field(default_factory=ToolConfiguration, description="Operational configuration")
-    availability: ToolAvailability = Field(default_factory=ToolAvailability, description="Availability state")
+    configuration: ToolConfiguration = Field(
+        default_factory=ToolConfiguration, description="Operational configuration"
+    )
+    availability: ToolAvailability = Field(
+        default_factory=ToolAvailability, description="Availability state"
+    )
 
     owner_id: str = Field(default="system", description="Owner user or system identifier")
     metadata: dict[str, Any] = Field(default_factory=dict, description="Arbitrary safe metadata")
 
-    created_at: datetime = Field(default_factory=datetime.utcnow, description="Registration timestamp")
-    updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last update timestamp")
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Registration timestamp"
+    )
+    updated_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Last update timestamp"
+    )
 
     @model_validator(mode="after")
     def validate_tool_definition(self) -> "Tool":
@@ -137,7 +168,9 @@ class Tool(BaseModel):
         if " " in self.name:
             raise InvalidToolDefinitionError(f"Tool name '{self.name}' must not contain spaces.")
         if not self.description or not self.description.strip():
-            raise InvalidToolDefinitionError(f"Tool '{self.name}' must have a non-empty description.")
+            raise InvalidToolDefinitionError(
+                f"Tool '{self.name}' must have a non-empty description."
+            )
         return self
 
     def to_descriptor(self) -> ToolDescriptor:
@@ -166,4 +199,6 @@ class ResolvedTool(BaseModel):
     version: str = Field(description="Resolved version")
     tool: Tool = Field(description="Full tool entity")
     is_active: bool = Field(description="Whether tool is active for invocation")
-    resolved_at: datetime = Field(default_factory=datetime.utcnow, description="Resolution timestamp")
+    resolved_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Resolution timestamp"
+    )

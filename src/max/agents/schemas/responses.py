@@ -62,7 +62,9 @@ class AgentRunResponse(BaseModel):
     completed_at: datetime | None = Field(default=None, description="Completion timestamp")
     failure: AgentFailure | None = Field(default=None, description="Failure detail if failed")
     result: AgentResult | None = Field(default=None, description="Result detail if completed")
-    next_action: AgentNextAction | None = Field(default=None, description="Structured next action intent")
+    next_action: AgentNextAction | None = Field(
+        default=None, description="Structured next action intent"
+    )
     metadata: dict[str, Any] = Field(description="Custom metadata")
     created_at: datetime = Field(description="Run creation timestamp")
 
@@ -94,7 +96,9 @@ class AgentSelectionResponse(BaseModel):
     """API representation of an Agent Selection result."""
 
     selected_agent_id: str | None = Field(default=None, description="Selected agent ID if found")
-    selected_agent_name: str | None = Field(default=None, description="Selected agent name if found")
+    selected_agent_name: str | None = Field(
+        default=None, description="Selected agent name if found"
+    )
     matched: bool = Field(description="Whether a suitable agent was matched")
     reason: str = Field(description="Explanation of selection outcome")
     evaluated_agent_count: int = Field(description="Number of agents evaluated")

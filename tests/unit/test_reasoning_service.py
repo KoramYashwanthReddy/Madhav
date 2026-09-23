@@ -39,7 +39,6 @@ async def test_development_reasoning_provider() -> None:
     assert len(result.plan["steps"]) >= 3
 
 
-
 @pytest.mark.asyncio
 async def test_reasoning_service_lifecycle() -> None:
     """Test full reasoning service lifecycle: request creation, execution, retrieval."""

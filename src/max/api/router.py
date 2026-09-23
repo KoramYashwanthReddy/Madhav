@@ -13,6 +13,7 @@ from max.memory.api.routes import router as memory_router
 from max.models.api.routes import router as models_router
 from max.rag.api.routes import router as rag_router
 from max.reasoning.api.routes import plan_router, reasoning_router
+from max.security.api.routes import router as security_router
 from max.tasks.api.routes import plan_task_router, task_group_router, tasks_router
 from max.tools.api.routes import router as tools_router
 
@@ -39,7 +40,5 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(plan_task_router)
     v1_router.include_router(agents_router)
     v1_router.include_router(tools_router)
+    v1_router.include_router(security_router)
     app.include_router(v1_router)
-
-
-

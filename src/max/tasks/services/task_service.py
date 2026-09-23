@@ -141,7 +141,14 @@ class TaskService:
             actor=owner_id,
         )
 
-        logger.info("Task created", extra={"task_id": saved_task.id, "status": saved_task.status.value, "owner_id": owner_id})
+        logger.info(
+            "Task created",
+            extra={
+                "task_id": saved_task.id,
+                "status": saved_task.status.value,
+                "owner_id": owner_id,
+            },
+        )
         return saved_task
 
     def get_task(self, task_id: str, requesting_owner_id: str | None = None) -> Task:
@@ -172,7 +179,9 @@ class TaskService:
         if parent_task_id is not None and parent_task_id != task.parent_task_id:
             if parent_task_id:
                 TaskValidator.detect_parent_cycle(task_id, parent_task_id, self.task_repo.get_by_id)
-                TaskValidator.check_parent_depth(parent_task_id, self.task_repo.get_by_id, self.settings.max_parent_depth)
+                TaskValidator.check_parent_depth(
+                    parent_task_id, self.task_repo.get_by_id, self.settings.max_parent_depth
+                )
 
         if group_id is not None and group_id != task.group_id:
             if group_id:
@@ -338,7 +347,9 @@ class TaskService:
 
         if task.status in (TaskStatus.COMPLETED, TaskStatus.CANCELLED, TaskStatus.SKIPPED):
             if task.status == TaskStatus.COMPLETED and progress < 100:
-                raise InvalidTaskProgressError(progress, "Completed task progress cannot be decreased.")
+                raise InvalidTaskProgressError(
+                    progress, "Completed task progress cannot be decreased."
+                )
             if task.status == TaskStatus.CANCELLED:
                 raise TaskCancelledError(task_id)
 
@@ -431,7 +442,9 @@ class TaskService:
             requesting_owner_id=requesting_owner_id,
         )
 
-    def cancel_task(self, task_id: str, reason: str = "Task cancelled", requesting_owner_id: str | None = None) -> Task:
+    def cancel_task(
+        self, task_id: str, reason: str = "Task cancelled", requesting_owner_id: str | None = None
+    ) -> Task:
         """Lifecycle action: Cancel task and child subtasks."""
         return self.transition_task_status(
             task_id=task_id,
@@ -451,7 +464,9 @@ class TaskService:
         task = self.get_task(task_id, requesting_owner_id)
 
         if task.status != TaskStatus.FAILED:
-            raise TaskRetryNotAllowedError(task_id, f"Task status is '{task.status.value}', not FAILED.")
+            raise TaskRetryNotAllowedError(
+                task_id, f"Task status is '{task.status.value}', not FAILED."
+            )
 
         if not task.retryable:
             raise TaskRetryNotAllowedError(task_id, "Task is marked non-retryable.")
@@ -498,7 +513,11 @@ class TaskService:
         # Check cycle
         def get_outgoing(tid: str) -> list[str]:
             deps = self.dep_repo.get_dependencies_for_task(tid)
-            return [d.target_task_id for d in deps if d.dependency_type in (DependencyType.DEPENDS_ON, DependencyType.BLOCKS)]
+            return [
+                d.target_task_id
+                for d in deps
+                if d.dependency_type in (DependencyType.DEPENDS_ON, DependencyType.BLOCKS)
+            ]
 
         TaskValidator.detect_dependency_cycle(source_task_id, target_task_id, get_outgoing)
 
@@ -510,8 +529,13 @@ class TaskService:
         saved_dep = self.dep_repo.save(dep)
 
         # Update source task readiness if blocked
-        if target_task.status != TaskStatus.COMPLETED and source_task.status in (TaskStatus.READY, TaskStatus.PENDING):
-            self.transition_task_status(source_task_id, TaskStatus.BLOCKED, reason=f"Blocked by task '{target_task_id}'")
+        if target_task.status != TaskStatus.COMPLETED and source_task.status in (
+            TaskStatus.READY,
+            TaskStatus.PENDING,
+        ):
+            self.transition_task_status(
+                source_task_id, TaskStatus.BLOCKED, reason=f"Blocked by task '{target_task_id}'"
+            )
 
         return saved_dep
 
@@ -552,7 +576,9 @@ class TaskService:
 
         incoming = self.dep_repo.get_dependencies_for_task(task_id)
         blocking = [
-            d for d in incoming if d.dependency_type in (DependencyType.DEPENDS_ON, DependencyType.BLOCKS)
+            d
+            for d in incoming
+            if d.dependency_type in (DependencyType.DEPENDS_ON, DependencyType.BLOCKS)
         ]
 
         for dep in blocking:
@@ -564,7 +590,11 @@ class TaskService:
 
     # Task Groups
     def create_task_group(
-        self, owner_id: str, name: str, description: str = "", metadata: dict[str, Any] | None = None
+        self,
+        owner_id: str,
+        name: str,
+        description: str = "",
+        metadata: dict[str, Any] | None = None,
     ) -> TaskGroup:
         """Create a new TaskGroup."""
         group = TaskGroup(
@@ -575,7 +605,10 @@ class TaskService:
             metadata=metadata or {},
         )
         saved = self.group_repo.save(group)
-        logger.info("Task group created", extra={"group_id": saved.group_id, "group_name": saved.name, "owner_id": owner_id})
+        logger.info(
+            "Task group created",
+            extra={"group_id": saved.group_id, "group_name": saved.name, "owner_id": owner_id},
+        )
         return saved
 
     def get_task_group(self, group_id: str, requesting_owner_id: str | None = None) -> TaskGroup:
@@ -627,7 +660,9 @@ class TaskService:
         effective_limit = min(limit, self.settings.max_page_size)
         return self.group_repo.list_groups(owner_id=owner_id, limit=effective_limit, offset=offset)
 
-    def get_task_group_summary(self, group_id: str, requesting_owner_id: str | None = None) -> TaskGroupSummary:
+    def get_task_group_summary(
+        self, group_id: str, requesting_owner_id: str | None = None
+    ) -> TaskGroupSummary:
         """Calculate progress summary statistics for a task group."""
         group = self.get_task_group(group_id, requesting_owner_id)
         tasks, _ = self.task_repo.list_tasks(group_id=group_id, limit=1000)
@@ -682,7 +717,6 @@ class TaskService:
         for dep in generated_deps:
             saved_dep = self.dep_repo.save(dep)
             saved_deps.append(saved_dep)
-
 
         logger.info(
             "Tasks generated from plan",

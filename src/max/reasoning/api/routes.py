@@ -160,6 +160,7 @@ def _map_plan_response(plan: Plan) -> PlanResponse:
 
 # --- REASONING ENDPOINTS ---
 
+
 @reasoning_router.post("", response_model=ReasoningResultResponse, status_code=201)
 async def create_reasoning_request(
     req: CreateReasoningRequestPayload,
@@ -295,7 +296,6 @@ async def validate_reasoning_plan(
             pid = str(res.plan["plan_id"])
             val_res = await service.plan_service.validate_plan_id(pid, owner_id)
             return PlanValidationResponse(
-
                 is_valid=val_res.is_valid,
                 status=val_res.status,
                 errors=val_res.errors,
@@ -314,7 +314,6 @@ async def validate_reasoning_plan(
             status_code=exc.status_code,
             detail={"message": exc.message, "code": exc.code, "details": exc.details},
         ) from exc
-
 
 
 @reasoning_router.get("/{reasoning_id}/summary")
@@ -339,7 +338,6 @@ async def get_reasoning_result(
     owner_id: str = Query(..., description="Owner user ID"),
     service: ReasoningService = Depends(get_reasoning_service),
 ) -> ReasoningResultResponse:
-
     """Get stored reasoning result by request_id."""
     res = await service.get_reasoning_result(reasoning_id, owner_id)
     if not res:
@@ -410,6 +408,7 @@ async def get_reasoning_result(
 
 
 # --- PLAN ENDPOINTS ---
+
 
 @plan_router.post("", response_model=PlanResponse, status_code=201)
 async def create_plan(

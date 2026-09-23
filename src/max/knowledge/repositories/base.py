@@ -57,9 +57,7 @@ class KnowledgeEntityRepository(Protocol):
         """Deterministic search across entities."""
         ...
 
-    async def count_entities(
-        self, owner_id: str, status: KnowledgeStatus | None = None
-    ) -> int:
+    async def count_entities(self, owner_id: str, status: KnowledgeStatus | None = None) -> int:
         """Count total matching entities for owner."""
         ...
 
@@ -183,7 +181,6 @@ class KnowledgeCollectionRepository(Protocol):
     ) -> KnowledgeCollection:
         """Archive collection."""
         ...
-
 
     async def delete_collection(
         self, collection_id: str, soft_delete: bool = True, deleted_at: datetime | None = None

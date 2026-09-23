@@ -51,7 +51,6 @@ class KnowledgeRelation(BaseModel):
         if s == t:
             raise ValueError("source_entity_id and target_entity_id cannot be identical")
 
-
         return self
 
     @property

@@ -15,4 +15,6 @@ class TaskReference(BaseModel):
     reference_type: TaskReferenceType = Field(description="Type of referenced artifact")
     reference_id: str = Field(description="Unique ID of referenced artifact")
     summary: str | None = Field(default=None, description="Optional brief label or text summary")
-    metadata: dict[str, Any] = Field(default_factory=dict, description="Additional contextual metadata")
+    metadata: dict[str, Any] = Field(
+        default_factory=dict, description="Additional contextual metadata"
+    )

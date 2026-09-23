@@ -48,12 +48,22 @@ class DevToolsProvider:
             source=ToolSource.DEVELOPMENT,
             input_schema=ToolInputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="message", type="string", required=True, description="Message text to echo")
+                    ToolFieldDescriptor(
+                        name="message",
+                        type="string",
+                        required=True,
+                        description="Message text to echo",
+                    )
                 ]
             ),
             output_schema=ToolOutputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="message", type="string", required=True, description="Echoed message text")
+                    ToolFieldDescriptor(
+                        name="message",
+                        type="string",
+                        required=True,
+                        description="Echoed message text",
+                    )
                 ]
             ),
         )
@@ -80,13 +90,28 @@ class DevToolsProvider:
                         allowed_values=["add", "subtract", "multiply", "divide"],
                         description="Arithmetic operation",
                     ),
-                    ToolFieldDescriptor(name="left", type="number", required=True, description="Left numeric operand"),
-                    ToolFieldDescriptor(name="right", type="number", required=True, description="Right numeric operand"),
+                    ToolFieldDescriptor(
+                        name="left",
+                        type="number",
+                        required=True,
+                        description="Left numeric operand",
+                    ),
+                    ToolFieldDescriptor(
+                        name="right",
+                        type="number",
+                        required=True,
+                        description="Right numeric operand",
+                    ),
                 ]
             ),
             output_schema=ToolOutputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="result", type="number", required=True, description="Calculated numeric result")
+                    ToolFieldDescriptor(
+                        name="result",
+                        type="number",
+                        required=True,
+                        description="Calculated numeric result",
+                    )
                 ]
             ),
         )
@@ -113,12 +138,19 @@ class DevToolsProvider:
                         allowed_values=["uppercase", "lowercase", "trim"],
                         description="String operation",
                     ),
-                    ToolFieldDescriptor(name="text", type="string", required=True, description="Input string text"),
+                    ToolFieldDescriptor(
+                        name="text", type="string", required=True, description="Input string text"
+                    ),
                 ]
             ),
             output_schema=ToolOutputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="result", type="string", required=True, description="Transformed string result")
+                    ToolFieldDescriptor(
+                        name="result",
+                        type="string",
+                        required=True,
+                        description="Transformed string result",
+                    )
                 ]
             ),
         )
@@ -138,13 +170,28 @@ class DevToolsProvider:
             source=ToolSource.FUTURE,
             input_schema=ToolInputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="command", type="string", required=True, description="Terminal command string")
+                    ToolFieldDescriptor(
+                        name="command",
+                        type="string",
+                        required=True,
+                        description="Terminal command string",
+                    )
                 ]
             ),
             output_schema=ToolOutputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="exit_code", type="integer", required=True, description="Command exit code"),
-                    ToolFieldDescriptor(name="output", type="string", required=True, description="Standard output text"),
+                    ToolFieldDescriptor(
+                        name="exit_code",
+                        type="integer",
+                        required=True,
+                        description="Command exit code",
+                    ),
+                    ToolFieldDescriptor(
+                        name="output",
+                        type="string",
+                        required=True,
+                        description="Standard output text",
+                    ),
                 ]
             ),
         )
@@ -164,13 +211,25 @@ class DevToolsProvider:
             source=ToolSource.FUTURE,
             input_schema=ToolInputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="path", type="string", required=True, description="Target file path"),
-                    ToolFieldDescriptor(name="content", type="string", required=True, description="Content text to write"),
+                    ToolFieldDescriptor(
+                        name="path", type="string", required=True, description="Target file path"
+                    ),
+                    ToolFieldDescriptor(
+                        name="content",
+                        type="string",
+                        required=True,
+                        description="Content text to write",
+                    ),
                 ]
             ),
             output_schema=ToolOutputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="bytes_written", type="integer", required=True, description="Number of bytes written")
+                    ToolFieldDescriptor(
+                        name="bytes_written",
+                        type="integer",
+                        required=True,
+                        description="Number of bytes written",
+                    )
                 ]
             ),
         )
@@ -190,12 +249,16 @@ class DevToolsProvider:
             source=ToolSource.FUTURE,
             input_schema=ToolInputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="url", type="string", required=True, description="Target URL string")
+                    ToolFieldDescriptor(
+                        name="url", type="string", required=True, description="Target URL string"
+                    )
                 ]
             ),
             output_schema=ToolOutputSchema(
                 fields=[
-                    ToolFieldDescriptor(name="title", type="string", required=True, description="Opened page title")
+                    ToolFieldDescriptor(
+                        name="title", type="string", required=True, description="Opened page title"
+                    )
                 ]
             ),
         )

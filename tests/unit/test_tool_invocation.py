@@ -46,7 +46,9 @@ def test_argument_and_output_validators() -> None:
     input_schema = ToolInputSchema(
         fields=[
             ToolFieldDescriptor(name="count", type="integer", required=True, min_value=1),
-            ToolFieldDescriptor(name="mode", type="string", required=False, allowed_values=["fast", "slow"]),
+            ToolFieldDescriptor(
+                name="mode", type="string", required=False, allowed_values=["fast", "slow"]
+            ),
         ]
     )
 
@@ -63,7 +65,9 @@ def test_argument_and_output_validators() -> None:
 
     # Invalid enum value fails
     with pytest.raises(ToolArgumentValidationError, match="not in allowed values"):
-        ToolArgumentValidator.validate("test_tool", {"count": 2, "mode": "invalid_mode"}, input_schema)
+        ToolArgumentValidator.validate(
+            "test_tool", {"count": 2, "mode": "invalid_mode"}, input_schema
+        )
 
     output_schema = ToolOutputSchema(
         fields=[ToolFieldDescriptor(name="result", type="string", required=True)]

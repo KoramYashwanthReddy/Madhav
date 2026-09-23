@@ -16,8 +16,12 @@ class AgentEvent(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    event_id: str = Field(default_factory=lambda: f"evt_{uuid4().hex[:12]}", description="Unique event ID")
-    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Event occurrence timestamp")
+    event_id: str = Field(
+        default_factory=lambda: f"evt_{uuid4().hex[:12]}", description="Unique event ID"
+    )
+    timestamp: datetime = Field(
+        default_factory=datetime.utcnow, description="Event occurrence timestamp"
+    )
     event_type: AgentEventType = Field(description="Operational event taxonomy category")
     agent_id: str = Field(description="Associated Agent ID")
     run_id: str | None = Field(default=None, description="Associated AgentRun ID")
@@ -34,8 +38,12 @@ class AgentTrace(BaseModel):
 
     run_id: str = Field(description="Associated AgentRun ID")
     agent_id: str = Field(description="Associated Agent ID")
-    events: list[AgentEvent] = Field(default_factory=list, description="Chronological sequence of events")
-    created_at: datetime = Field(default_factory=datetime.utcnow, description="Trace creation timestamp")
+    events: list[AgentEvent] = Field(
+        default_factory=list, description="Chronological sequence of events"
+    )
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Trace creation timestamp"
+    )
 
     def record_event(self, event: AgentEvent) -> None:
         """Record an operational trace event."""

@@ -161,8 +161,6 @@ def test_generate_tasks_from_plan_idempotency() -> None:
         completeness=CompletenessStatus.COMPLETE,
     )
 
-
-
     tasks1, deps1 = service.generate_tasks_from_plan(plan)
     assert len(tasks1) == 2
     assert len(deps1) == 1

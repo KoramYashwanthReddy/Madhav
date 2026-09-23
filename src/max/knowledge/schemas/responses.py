@@ -191,4 +191,3 @@ class KnowledgeListResponse[T](BaseModel):
     total: int = Field(..., description="Total available records count")
     page: int = Field(..., description="Current page index")
     page_size: int = Field(..., description="Page size limit")
-

@@ -45,12 +45,17 @@ class AgentStateMachine:
         cls.validate_transition(current_status, target_status, reason)
 
     @classmethod
-    def can_transition_run(cls, current_status: AgentRunStatus, target_status: AgentRunStatus) -> bool:
+    def can_transition_run(
+        cls, current_status: AgentRunStatus, target_status: AgentRunStatus
+    ) -> bool:
         return AgentRunStateMachine.can_transition(current_status, target_status)
 
     @classmethod
     def validate_run_transition(
-        cls, current_status: AgentRunStatus, target_status: AgentRunStatus, reason: str | None = None
+        cls,
+        current_status: AgentRunStatus,
+        target_status: AgentRunStatus,
+        reason: str | None = None,
     ) -> None:
         AgentRunStateMachine.validate_transition(current_status, target_status, reason)
 
@@ -96,7 +101,10 @@ class AgentRunStateMachine:
 
     @classmethod
     def validate_transition(
-        cls, current_status: AgentRunStatus, target_status: AgentRunStatus, reason: str | None = None
+        cls,
+        current_status: AgentRunStatus,
+        target_status: AgentRunStatus,
+        reason: str | None = None,
     ) -> None:
         if current_status == target_status:
             return

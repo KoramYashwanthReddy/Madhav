@@ -53,7 +53,9 @@ class AgentSelectionService:
         target_role = preferred_role or role
         target_type = preferred_type or type
 
-        candidates, _ = self.agent_repo.list_agents(owner_id=owner_id, status=AgentStatus.ACTIVE, limit=500)
+        candidates, _ = self.agent_repo.list_agents(
+            owner_id=owner_id, status=AgentStatus.ACTIVE, limit=500
+        )
         matching_agents: list[Agent] = []
 
         for agent in candidates:

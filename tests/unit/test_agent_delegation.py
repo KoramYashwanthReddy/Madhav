@@ -99,9 +99,15 @@ def test_delegation_limit_exceeded(
     agent_service.activate_agent(child2.id)
     agent_service.activate_agent(child3.id)
 
-    delegation_service.delegate_task(parent_agent_id=parent.id, child_agent_id=child1.id, task_id="t1")
-    delegation_service.delegate_task(parent_agent_id=parent.id, child_agent_id=child2.id, task_id="t2")
+    delegation_service.delegate_task(
+        parent_agent_id=parent.id, child_agent_id=child1.id, task_id="t1"
+    )
+    delegation_service.delegate_task(
+        parent_agent_id=parent.id, child_agent_id=child2.id, task_id="t2"
+    )
 
     # Third delegation exceeds limit of 2
     with pytest.raises(DelegationLimitExceededError):
-        delegation_service.delegate_task(parent_agent_id=parent.id, child_agent_id=child3.id, task_id="t3")
+        delegation_service.delegate_task(
+            parent_agent_id=parent.id, child_agent_id=child3.id, task_id="t3"
+        )

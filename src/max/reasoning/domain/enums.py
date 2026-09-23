@@ -99,4 +99,3 @@ class ConstraintType(StrEnum):
     ENVIRONMENT = "environment"
     PREFERENCE = "preference"
     SYSTEM = "system"
-

@@ -26,7 +26,9 @@ def test_validate_task_field_limits() -> None:
 
     # Description too long
     with pytest.raises(TaskValidationError):
-        TaskValidator.validate_task(Task(owner_id="u1", title="Valid", description="B" * 30), settings)
+        TaskValidator.validate_task(
+            Task(owner_id="u1", title="Valid", description="B" * 30), settings
+        )
 
 
 def test_detect_dependency_cycle() -> None:

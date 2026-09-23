@@ -17,7 +17,13 @@ class DevelopmentAgent(BaseAgentAdapter):
         agent: Agent,
         run: AgentRun,
         context_package: Any | None = None,
-    ) -> tuple[AgentResult | None, AgentFailure | None, NextAction, list[ToolRequestIntent], list[PermissionRequestIntent]]:
+    ) -> tuple[
+        AgentResult | None,
+        AgentFailure | None,
+        NextAction,
+        list[ToolRequestIntent],
+        list[PermissionRequestIntent],
+    ]:
         """Produce deterministic coordination outcomes based on request parameters."""
         obj_lower = request.objective.lower() if request.objective else ""
         sim_action = request.metadata.get("simulate_next_action", "")

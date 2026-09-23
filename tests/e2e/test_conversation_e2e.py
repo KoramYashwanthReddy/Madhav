@@ -25,9 +25,7 @@ async def test_end_to_end_multi_turn_conversation_flow() -> None:
         owner_id="e2e_owner",
     )
 
-    assert (
-        turn1.user_message.content == "Hello Max, I am working on building a modular AI system."
-    )
+    assert turn1.user_message.content == "Hello Max, I am working on building a modular AI system."
     assert turn1.assistant_message.status.value == "completed"
     assert len(turn1.assistant_message.content) > 0
 

@@ -36,5 +36,9 @@ class ToolTrace(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     invocation_id: str = Field(description="Invocation identifier")
-    events: list[ToolEvent] = Field(default_factory=list, description="Ordered timeline of operational events")
-    created_at: datetime = Field(default_factory=datetime.utcnow, description="Trace creation timestamp")
+    events: list[ToolEvent] = Field(
+        default_factory=list, description="Ordered timeline of operational events"
+    )
+    created_at: datetime = Field(
+        default_factory=datetime.utcnow, description="Trace creation timestamp"
+    )

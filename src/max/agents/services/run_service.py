@@ -115,7 +115,9 @@ class AgentRunService:
         """Start execution lifecycle of a run."""
         run = self.get_run(run_id)
         if run.status == AgentRunStatus.CREATED:
-            self.transition_run_status(run_id, AgentRunStatus.INITIALIZING, reason="Initializing run context")
+            self.transition_run_status(
+                run_id, AgentRunStatus.INITIALIZING, reason="Initializing run context"
+            )
             self.transition_run_status(run_id, AgentRunStatus.READY, reason="Ready for execution")
         return self.transition_run_status(run_id, AgentRunStatus.RUNNING, reason="Run started")
 
@@ -133,13 +135,19 @@ class AgentRunService:
 
     def complete_run(self, run_id: str, result: AgentResult | None = None) -> AgentRun:
         """Complete an active run."""
-        res = result or AgentResult(status=AgentRunStatus.COMPLETED, summary="Run completed successfully")
-        return self.transition_run_status(run_id, AgentRunStatus.COMPLETED, reason="Run completed", result=res)
+        res = result or AgentResult(
+            status=AgentRunStatus.COMPLETED, summary="Run completed successfully"
+        )
+        return self.transition_run_status(
+            run_id, AgentRunStatus.COMPLETED, reason="Run completed", result=res
+        )
 
     def fail_run(self, run_id: str, failure: AgentFailure | None = None) -> AgentRun:
         """Mark run as failed."""
         fail = failure or AgentFailure(error_code="RUN_FAILED", message="Run execution failed")
-        return self.transition_run_status(run_id, AgentRunStatus.FAILED, reason="Run failed", failure=fail)
+        return self.transition_run_status(
+            run_id, AgentRunStatus.FAILED, reason="Run failed", failure=fail
+        )
 
     def list_runs_for_agent(self, agent_id: str) -> list[AgentRun]:
         """List all runs for an agent."""
@@ -169,7 +177,12 @@ class AgentRunService:
         if target_status == AgentRunStatus.RUNNING and run.started_at is None:
             updated_dict["started_at"] = now
 
-        if target_status in (AgentRunStatus.COMPLETED, AgentRunStatus.FAILED, AgentRunStatus.CANCELLED, AgentRunStatus.TIMED_OUT):
+        if target_status in (
+            AgentRunStatus.COMPLETED,
+            AgentRunStatus.FAILED,
+            AgentRunStatus.CANCELLED,
+            AgentRunStatus.TIMED_OUT,
+        ):
             updated_dict["completed_at"] = now
 
         if result is not None:

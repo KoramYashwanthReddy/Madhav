@@ -124,7 +124,6 @@ def create_task(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @tasks_router.get("", response_model=TaskListResponse)
 def list_tasks(
     owner_id: str | None = Query(default=None, description="Filter by owner ID"),
@@ -177,9 +176,12 @@ def get_task(
         task = service.get_task(task_id, requesting_owner_id=owner_id)
         return _to_task_response(task)
     except TaskError as e:
-        status_code = status.HTTP_404_NOT_FOUND if "not found" in str(e).lower() else status.HTTP_400_BAD_REQUEST
+        status_code = (
+            status.HTTP_404_NOT_FOUND
+            if "not found" in str(e).lower()
+            else status.HTTP_400_BAD_REQUEST
+        )
         raise HTTPException(status_code=status_code, detail=str(e)) from e
-
 
 
 @tasks_router.patch("/{task_id}", response_model=TaskResponse)
@@ -208,7 +210,6 @@ def update_task(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @tasks_router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_task(
     task_id: str,
@@ -220,7 +221,6 @@ def delete_task(
         service.delete_task(task_id, requesting_owner_id=owner_id)
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 # LIFECYCLE TRANSITIONS
@@ -244,7 +244,6 @@ def mark_task_ready(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @tasks_router.post("/{task_id}/start", response_model=TaskResponse)
 def start_task(
     task_id: str,
@@ -257,7 +256,6 @@ def start_task(
         return _to_task_response(task)
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @tasks_router.post("/{task_id}/pause", response_model=TaskResponse)
@@ -274,7 +272,6 @@ def pause_task(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @tasks_router.post("/{task_id}/resume", response_model=TaskResponse)
 def resume_task(
     task_id: str,
@@ -287,7 +284,6 @@ def resume_task(
         return _to_task_response(task)
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @tasks_router.post("/{task_id}/complete", response_model=TaskResponse)
@@ -311,7 +307,6 @@ def complete_task(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @tasks_router.post("/{task_id}/cancel", response_model=TaskResponse)
 def cancel_task(
     task_id: str,
@@ -327,7 +322,6 @@ def cancel_task(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @tasks_router.post("/{task_id}/retry", response_model=TaskResponse)
 def retry_task(
     task_id: str,
@@ -341,7 +335,6 @@ def retry_task(
         return _to_task_response(task)
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @tasks_router.patch("/{task_id}/progress", response_model=TaskResponse)
@@ -364,9 +357,12 @@ def update_progress(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 # DEPENDENCIES
-@tasks_router.post("/{task_id}/dependencies", response_model=TaskDependencyResponse, status_code=status.HTTP_201_CREATED)
+@tasks_router.post(
+    "/{task_id}/dependencies",
+    response_model=TaskDependencyResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 def create_dependency(
     task_id: str,
     payload: CreateTaskDependencyRequest,
@@ -390,7 +386,6 @@ def create_dependency(
         )
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @tasks_router.get("/{task_id}/dependencies", response_model=TaskDependencyListResponse)
@@ -428,8 +423,9 @@ def list_dependencies(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
-@tasks_router.delete("/{task_id}/dependencies/{dependency_id}", status_code=status.HTTP_204_NO_CONTENT)
+@tasks_router.delete(
+    "/{task_id}/dependencies/{dependency_id}", status_code=status.HTTP_204_NO_CONTENT
+)
 def remove_dependency(
     task_id: str,
     dependency_id: str,
@@ -441,7 +437,6 @@ def remove_dependency(
         service.remove_dependency(dependency_id, requesting_owner_id=owner_id)
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @tasks_router.get("/{task_id}/readiness", response_model=TaskReadinessResponse)
@@ -474,7 +469,6 @@ def get_task_history(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 # TASK GROUPS ENDPOINTS
 @task_group_router.post("", response_model=TaskGroupResponse, status_code=status.HTTP_201_CREATED)
 def create_task_group(
@@ -501,7 +495,6 @@ def create_task_group(
         )
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @task_group_router.get("", response_model=TaskGroupListResponse)
@@ -553,9 +546,12 @@ def get_task_group(
             metadata=group.metadata,
         )
     except TaskError as e:
-        status_code = status.HTTP_404_NOT_FOUND if "not found" in str(e).lower() else status.HTTP_400_BAD_REQUEST
+        status_code = (
+            status.HTTP_404_NOT_FOUND
+            if "not found" in str(e).lower()
+            else status.HTTP_400_BAD_REQUEST
+        )
         raise HTTPException(status_code=status_code, detail=str(e)) from e
-
 
 
 @task_group_router.get("/{group_id}/summary", response_model=TaskGroupSummaryResponse)
@@ -579,7 +575,6 @@ def get_task_group_summary(
         )
     except TaskError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
-
 
 
 @task_group_router.patch("/{group_id}", response_model=TaskGroupResponse)
@@ -612,7 +607,6 @@ def update_task_group(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 @task_group_router.delete("/{group_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_task_group(
     group_id: str,
@@ -626,9 +620,10 @@ def delete_task_group(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
-
 # PLAN TASK CONVERSION ENDPOINT
-@plan_task_router.post("/{plan_id}/tasks", response_model=PlanConversionResponse, status_code=status.HTTP_201_CREATED)
+@plan_task_router.post(
+    "/{plan_id}/tasks", response_model=PlanConversionResponse, status_code=status.HTTP_201_CREATED
+)
 async def convert_plan_to_tasks(
     plan_id: str,
     payload: ConvertPlanToTasksRequest | None = None,
@@ -639,7 +634,9 @@ async def convert_plan_to_tasks(
     plan = await plan_repo.get_by_id(plan_id)
 
     if not plan:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Plan '{plan_id}' not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Plan '{plan_id}' not found."
+        )
 
     owner_id = payload.owner_id if payload else None
     tasks, deps = service.generate_tasks_from_plan(plan=plan, owner_id=owner_id)

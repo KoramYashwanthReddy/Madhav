@@ -124,8 +124,6 @@ class DevelopmentReasoningProvider(ReasoningProvider):
         )
         conclusion = ReasoningConclusion(
             summary=summary_txt,
-
-
             key_findings=[
                 f"Mode evaluated: {request.mode}",
                 f"Constraints identified: {len(constraints)}",

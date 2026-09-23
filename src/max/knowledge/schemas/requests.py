@@ -147,7 +147,6 @@ class UpdateCollectionRequest(BaseModel):
     )
 
 
-
 class KnowledgeSearchRequest(BaseModel):
     """API payload for deterministic Knowledge search."""
 

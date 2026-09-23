@@ -1,6 +1,5 @@
 """Plan-to-Task mapper and task generation service."""
 
-
 from max.reasoning.domain.plan import Plan, PlanStep
 from max.tasks.domain.dependency import TaskDependency
 from max.tasks.domain.enums import (
@@ -34,7 +33,11 @@ class PlanTaskMapper:
 
         if existing_tasks:
             for task in existing_tasks:
-                if task.plan_id == plan.plan_id and task.plan_version == plan.version and task.plan_step_id:
+                if (
+                    task.plan_id == plan.plan_id
+                    and task.plan_version == plan.version
+                    and task.plan_step_id
+                ):
                     existing_by_step_id[task.plan_step_id] = task
 
         generated_tasks: list[Task] = []
@@ -44,7 +47,9 @@ class PlanTaskMapper:
             if step.step_id in existing_by_step_id:
                 task = existing_by_step_id[step.step_id]
             else:
-                task = PlanTaskMapper._map_step_to_task(step=step, plan=plan, owner_id=effective_owner_id)
+                task = PlanTaskMapper._map_step_to_task(
+                    step=step, plan=plan, owner_id=effective_owner_id
+                )
 
             generated_tasks.append(task)
             step_id_to_task_id[step.step_id] = task.id
@@ -116,7 +121,6 @@ class PlanTaskMapper:
                 )
             )
 
-
         task_type = TaskType.PLANNING
         if "research" in step.title.lower() or "read" in step.title.lower():
             task_type = TaskType.RESEARCH
@@ -141,7 +145,6 @@ class PlanTaskMapper:
             plan_step_id=step.step_id,
             reasoning_id=str(reasoning_id) if reasoning_id else None,
             references=references,
-
             metadata={
                 "sequence": step.sequence,
                 "estimated_complexity": step.estimated_complexity.value,

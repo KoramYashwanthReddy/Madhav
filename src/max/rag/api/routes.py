@@ -101,6 +101,7 @@ def _map_doc_response(doc: Document) -> DocumentResponse:
 
 # --- DOCUMENT ENDPOINTS ---
 
+
 @router.post("/documents", response_model=DocumentResponse, status_code=201)
 async def create_document(
     req: DocumentCreateRequest,
@@ -268,6 +269,7 @@ async def reindex_document_endpoint(
 
 # --- RETRIEVAL ENDPOINTS ---
 
+
 @router.post("/search", response_model=RetrievalSearchResponse)
 async def search_retrieval(
     req: RetrievalSearchRequest,
@@ -356,6 +358,7 @@ async def retrieve_alias(
 
 
 # --- STATUS ENDPOINT ---
+
 
 @router.get("/status", response_model=RAGStatusResponse)
 async def rag_status(

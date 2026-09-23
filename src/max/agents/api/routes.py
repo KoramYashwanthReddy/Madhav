@@ -420,7 +420,11 @@ def get_agent_availability(
 # ==================================================
 
 
-@router.post("/{agent_id}/assignments", response_model=AgentAssignmentResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{agent_id}/assignments",
+    response_model=AgentAssignmentResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 def assign_task(
     agent_id: str,
     req: CreateAssignmentRequest,
@@ -461,7 +465,9 @@ def list_assignments(
 # ==================================================
 
 
-@router.post("/{agent_id}/runs", response_model=AgentRunResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{agent_id}/runs", response_model=AgentRunResponse, status_code=status.HTTP_201_CREATED
+)
 def create_run(
     agent_id: str,
     req: CreateRunRequest,
@@ -621,7 +627,11 @@ def get_run_trace(
 # ==================================================
 
 
-@router.post("/{agent_id}/delegations", response_model=AgentDelegationResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{agent_id}/delegations",
+    response_model=AgentDelegationResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 def create_delegation(
     agent_id: str,
     req: CreateDelegationRequest,

@@ -41,8 +41,6 @@ class PlanService:
         self.validator = validator or PlanValidator()
         self.comparer = comparer or PlanComparer()
 
-
-
     async def create_plan(
         self,
         owner_id: str,
@@ -183,4 +181,3 @@ class PlanService:
     ) -> PlanDiff:
         """Alias for compare_plan_versions."""
         return await self.compare_plan_versions(plan_id, owner_id, version_a, version_b)
-

@@ -81,7 +81,9 @@ class ToolInvocationStateError(ToolError):
     """Raised when an illegal transition on tool invocation state occurs."""
 
     def __init__(self, current_status: str, target_status: str) -> None:
-        super().__init__(f"Invalid invocation transition from '{current_status}' to '{target_status}'.")
+        super().__init__(
+            f"Invalid invocation transition from '{current_status}' to '{target_status}'."
+        )
 
 
 class ToolCapabilityError(ToolError):
@@ -89,7 +91,9 @@ class ToolCapabilityError(ToolError):
 
     def __init__(self, tool_id: str, missing_capabilities: list[str]) -> None:
         msg = f"Tool '{tool_id}' missing required capabilities: {', '.join(missing_capabilities)}"
-        super().__init__(msg, details={"tool_id": tool_id, "missing_capabilities": missing_capabilities})
+        super().__init__(
+            msg, details={"tool_id": tool_id, "missing_capabilities": missing_capabilities}
+        )
 
 
 class ToolPermissionRequiredError(ToolError):
@@ -113,4 +117,6 @@ class ToolTimeoutError(ToolError):
 
     def __init__(self, invocation_id: str, timeout_seconds: float) -> None:
         msg = f"Tool invocation '{invocation_id}' timed out after {timeout_seconds} seconds."
-        super().__init__(msg, details={"invocation_id": invocation_id, "timeout_seconds": timeout_seconds})
+        super().__init__(
+            msg, details={"invocation_id": invocation_id, "timeout_seconds": timeout_seconds}
+        )

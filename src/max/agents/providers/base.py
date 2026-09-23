@@ -18,6 +18,12 @@ class BaseAgentAdapter(ABC):
         agent: Agent,
         run: AgentRun,
         context_package: Any | None = None,
-    ) -> tuple[AgentResult | None, AgentFailure | None, NextAction, list[ToolRequestIntent], list[PermissionRequestIntent]]:
+    ) -> tuple[
+        AgentResult | None,
+        AgentFailure | None,
+        NextAction,
+        list[ToolRequestIntent],
+        list[PermissionRequestIntent],
+    ]:
         """Execute a single coordination step producing result, failure, next_action, and intent requests."""
         ...

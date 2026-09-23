@@ -44,7 +44,6 @@ class ReasoningObjective(BaseModel):
         default_factory=list, description="Objective-specific constraints"
     )
 
-
     @field_validator("title")
     @classmethod
     def validate_title_not_empty(cls, v: str) -> str:
@@ -200,9 +199,7 @@ class ReasoningResult(BaseModel):
     plan: dict[str, Any] | None = Field(
         default=None, description="Generated Plan representation dict if mode includes PLANNING"
     )
-    risks: list[dict[str, Any]] = Field(
-        default_factory=list, description="Identified risk items"
-    )
+    risks: list[dict[str, Any]] = Field(default_factory=list, description="Identified risk items")
     evidence: list[ReasoningEvidence] = Field(
         default_factory=list, description="Evidence citations linking back to context"
     )
@@ -216,4 +213,3 @@ class ReasoningResult(BaseModel):
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC), description="Result creation timestamp"
     )
-

@@ -49,12 +49,16 @@ class AgentCoordinator:
     ) -> None:
         self.agent_service = agent_service or AgentService()
         self.run_service = run_service or AgentRunService(agent_repo=self.agent_service.agent_repo)
-        self.assignment_service = assignment_service or AgentAssignmentService(agent_repo=self.agent_service.agent_repo)
+        self.assignment_service = assignment_service or AgentAssignmentService(
+            agent_repo=self.agent_service.agent_repo
+        )
         self.selection_service = selection_service or AgentSelectionService(
             agent_repo=self.agent_service.agent_repo, run_repo=self.run_service.run_repo
         )
         self.trace_service = trace_service or AgentTraceService()
-        self.delegation_service = delegation_service or AgentDelegationService(agent_repo=self.agent_service.agent_repo)
+        self.delegation_service = delegation_service or AgentDelegationService(
+            agent_repo=self.agent_service.agent_repo
+        )
         self.task_service = task_service or TaskService()
         self.context_manager = context_manager or ContextManager()
         self.adapter = dev_agent or agent_adapter or DevelopmentAgent()
@@ -74,7 +78,9 @@ class AgentCoordinator:
         else:
             selection_res = self.selection_service.select_agent(owner_id=request.owner_id)
             if not selection_res.matched or not selection_res.selected_agent_id:
-                raise AgentUnavailableError(selection_res.reason or "No available agent matched criteria")
+                raise AgentUnavailableError(
+                    selection_res.reason or "No available agent matched criteria"
+                )
             agent = self.agent_service.get_agent(selection_res.selected_agent_id)
 
         # 2. Validate Task reference if task_id provided
@@ -93,7 +99,9 @@ class AgentCoordinator:
                 owner_id=request.owner_id,
                 plan_id=request.plan_id,
             )
-            self.assignment_service.update_assignment_status(asgn.assignment_id, AgentAssignmentStatus.STARTED)
+            self.assignment_service.update_assignment_status(
+                asgn.assignment_id, AgentAssignmentStatus.STARTED
+            )
 
         # 3. Context Package preparation (stub/fallback safe)
         context_package = None
@@ -110,16 +118,24 @@ class AgentCoordinator:
             metadata=request.metadata,
         )
 
-        self.run_service.transition_run_status(run.run_id, AgentRunStatus.INITIALIZING, reason="Initializing run context")
-        self.run_service.transition_run_status(run.run_id, AgentRunStatus.READY, reason="Ready for execution")
-        self.run_service.transition_run_status(run.run_id, AgentRunStatus.RUNNING, reason="Executing coordination step")
+        self.run_service.transition_run_status(
+            run.run_id, AgentRunStatus.INITIALIZING, reason="Initializing run context"
+        )
+        self.run_service.transition_run_status(
+            run.run_id, AgentRunStatus.READY, reason="Ready for execution"
+        )
+        self.run_service.transition_run_status(
+            run.run_id, AgentRunStatus.RUNNING, reason="Executing coordination step"
+        )
 
         # 5. Invoke Agent Adapter (DevelopmentAgent)
-        result, failure, next_action, tool_requests, perm_requests = self.adapter.execute_coordination_step(
-            request=request,
-            agent=agent,
-            run=run,
-            context_package=context_package,
+        result, failure, next_action, tool_requests, perm_requests = (
+            self.adapter.execute_coordination_step(
+                request=request,
+                agent=agent,
+                run=run,
+                context_package=context_package,
+            )
         )
 
         # 6. Process Tool & Permission Boundary Intents (NO ACTION EXECUTION / NO PERMISSION GRANTED)
@@ -135,7 +151,11 @@ class AgentCoordinator:
         final_status = AgentRunStatus.RUNNING
         if next_action in (NextAction.COMPLETE, NextAction.FAIL):
             final_status = AgentRunStatus.COMPLETED if result else AgentRunStatus.FAILED
-        elif next_action in (NextAction.REQUEST_TOOL, NextAction.REQUEST_PERMISSION, NextAction.WAIT):
+        elif next_action in (
+            NextAction.REQUEST_TOOL,
+            NextAction.REQUEST_PERMISSION,
+            NextAction.WAIT,
+        ):
             final_status = AgentRunStatus.WAITING
 
         updated_run = self.run_service.transition_run_status(
@@ -151,7 +171,11 @@ class AgentCoordinator:
 
         # 8. Update Assignment status if linked
         if request.task_id:
-            asgn_record: AgentAssignment | None = self.assignment_service.assignment_repo.get_by_agent_and_task(agent.id, request.task_id)
+            asgn_record: AgentAssignment | None = (
+                self.assignment_service.assignment_repo.get_by_agent_and_task(
+                    agent.id, request.task_id
+                )
+            )
             if asgn_record:
                 asgn_status = (
                     AgentAssignmentStatus.COMPLETED
@@ -160,7 +184,9 @@ class AgentCoordinator:
                     if final_status == AgentRunStatus.FAILED
                     else AgentAssignmentStatus.STARTED
                 )
-                self.assignment_service.update_assignment_status(asgn_record.assignment_id, asgn_status)
+                self.assignment_service.update_assignment_status(
+                    asgn_record.assignment_id, asgn_status
+                )
 
         trace = self.trace_service.get_trace_for_run(run.run_id)
 

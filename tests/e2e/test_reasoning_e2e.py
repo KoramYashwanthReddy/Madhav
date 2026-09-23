@@ -45,9 +45,7 @@ async def test_e2e_reasoning_pipeline_with_upstream_modules() -> None:
 
     conv_repo = InMemoryConversationRepository()
     conv_service = ConversationService(repository=conv_repo)
-    _ = await conv_service.create_conversation(
-        owner_id=owner_id, title="Architecture Discussion"
-    )
+    _ = await conv_service.create_conversation(owner_id=owner_id, title="Architecture Discussion")
 
     _ = InMemoryDocumentRepository()
 

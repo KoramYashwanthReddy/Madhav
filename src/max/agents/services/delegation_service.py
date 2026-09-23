@@ -64,7 +64,9 @@ class AgentDelegationService:
                     f"Parent run {parent_run_id} reached max delegation limit {parent_agent.limits.max_delegations}"
                 )
         else:
-            existing_count = len([d for d in parent_delegations if d.parent_agent_id == parent_agent_id])
+            existing_count = len(
+                [d for d in parent_delegations if d.parent_agent_id == parent_agent_id]
+            )
             if existing_count >= parent_agent.limits.max_delegations:
                 raise DelegationLimitExceededError(
                     f"Parent agent {parent_agent_id} reached max delegation limit {parent_agent.limits.max_delegations}"
@@ -125,7 +127,11 @@ class AgentDelegationService:
         updated_dict["status"] = status
         if child_run_id:
             updated_dict["child_run_id"] = child_run_id
-        if status in (DelegationStatus.COMPLETED, DelegationStatus.FAILED, DelegationStatus.CANCELLED):
+        if status in (
+            DelegationStatus.COMPLETED,
+            DelegationStatus.FAILED,
+            DelegationStatus.CANCELLED,
+        ):
             updated_dict["completed_at"] = datetime.utcnow()
 
         new_delegation = AgentDelegation(**updated_dict)

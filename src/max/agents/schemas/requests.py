@@ -43,7 +43,9 @@ class UpdateAgentRequest(BaseModel):
         default=None, description="Updated configuration"
     )
     limits: AgentLimits | None = Field(default=None, description="Updated safety limits")
-    metadata: dict[str, Any] | None = Field(default=None, description="Metadata key-values to update")
+    metadata: dict[str, Any] | None = Field(
+        default=None, description="Metadata key-values to update"
+    )
 
 
 class CreateAssignmentRequest(BaseModel):
