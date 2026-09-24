@@ -55,7 +55,6 @@ ignore = ["N818", "B008", "E501", "B904", "ASYNC230", "ASYNC240", "B017", "UP046
 [tool.mypy]
 python_version = "3.12"
 mypy_path = "src"
-packages = ["max"]
 ignore_missing_imports = true
 warn_unused_ignores = false
 check_untyped_defs = false
