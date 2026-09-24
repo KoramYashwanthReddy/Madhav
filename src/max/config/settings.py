@@ -32,6 +32,7 @@ from max.config.sections import (
     TaskSettings,
     TerminalSettings,
     ToolRegistrySettings,
+    WebIntelligenceSettings,
 )
 from max.config.validators import (
     validate_agent_settings,
@@ -51,6 +52,7 @@ from max.config.validators import (
     validate_server_settings,
     validate_task_settings,
     validate_tool_settings,
+    validate_web_intelligence_settings,
 )
 
 
@@ -97,6 +99,7 @@ class Settings(BaseSettings):
     terminal: TerminalSettings = Field(default_factory=TerminalSettings)
     application_control: ApplicationControlSettings = Field(default_factory=ApplicationControlSettings)
     browser: BrowserSettings = Field(default_factory=BrowserSettings)
+    web_intelligence: WebIntelligenceSettings = Field(default_factory=WebIntelligenceSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -121,6 +124,8 @@ class Settings(BaseSettings):
         validate_filesystem_settings(self.filesystem)
         validate_application_control_settings(self.application_control)
         validate_browser_settings(self.browser)
+        validate_web_intelligence_settings(self.web_intelligence)
+
 
 
     def safe_dict(self) -> dict[str, Any]:

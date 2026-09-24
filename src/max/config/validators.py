@@ -22,6 +22,7 @@ from max.config.sections import (
     ServerSettings,
     TaskSettings,
     ToolRegistrySettings,
+    WebIntelligenceSettings,
 )
 
 
@@ -466,6 +467,26 @@ def validate_browser_settings(browser_cfg: BrowserSettings) -> None:
             f"Invalid max_tabs_per_session: {browser_cfg.max_tabs_per_session}. Must be positive.",
             details={"max_tabs_per_session": browser_cfg.max_tabs_per_session},
         )
+
+
+def validate_web_intelligence_settings(web_cfg: WebIntelligenceSettings) -> None:
+    """Validate Web Intelligence subsystem configuration parameters."""
+    if web_cfg.max_queries <= 0:
+        raise ConfigurationError(
+            f"Invalid max_queries: {web_cfg.max_queries}. Must be positive.",
+            details={"max_queries": web_cfg.max_queries},
+        )
+    if web_cfg.max_sources <= 0:
+        raise ConfigurationError(
+            f"Invalid max_sources: {web_cfg.max_sources}. Must be positive.",
+            details={"max_sources": web_cfg.max_sources},
+        )
+    if web_cfg.max_research_duration_seconds <= 0:
+        raise ConfigurationError(
+            f"Invalid max_research_duration_seconds: {web_cfg.max_research_duration_seconds}. Must be positive.",
+            details={"max_research_duration_seconds": web_cfg.max_research_duration_seconds},
+        )
+
 
 
 

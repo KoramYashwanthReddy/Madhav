@@ -561,5 +561,53 @@ class BrowserSettings(BaseModel):
     )
 
 
+class WebIntelligenceSettings(BaseModel):
+    """Web Intelligence subsystem configuration settings (Module 21)."""
+
+    enabled: bool = Field(
+        default=True, description="Toggle Web Intelligence active state"
+    )
+    default_provider: str = Field(
+        default="mock", description="Default search provider identifier ('mock')"
+    )
+    max_queries: int = Field(
+        default=5, ge=1, le=20, description="Maximum search queries per research request"
+    )
+    max_results_per_query: int = Field(
+        default=10, ge=1, le=50, description="Maximum search results returned per query"
+    )
+    max_sources: int = Field(
+        default=15, ge=1, le=50, description="Maximum candidate sources evaluated per research request"
+    )
+    max_page_acquisitions: int = Field(
+        default=10, ge=0, le=30, description="Maximum web pages fetched/acquired per research request"
+    )
+    max_research_duration_seconds: float = Field(
+        default=120.0, ge=5.0, le=600.0, description="Maximum duration timeout for research operations"
+    )
+    max_content_bytes: int = Field(
+        default=1048576, description="Maximum allowed text content size per page in bytes (1MB default)"
+    )
+    cache_duration_seconds: float = Field(
+        default=3600.0, ge=0.0, le=86400.0, description="Cache retention duration in seconds"
+    )
+    default_freshness_policy: str = Field(
+        default="NO_REQUIREMENT", description="Default freshness policy ('NO_REQUIREMENT', 'TODAY', etc.)"
+    )
+    default_research_depth: str = Field(
+        default="STANDARD", description="Default research depth tier ('SHALLOW', 'STANDARD', 'DEEP')"
+    )
+    allowed_domains: list[str] = Field(
+        default_factory=list, description="Global whitelist of allowed domains"
+    )
+    blocked_domains: list[str] = Field(
+        default_factory=list, description="Global blacklist of blocked domains"
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for web intelligence listings"
+    )
+
+
+
 
 

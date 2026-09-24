@@ -19,6 +19,7 @@ from max.reasoning.api.routes import plan_router, reasoning_router
 from max.security.api.routes import router as security_router
 from max.tasks.api.routes import plan_task_router, task_group_router, tasks_router
 from max.tools.api.routes import router as tools_router
+from max.web_intelligence.api.routes import router as web_intelligence_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -47,7 +48,9 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(computer_router)
     v1_router.include_router(filesystem_router)
     v1_router.include_router(browser_router)
+    v1_router.include_router(web_intelligence_router)
     app.include_router(v1_router)
+
 
 
 
