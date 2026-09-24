@@ -59,3 +59,4 @@ mypy_path = "src"
 ignore_missing_imports = true
 warn_unused_ignores = false
 check_untyped_defs = false
+exclude = [".*\\.egg-info"]

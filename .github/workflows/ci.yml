@@ -30,7 +30,7 @@ jobs:
       - name: Type Check with Mypy
         env:
           PYTHONPATH: src
-        run: mypy src
+        run: mypy src/max
 
   backend-test-suite:
     name: Pytest Unit & Integration Suite
