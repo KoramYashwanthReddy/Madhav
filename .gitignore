@@ -34,3 +34,15 @@ htmlcov/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Node dependencies & build output
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.vite/
+
+# Application artifacts & backups
+artifacts/
+backups/
+

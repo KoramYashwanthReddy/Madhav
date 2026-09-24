@@ -1,0 +1,15 @@
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.venv/
+venv/
+.git/
+.gitignore
+artifacts/
+backups/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+__pycache__/
