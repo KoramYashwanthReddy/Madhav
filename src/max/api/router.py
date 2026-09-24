@@ -32,6 +32,7 @@ from max.integrations.api.routes import (
     integrations_router,
     webhooks_router,
 )
+from max.proactive.api.routes import router as proactive_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -72,6 +73,7 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(integrations_router)
     v1_router.include_router(connections_router)
     v1_router.include_router(webhooks_router)
+    v1_router.include_router(proactive_router)
     app.include_router(v1_router)
 
 

@@ -68,9 +68,11 @@ from max.config.validators import (
     validate_notification_settings,
     validate_scheduler_settings,
     validate_integrations_settings,
+    validate_proactive_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
+    ProactiveSettings,
 )
 
 
@@ -127,6 +129,7 @@ class Settings(BaseSettings):
     notification: NotificationSettings = Field(default_factory=NotificationSettings)
     scheduler: SchedulerSettings = Field(default_factory=SchedulerSettings)
     integrations: IntegrationsSettings = Field(default_factory=IntegrationsSettings)
+    proactive: ProactiveSettings = Field(default_factory=ProactiveSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -160,6 +163,7 @@ class Settings(BaseSettings):
         validate_notification_settings(self.notification)
         validate_scheduler_settings(self.scheduler)
         validate_integrations_settings(self.integrations)
+        validate_proactive_settings(self.proactive)
 
 
 

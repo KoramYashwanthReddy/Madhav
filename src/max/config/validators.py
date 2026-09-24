@@ -31,6 +31,7 @@ from max.config.sections import (
     NotificationSettings,
     SchedulerSettings,
     IntegrationsSettings,
+    ProactiveSettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -669,5 +670,20 @@ def validate_integrations_settings(integrations_cfg: IntegrationsSettings) -> No
             f"Invalid rate_limit_per_minute: {integrations_cfg.rate_limit_per_minute}. Must be positive.",
             details={"rate_limit_per_minute": integrations_cfg.rate_limit_per_minute},
         )
+
+
+def validate_proactive_settings(proactive_cfg: ProactiveSettings) -> None:
+    """Validate Module 30 — Proactive Intelligence Engine subsystem configuration parameters."""
+    if proactive_cfg.mode.upper() not in ("PASSIVE", "NORMAL", "PROACTIVE", "AUTONOMOUS"):
+        raise ConfigurationError(
+            f"Invalid proactive mode: {proactive_cfg.mode}.",
+            details={"mode": proactive_cfg.mode},
+        )
+    if proactive_cfg.max_notifications_per_hour <= 0:
+        raise ConfigurationError(
+            f"Invalid max_notifications_per_hour: {proactive_cfg.max_notifications_per_hour}. Must be positive.",
+            details={"max_notifications_per_hour": proactive_cfg.max_notifications_per_hour},
+        )
+
 
 

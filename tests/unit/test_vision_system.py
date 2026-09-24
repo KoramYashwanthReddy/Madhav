@@ -423,8 +423,13 @@ class TestImagePreprocessor:
             assert result.width <= 2 or result.height <= 2
 
     def test_preprocess_passthrough_on_empty_data(self, preprocessor):
-        with pytest.raises(ImageDecodeError):
-            preprocessor.preprocess(b"\x89PNG\r\n\x1a\n\x00\x00", VisionFormat.PNG)
+        from max.vision.preprocessing.preprocessor import PIL_AVAILABLE
+        if not PIL_AVAILABLE:
+            result = preprocessor.preprocess(b"\x89PNG\r\n\x1a\n\x00\x00", VisionFormat.PNG)
+            assert result.data == b"\x89PNG\r\n\x1a\n\x00\x00"
+        else:
+            with pytest.raises(ImageDecodeError):
+                preprocessor.preprocess(b"\x89PNG\r\n\x1a\n\x00\x00", VisionFormat.PNG)
 
     def test_get_color_space_unknown_on_bad_data(self, preprocessor):
         cs = preprocessor.get_color_space_from_bytes(b"not an image")

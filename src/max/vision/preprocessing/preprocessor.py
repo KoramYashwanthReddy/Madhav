@@ -134,6 +134,7 @@ class ImagePreprocessor:
     ) -> PreprocessedImage:
         """PIL-based preprocessing implementation."""
         img = PILImage.open(io.BytesIO(data))
+        img.load()
 
         original_width, original_height = img.size
         was_resized = False

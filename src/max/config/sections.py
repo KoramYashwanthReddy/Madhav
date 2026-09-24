@@ -945,4 +945,20 @@ class IntegrationsSettings(BaseModel):
     )
 
 
+class ProactiveSettings(BaseModel):
+    """Configuration parameters for Module 30 — Proactive Intelligence Engine."""
+
+    enabled: bool = Field(default=True, description="Enable Proactive Intelligence subsystem")
+    mode: str = Field(default="NORMAL", description="Proactive operating mode (PASSIVE, NORMAL, PROACTIVE, AUTONOMOUS)")
+    default_autonomy_level: int = Field(default=1, ge=0, le=5, description="Default autonomy level (0=Observe, 1=Notify, 2=Recommend, 3=Task, 4=Action, 5=Workflow)")
+    min_confidence: float = Field(default=0.6, ge=0.0, le=1.0, description="Minimum confidence threshold for proactive decisions")
+    min_relevance: float = Field(default=0.5, ge=0.0, le=1.0, description="Minimum relevance score threshold")
+    max_notifications_per_hour: int = Field(default=5, ge=1, le=100, description="Maximum proactive notifications per hour (attention budget)")
+    max_notifications_per_day: int = Field(default=20, ge=1, le=500, description="Maximum proactive notifications per day (attention budget)")
+    default_cooldown_seconds: float = Field(default=14400.0, ge=0.0, le=604800.0, description="Default cooldown window per candidate category")
+    signal_retention_days: int = Field(default=30, ge=1, le=365, description="Retention window for proactive signal logs")
+    candidate_expiration_seconds: float = Field(default=86400.0, ge=60.0, le=604800.0, description="Expiration window for pending candidates")
+
+
+
 
