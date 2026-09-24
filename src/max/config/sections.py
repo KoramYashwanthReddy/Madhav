@@ -1105,6 +1105,22 @@ class DataRecoverySettings(BaseModel):
     soft_delete_enabled: bool = Field(default=True, description="Enable soft-delete tombstones before hard deletion")
 
 
+class TrainingSettings(BaseModel):
+    """Configuration parameters for Module 40 — AI Training, Fine-Tuning & Model Improvement."""
+
+    enabled: bool = Field(default=True, description="Enable AI Training & Fine-Tuning subsystem")
+    backend_mode: str = Field(default="MOCK", description="Training backend provider (MOCK, HUGGINGFACE, PYTORCH)")
+    artifacts_dir: str = Field(default="artifacts/training", description="Root directory for training artifacts and checkpoints")
+    datasets_dir: str = Field(default="data/datasets", description="Root directory for stored training datasets")
+    max_concurrent_jobs: int = Field(default=1, ge=1, le=10, description="Maximum concurrent training jobs")
+    gpu_memory_limit_mb: int = Field(default=6144, ge=1024, le=131072, description="Maximum GPU VRAM memory limit in MB")
+    max_sequence_length_default: int = Field(default=2048, ge=64, le=131072, description="Default max sequence length")
+    max_batch_size_default: int = Field(default=4, ge=1, le=256, description="Default batch size")
+    require_approval_for_promotion: bool = Field(default=True, description="Enforce explicit authorization boundary before promoting model to production")
+    auto_evaluate_on_completion: bool = Field(default=True, description="Trigger Module 32 evaluation upon training completion")
+
+
+
 
 
 

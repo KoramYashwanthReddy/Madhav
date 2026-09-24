@@ -37,6 +37,7 @@ from max.config.sections import (
     ObservabilitySettings,
     InfrastructureSettings,
     DataRecoverySettings,
+    TrainingSettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -795,6 +796,22 @@ def validate_data_recovery_settings(dr_cfg: DataRecoverySettings) -> None:
             f"Invalid compression_algorithm: {dr_cfg.compression_algorithm}. Must be one of {sorted(valid_compression)}.",
             details={"compression_algorithm": dr_cfg.compression_algorithm},
         )
+
+
+def validate_training_settings(tr_cfg: TrainingSettings) -> None:
+    """Validate Module 40 — AI Training, Fine-Tuning & Model Improvement configuration parameters."""
+    valid_backends = {"MOCK", "HUGGINGFACE", "PYTORCH"}
+    if tr_cfg.backend_mode.upper() not in valid_backends:
+        raise ConfigurationError(
+            f"Invalid backend_mode: {tr_cfg.backend_mode}. Must be one of {sorted(valid_backends)}.",
+            details={"backend_mode": tr_cfg.backend_mode},
+        )
+    if tr_cfg.gpu_memory_limit_mb < 512:
+        raise ConfigurationError(
+            f"Invalid gpu_memory_limit_mb: {tr_cfg.gpu_memory_limit_mb}. Must be at least 512 MB.",
+            details={"gpu_memory_limit_mb": tr_cfg.gpu_memory_limit_mb},
+        )
+
 
 
 
