@@ -5,6 +5,7 @@ from max.config.errors import ConfigurationError
 from max.config.sections import (
     AgentSettings,
     ApplicationSettings,
+    ComputerControlSettings,
     ContextManagementSettings,
     ConversationSettings,
     CORSSettings,
@@ -366,3 +367,28 @@ def validate_security_module_settings(sec_module_cfg: SecurityModuleSettings) ->
             f"Invalid max_grant_duration: {sec_module_cfg.max_grant_duration}. Must be positive.",
             details={"max_grant_duration": sec_module_cfg.max_grant_duration},
         )
+
+
+def validate_computer_control_settings(computer_cfg: ComputerControlSettings) -> None:
+    """Validate Computer Control subsystem configuration parameters."""
+    if computer_cfg.default_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid default_timeout: {computer_cfg.default_timeout}. Must be positive.",
+            details={"default_timeout": computer_cfg.default_timeout},
+        )
+    if computer_cfg.max_sequence_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_sequence_length: {computer_cfg.max_sequence_length}. Must be positive.",
+            details={"max_sequence_length": computer_cfg.max_sequence_length},
+        )
+    if computer_cfg.max_click_count <= 0:
+        raise ConfigurationError(
+            f"Invalid max_click_count: {computer_cfg.max_click_count}. Must be positive.",
+            details={"max_click_count": computer_cfg.max_click_count},
+        )
+    if computer_cfg.max_typed_text_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_typed_text_length: {computer_cfg.max_typed_text_length}. Must be positive.",
+            details={"max_typed_text_length": computer_cfg.max_typed_text_length},
+        )
+

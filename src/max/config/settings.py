@@ -11,6 +11,7 @@ from max.config.sections import (
     AIRuntimeSettings,
     APISettings,
     ApplicationSettings,
+    ComputerControlSettings,
     ContextManagementSettings,
     ConversationSettings,
     CORSSettings,
@@ -30,6 +31,7 @@ from max.config.sections import (
 )
 from max.config.validators import (
     validate_agent_settings,
+    validate_computer_control_settings,
     validate_context_settings,
     validate_conversation_settings,
     validate_knowledge_settings,
@@ -50,7 +52,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, and feature flags.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, and feature flags.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -83,6 +85,7 @@ class Settings(BaseSettings):
     agents: AgentSettings = Field(default_factory=AgentSettings)
     tools: ToolRegistrySettings = Field(default_factory=ToolRegistrySettings)
     security_module: SecurityModuleSettings = Field(default_factory=SecurityModuleSettings)
+    computer_control: ComputerControlSettings = Field(default_factory=ComputerControlSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -103,6 +106,8 @@ class Settings(BaseSettings):
         validate_agent_settings(self.agents)
         validate_tool_settings(self.tools)
         validate_security_module_settings(self.security_module)
+        validate_computer_control_settings(self.computer_control)
+
 
     def safe_dict(self) -> dict[str, Any]:
         """Return a dictionary representation with sensitive secrets redacted."""

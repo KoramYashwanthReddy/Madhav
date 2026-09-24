@@ -398,3 +398,18 @@ class SecurityModuleSettings(BaseModel):
         default=False, description="Allow automatic development approvals for tests"
     )
     max_page_size: int = Field(default=100, description="Maximum page size for security listings")
+
+
+class ComputerControlSettings(BaseModel):
+    """Computer Control subsystem configuration settings."""
+
+    enabled: bool = Field(default=False, description="Toggle physical computer control active state (defaults to false for safety)")
+    dry_run: bool = Field(default=True, description="Enable dry-run simulation mode by default")
+    default_timeout: float = Field(default=30.0, description="Default timeout in seconds for computer control actions")
+    max_sequence_length: int = Field(default=20, description="Maximum number of actions allowed in a single sequence")
+    max_click_count: int = Field(default=10, description="Maximum click count per mouse click action")
+    max_typed_text_length: int = Field(default=1000, description="Maximum character length per text typing action")
+    screen_capture_enabled: bool = Field(default=True, description="Enable screen capture observation")
+    screen_retention_seconds: float = Field(default=60.0, description="Screen capture in-memory retention duration")
+    max_page_size: int = Field(default=100, description="Maximum page size for computer control listings")
+
