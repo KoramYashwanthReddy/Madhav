@@ -23,6 +23,7 @@ from max.config.sections import (
     TaskSettings,
     ToolRegistrySettings,
     WebIntelligenceSettings,
+    CodingAgentSettings,
 )
 
 
@@ -486,6 +487,26 @@ def validate_web_intelligence_settings(web_cfg: WebIntelligenceSettings) -> None
             f"Invalid max_research_duration_seconds: {web_cfg.max_research_duration_seconds}. Must be positive.",
             details={"max_research_duration_seconds": web_cfg.max_research_duration_seconds},
         )
+
+
+def validate_coding_agent_settings(coding_cfg: CodingAgentSettings) -> None:
+    """Validate Coding Agent subsystem configuration parameters."""
+    if coding_cfg.max_repository_bytes <= 0:
+        raise ConfigurationError(
+            f"Invalid max_repository_bytes: {coding_cfg.max_repository_bytes}. Must be positive.",
+            details={"max_repository_bytes": coding_cfg.max_repository_bytes},
+        )
+    if coding_cfg.max_files_per_analysis <= 0:
+        raise ConfigurationError(
+            f"Invalid max_files_per_analysis: {coding_cfg.max_files_per_analysis}. Must be positive.",
+            details={"max_files_per_analysis": coding_cfg.max_files_per_analysis},
+        )
+    if coding_cfg.max_fix_iterations <= 0:
+        raise ConfigurationError(
+            f"Invalid max_fix_iterations: {coding_cfg.max_fix_iterations}. Must be positive.",
+            details={"max_fix_iterations": coding_cfg.max_fix_iterations},
+        )
+
 
 
 

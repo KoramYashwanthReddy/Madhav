@@ -608,6 +608,39 @@ class WebIntelligenceSettings(BaseModel):
     )
 
 
+class CodingAgentSettings(BaseModel):
+    """Coding Agent subsystem configuration settings (Module 22)."""
+
+    enabled: bool = Field(
+        default=True, description="Toggle Coding Agent active state"
+    )
+    max_repository_bytes: int = Field(
+        default=524288000, description="Maximum allowed repository size in bytes (500MB default)"
+    )
+    max_files_per_analysis: int = Field(
+        default=1000, ge=1, le=10000, description="Maximum files indexed per repository analysis"
+    )
+    max_changed_files: int = Field(
+        default=50, ge=1, le=500, description="Maximum changed files allowed per changeset"
+    )
+    max_fix_iterations: int = Field(
+        default=3, ge=1, le=10, description="Maximum debugging fix iteration attempts"
+    )
+    command_timeout_seconds: float = Field(
+        default=120.0, ge=1.0, le=600.0, description="Maximum command execution timeout in seconds"
+    )
+    test_timeout_seconds: float = Field(
+        default=300.0, ge=1.0, le=1200.0, description="Maximum test suite execution timeout in seconds"
+    )
+    build_timeout_seconds: float = Field(
+        default=300.0, ge=1.0, le=1200.0, description="Maximum build execution timeout in seconds"
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for coding listings"
+    )
+
+
+
 
 
 
