@@ -12,6 +12,7 @@ from max.config.sections import (
     APISettings,
     ApplicationControlSettings,
     ApplicationSettings,
+    BrowserSettings,
     ComputerControlSettings,
     ContextManagementSettings,
     ConversationSettings,
@@ -35,6 +36,7 @@ from max.config.sections import (
 from max.config.validators import (
     validate_agent_settings,
     validate_application_control_settings,
+    validate_browser_settings,
     validate_computer_control_settings,
     validate_context_settings,
     validate_conversation_settings,
@@ -57,7 +59,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, and feature flags.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, and feature flags.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -94,6 +96,7 @@ class Settings(BaseSettings):
     filesystem: FilesystemSettings = Field(default_factory=FilesystemSettings)
     terminal: TerminalSettings = Field(default_factory=TerminalSettings)
     application_control: ApplicationControlSettings = Field(default_factory=ApplicationControlSettings)
+    browser: BrowserSettings = Field(default_factory=BrowserSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -117,6 +120,7 @@ class Settings(BaseSettings):
         validate_computer_control_settings(self.computer_control)
         validate_filesystem_settings(self.filesystem)
         validate_application_control_settings(self.application_control)
+        validate_browser_settings(self.browser)
 
 
     def safe_dict(self) -> dict[str, Any]:

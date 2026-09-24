@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><title>Form Test Page</title></head>
+<body>
+<h1>Form Test</h1>
+<form id="test-form" action="basic.html" method="GET">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" placeholder="Enter username"><br><br>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" placeholder="Enter password"><br><br>
+
+  <label for="country">Country:</label>
+  <select id="country" name="country">
+    <option value="us">United States</option>
+    <option value="ca">Canada</option>
+    <option value="uk">United Kingdom</option>
+  </select><br><br>
+
+  <button type="submit" id="submit-btn">Submit</button>
+</form>
+<div id="result"></div>
+<script>
+document.getElementById('test-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  document.getElementById('result').innerText = 'Submitted successfully';
+});
+</script>
+</body>
+</html>

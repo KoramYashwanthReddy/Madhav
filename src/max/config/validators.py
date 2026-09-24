@@ -6,6 +6,7 @@ from max.config.sections import (
     AgentSettings,
     ApplicationControlSettings,
     ApplicationSettings,
+    BrowserSettings,
     ComputerControlSettings,
     ContextManagementSettings,
     ConversationSettings,
@@ -441,6 +442,31 @@ def validate_application_control_settings(app_cfg: ApplicationControlSettings) -
             f"Invalid max_page_size: {app_cfg.max_page_size}. Must be positive.",
             details={"max_page_size": app_cfg.max_page_size},
         )
+
+
+def validate_browser_settings(browser_cfg: BrowserSettings) -> None:
+    """Validate Browser Agent subsystem configuration parameters."""
+    if browser_cfg.navigation_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid navigation_timeout: {browser_cfg.navigation_timeout}. Must be positive.",
+            details={"navigation_timeout": browser_cfg.navigation_timeout},
+        )
+    if browser_cfg.action_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid action_timeout: {browser_cfg.action_timeout}. Must be positive.",
+            details={"action_timeout": browser_cfg.action_timeout},
+        )
+    if browser_cfg.max_sessions <= 0:
+        raise ConfigurationError(
+            f"Invalid max_sessions: {browser_cfg.max_sessions}. Must be positive.",
+            details={"max_sessions": browser_cfg.max_sessions},
+        )
+    if browser_cfg.max_tabs_per_session <= 0:
+        raise ConfigurationError(
+            f"Invalid max_tabs_per_session: {browser_cfg.max_tabs_per_session}. Must be positive.",
+            details={"max_tabs_per_session": browser_cfg.max_tabs_per_session},
+        )
+
 
 
 

@@ -496,4 +496,70 @@ class ApplicationControlSettings(BaseModel):
     )
 
 
+class BrowserSettings(BaseModel):
+    """Browser Agent subsystem configuration settings (Module 20)."""
+
+    enabled: bool = Field(
+        default=True, description="Toggle Browser Agent active state"
+    )
+    default_browser: str = Field(
+        default="chromium", description="Default browser engine ('chromium', 'firefox', 'webkit', 'mock')"
+    )
+    headless: bool = Field(
+        default=True, description="Run browser in headless mode"
+    )
+    navigation_timeout: float = Field(
+        default=30.0, ge=1.0, le=300.0, description="Default navigation timeout in seconds"
+    )
+    action_timeout: float = Field(
+        default=15.0, ge=1.0, le=180.0, description="Default action (click, type, etc.) timeout in seconds"
+    )
+    download_timeout: float = Field(
+        default=60.0, ge=1.0, le=600.0, description="Default file download timeout in seconds"
+    )
+    upload_timeout: float = Field(
+        default=60.0, ge=1.0, le=600.0, description="Default file upload timeout in seconds"
+    )
+    session_timeout: float = Field(
+        default=3600.0, ge=60.0, le=86400.0, description="Session idle expiration timeout in seconds"
+    )
+    max_sessions: int = Field(
+        default=10, ge=1, le=50, description="Maximum concurrent active browser sessions"
+    )
+    max_tabs_per_session: int = Field(
+        default=10, ge=1, le=50, description="Maximum open tabs per browser session"
+    )
+    max_redirects: int = Field(
+        default=5, ge=0, le=20, description="Maximum automatic navigation redirects allowed"
+    )
+    max_observation_bytes: int = Field(
+        default=1048576, description="Maximum character/byte length for page observations (1MB default)"
+    )
+    max_download_bytes: int = Field(
+        default=104857600, description="Maximum allowed file download size in bytes (100MB default)"
+    )
+    max_upload_bytes: int = Field(
+        default=52428800, description="Maximum allowed file upload size in bytes (50MB default)"
+    )
+    allowed_schemes: list[str] = Field(
+        default_factory=lambda: ["http", "https"], description="Allowed URL schemes"
+    )
+    blocked_domains: list[str] = Field(
+        default_factory=list, description="Explicitly blocked domain names or wildcard patterns"
+    )
+    allowed_domains: list[str] = Field(
+        default_factory=list, description="Allowed domain names (empty = all except blocked)"
+    )
+    screenshot_quality: int = Field(
+        default=80, ge=1, le=100, description="JPEG screenshot image quality"
+    )
+    redact_sensitive_inputs: bool = Field(
+        default=True, description="Automatically mask passwords and secret field inputs in logs and state"
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for browser listings"
+    )
+
+
+
 

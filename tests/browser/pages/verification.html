@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Verification Test</title></head>
+<body>
+<h1>Action Verification Test</h1>
+<button id="verify-btn">Trigger Action</button>
+<div id="status-container"></div>
+<script>
+document.getElementById('verify-btn').addEventListener('click', function() {
+  document.getElementById('status-container').innerHTML = '<p id="success-msg">Action Successful</p>';
+});
+</script>
+</body>
+</html>
