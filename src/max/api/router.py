@@ -39,10 +39,10 @@ from max.observability.api.routes import router as observability_router
 from max.infrastructure.router import router as infrastructure_router
 from max.data_recovery.router import router as data_recovery_router
 from max.training.router import router as training_router
+from max.autonomy.router import router as autonomy_router
 
 
 def register_routers(app: FastAPI) -> None:
-    """Register top-level and versioned API routers with the FastAPI app."""
     # Top level system foundation endpoints
     app.include_router(health_router)
 
@@ -86,6 +86,7 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(infrastructure_router)
     v1_router.include_router(data_recovery_router)
     v1_router.include_router(training_router)
+    v1_router.include_router(autonomy_router)
     app.include_router(v1_router)
 
 

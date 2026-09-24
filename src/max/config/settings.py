@@ -75,6 +75,7 @@ from max.config.validators import (
     validate_infrastructure_settings,
     validate_data_recovery_settings,
     validate_training_settings,
+    validate_autonomy_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
@@ -85,6 +86,7 @@ from max.config.sections import (
     InfrastructureSettings,
     DataRecoverySettings,
     TrainingSettings,
+    AutonomySettings,
 )
 
 
@@ -147,6 +149,7 @@ class Settings(BaseSettings):
     infrastructure: InfrastructureSettings = Field(default_factory=InfrastructureSettings)
     data_recovery: DataRecoverySettings = Field(default_factory=DataRecoverySettings)
     training: TrainingSettings = Field(default_factory=TrainingSettings)
+    autonomy: AutonomySettings = Field(default_factory=AutonomySettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -187,6 +190,7 @@ class Settings(BaseSettings):
         validate_infrastructure_settings(self.infrastructure)
         validate_data_recovery_settings(self.data_recovery)
         validate_training_settings(self.training)
+        validate_autonomy_settings(self.autonomy)
 
 
 

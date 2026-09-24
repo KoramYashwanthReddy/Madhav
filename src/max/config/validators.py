@@ -38,6 +38,7 @@ from max.config.sections import (
     InfrastructureSettings,
     DataRecoverySettings,
     TrainingSettings,
+    AutonomySettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -811,6 +812,22 @@ def validate_training_settings(tr_cfg: TrainingSettings) -> None:
             f"Invalid gpu_memory_limit_mb: {tr_cfg.gpu_memory_limit_mb}. Must be at least 512 MB.",
             details={"gpu_memory_limit_mb": tr_cfg.gpu_memory_limit_mb},
         )
+
+
+def validate_autonomy_settings(auto_cfg: AutonomySettings) -> None:
+    """Validate Module 41 — Future Autonomous Intelligence configuration parameters."""
+    valid_levels = {"MANUAL", "ASSISTED", "SUPERVISED", "DELEGATED", "PROACTIVE", "HIGH_AUTONOMY"}
+    if auto_cfg.default_autonomy_level.upper() not in valid_levels:
+        raise ConfigurationError(
+            f"Invalid default_autonomy_level: {auto_cfg.default_autonomy_level}. Must be one of {sorted(valid_levels)}.",
+            details={"default_autonomy_level": auto_cfg.default_autonomy_level},
+        )
+    if auto_cfg.approval_timeout_seconds < 10:
+        raise ConfigurationError(
+            f"Invalid approval_timeout_seconds: {auto_cfg.approval_timeout_seconds}. Must be at least 10 seconds.",
+            details={"approval_timeout_seconds": auto_cfg.approval_timeout_seconds},
+        )
+
 
 
 

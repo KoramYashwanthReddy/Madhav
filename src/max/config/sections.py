@@ -1120,6 +1120,20 @@ class TrainingSettings(BaseModel):
     auto_evaluate_on_completion: bool = Field(default=True, description="Trigger Module 32 evaluation upon training completion")
 
 
+class AutonomySettings(BaseModel):
+    """Configuration parameters for Module 41 — Future Autonomous Intelligence."""
+
+    enabled: bool = Field(default=True, description="Enable Future Autonomous Intelligence subsystem")
+    default_autonomy_level: str = Field(default="SUPERVISED", description="Default global autonomy level (MANUAL..HIGH_AUTONOMY)")
+    approval_timeout_seconds: int = Field(default=600, ge=30, le=86400, description="Default human approval request expiration in seconds")
+    max_concurrent_missions: int = Field(default=5, ge=1, le=50, description="Max concurrent running missions")
+    max_retries_per_step: int = Field(default=3, ge=0, le=10, description="Default max retries per step")
+    max_replans_per_mission: int = Field(default=3, ge=0, le=10, description="Default max replanning cycles per mission")
+    enable_simulation_environment: bool = Field(default=True, description="Enable dry-run and mock simulation environment")
+    circuit_breaker_failure_threshold: int = Field(default=5, ge=1, le=20, description="Consecutive failure threshold before circuit breaker trips")
+
+
+
 
 
 

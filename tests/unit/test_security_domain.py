@@ -1,6 +1,6 @@
 """Unit tests for Module 15 domain models and exceptions."""
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 from max.security.domain.action import ActionDefinition
 from max.security.domain.boundary import AuthorizedExecutionRequest
@@ -104,7 +104,7 @@ def test_authorized_execution_request_validation() -> None:
         resource=resource,
         subject=subject,
         owner_id="user_1",
-        authorization_expiry=now + datetime.resolution,  # slight future
+        authorization_expiry=now + timedelta(minutes=5),  # future expiry
     )
     assert token.is_valid is True
 

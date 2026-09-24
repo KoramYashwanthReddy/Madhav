@@ -17,7 +17,10 @@ from max.config.settings import Settings, clear_settings_cache, get_settings
 
 def test_default_settings() -> None:
     """Verify built-in default configuration values."""
-    settings = Settings(application=ApplicationSettings(environment=Environment.DEVELOPMENT))
+    settings = Settings(
+        application=ApplicationSettings(environment=Environment.DEVELOPMENT),
+        server=ServerSettings(reload=False),
+    )
     assert settings.application.name == "MAX"
     assert settings.application.service == "max"
     assert settings.application.version == "0.1.0"
