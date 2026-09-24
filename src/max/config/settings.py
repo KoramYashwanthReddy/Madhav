@@ -71,12 +71,14 @@ from max.config.validators import (
     validate_proactive_settings,
     validate_personalization_settings,
     validate_evaluation_settings,
+    validate_observability_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
     ProactiveSettings,
     PersonalizationSettings,
     EvaluationSettings,
+    ObservabilitySettings,
 )
 
 
@@ -85,7 +87,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, and evaluation system.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, evaluation system, and observability & audit.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -135,6 +137,7 @@ class Settings(BaseSettings):
     proactive: ProactiveSettings = Field(default_factory=ProactiveSettings)
     personalization: PersonalizationSettings = Field(default_factory=PersonalizationSettings)
     evaluation: EvaluationSettings = Field(default_factory=EvaluationSettings)
+    observability: ObservabilitySettings = Field(default_factory=ObservabilitySettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -171,6 +174,8 @@ class Settings(BaseSettings):
         validate_proactive_settings(self.proactive)
         validate_personalization_settings(self.personalization)
         validate_evaluation_settings(self.evaluation)
+        validate_observability_settings(self.observability)
+
 
 
 

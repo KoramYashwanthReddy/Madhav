@@ -34,6 +34,7 @@ from max.config.sections import (
     ProactiveSettings,
     PersonalizationSettings,
     EvaluationSettings,
+    ObservabilitySettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -725,6 +726,33 @@ def validate_evaluation_settings(evaluation_cfg: EvaluationSettings) -> None:
             f"Invalid regression_threshold: {evaluation_cfg.regression_threshold}. Must be between 0.0 and 1.0.",
             details={"regression_threshold": evaluation_cfg.regression_threshold},
         )
+
+
+def validate_observability_settings(observability_cfg: ObservabilitySettings) -> None:
+    """Validate Module 33 — Observability & Audit System configuration parameters."""
+    valid_levels = {"TRACE", "DEBUG", "INFO", "WARNING", "WARN", "ERROR", "CRITICAL"}
+    if observability_cfg.logging_level.upper() not in valid_levels:
+        raise ConfigurationError(
+            f"Invalid logging level: {observability_cfg.logging_level}. Must be one of {sorted(valid_levels)}.",
+            details={"logging_level": observability_cfg.logging_level},
+        )
+    valid_sampling = {"ALWAYS_ON", "ALWAYS_OFF", "PROBABILISTIC", "ERROR_ONLY", "CONFIGURABLE"}
+    if observability_cfg.trace_sampling.upper() not in valid_sampling:
+        raise ConfigurationError(
+            f"Invalid trace sampling strategy: {observability_cfg.trace_sampling}. Must be one of {sorted(valid_sampling)}.",
+            details={"trace_sampling": observability_cfg.trace_sampling},
+        )
+    if observability_cfg.retention_days < 1:
+        raise ConfigurationError(
+            f"Invalid retention_days: {observability_cfg.retention_days}. Must be at least 1 day.",
+            details={"retention_days": observability_cfg.retention_days},
+        )
+    if observability_cfg.max_log_size_bytes < 1024:
+        raise ConfigurationError(
+            f"Invalid max_log_size_bytes: {observability_cfg.max_log_size_bytes}. Must be at least 1024 bytes.",
+            details={"max_log_size_bytes": observability_cfg.max_log_size_bytes},
+        )
+
 
 
 

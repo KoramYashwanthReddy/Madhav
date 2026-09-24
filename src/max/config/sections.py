@@ -991,6 +991,32 @@ class EvaluationSettings(BaseModel):
     privacy_mode: bool = Field(default=True, description="Enforce privacy controls on evaluation data")
 
 
+class ObservabilitySettings(BaseModel):
+    """Configuration parameters for Module 33 — Observability & Audit System."""
+
+    enabled: bool = Field(default=True, description="Enable Observability & Audit subsystem")
+    logging_level: str = Field(default="INFO", description="Default logging level (TRACE, DEBUG, INFO, WARNING, ERROR, CRITICAL)")
+    structured_logging: bool = Field(default=True, description="Enable structured JSON log formatting")
+    trace_enabled: bool = Field(default=True, description="Enable distributed tracing")
+    metric_enabled: bool = Field(default=True, description="Enable metrics collection")
+    audit_enabled: bool = Field(default=True, description="Enable append-only security & system audit logging")
+    trace_sampling: str = Field(default="ALWAYS_ON", description="Trace sampling strategy (ALWAYS_ON, ALWAYS_OFF, PROBABILISTIC, ERROR_ONLY, CONFIGURABLE)")
+    otlp_enabled: bool = Field(default=False, description="Enable OTLP exporter to external OpenTelemetry collector")
+    otlp_endpoint: str = Field(default="http://localhost:4317", description="OTLP collector gRPC/HTTP endpoint")
+    capture_ai_content: bool = Field(default=False, description="Opt-in to log full raw AI prompt/response content (Privacy: default False)")
+    capture_tool_arguments: bool = Field(default=True, description="Capture sanitized/redacted tool call arguments in spans/logs")
+    capture_tool_outputs: bool = Field(default=True, description="Capture sanitized/redacted tool execution outputs")
+    redaction_enabled: bool = Field(default=True, description="Enable centralized secret and sensitive data redaction")
+    retention_days: int = Field(default=90, ge=1, le=3650, description="Default retention metadata window in days")
+    max_log_size_bytes: int = Field(default=1048576, ge=1024, le=10485760, description="Maximum log size limit for high-cardinality protection")
+    max_attribute_size_bytes: int = Field(default=4096, ge=256, le=65536, description="Maximum span/log attribute payload size")
+    max_trace_duration_seconds: float = Field(default=3600.0, ge=1.0, le=86400.0, description="Maximum trace duration before warning/cancellation")
+    environment: str = Field(default="development", description="Deployment environment mode")
+    service_name: str = Field(default="max-ai", description="Canonical service identifier")
+    service_version: str = Field(default="1.0.0", description="Canonical service version string")
+
+
+
 
 
 
