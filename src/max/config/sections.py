@@ -1086,6 +1086,26 @@ class InfrastructureSettings(BaseModel):
     )
 
 
+class DataRecoverySettings(BaseModel):
+    """Configuration parameters for Module 39 — Data, Storage, Backup & Disaster Recovery."""
+
+    enabled: bool = Field(default=True, description="Enable Data, Storage & Disaster Recovery subsystem")
+    backup_dir: str = Field(default="backups", description="Local backup storage root directory")
+    retention_days: int = Field(default=90, ge=1, le=3650, description="Default data retention window in days")
+    encryption_enabled: bool = Field(default=True, description="Enable at-rest payload and field-level encryption")
+    master_key: SecretStr = Field(
+        default=SecretStr("insecure-master-encryption-key-change-in-prod-32B"),
+        description="Master encryption key (Fernet / AES-256)",
+    )
+    auto_backup_enabled: bool = Field(default=True, description="Enable automated scheduled backup runs")
+    auto_backup_interval_hours: int = Field(default=24, ge=1, le=168, description="Automated backup interval in hours")
+    max_backup_versions: int = Field(default=30, ge=1, le=365, description="Maximum backup archives retained")
+    compression_algorithm: str = Field(default="gzip", description="Backup compression algorithm (gzip, zip, tar)")
+    verify_integrity_on_backup: bool = Field(default=True, description="Perform SHA-256 integrity verification post-backup")
+    soft_delete_enabled: bool = Field(default=True, description="Enable soft-delete tombstones before hard deletion")
+
+
+
 
 
 

@@ -73,6 +73,7 @@ from max.config.validators import (
     validate_evaluation_settings,
     validate_observability_settings,
     validate_infrastructure_settings,
+    validate_data_recovery_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
@@ -81,6 +82,7 @@ from max.config.sections import (
     EvaluationSettings,
     ObservabilitySettings,
     InfrastructureSettings,
+    DataRecoverySettings,
 )
 
 
@@ -89,7 +91,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, evaluation system, observability & audit, and infrastructure & production deployment.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, evaluation system, observability & audit, infrastructure & production deployment, and data, storage, backup & disaster recovery.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -141,6 +143,7 @@ class Settings(BaseSettings):
     evaluation: EvaluationSettings = Field(default_factory=EvaluationSettings)
     observability: ObservabilitySettings = Field(default_factory=ObservabilitySettings)
     infrastructure: InfrastructureSettings = Field(default_factory=InfrastructureSettings)
+    data_recovery: DataRecoverySettings = Field(default_factory=DataRecoverySettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -179,6 +182,8 @@ class Settings(BaseSettings):
         validate_evaluation_settings(self.evaluation)
         validate_observability_settings(self.observability)
         validate_infrastructure_settings(self.infrastructure)
+        validate_data_recovery_settings(self.data_recovery)
+
 
 
 

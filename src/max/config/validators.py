@@ -36,6 +36,7 @@ from max.config.sections import (
     EvaluationSettings,
     ObservabilitySettings,
     InfrastructureSettings,
+    DataRecoverySettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -774,6 +775,27 @@ def validate_infrastructure_settings(infra_cfg: InfrastructureSettings) -> None:
             f"Invalid rate_limit_requests_per_minute: {infra_cfg.rate_limit_requests_per_minute}. Must be at least 1.",
             details={"rate_limit_requests_per_minute": infra_cfg.rate_limit_requests_per_minute},
         )
+
+
+def validate_data_recovery_settings(dr_cfg: DataRecoverySettings) -> None:
+    """Validate Module 39 — Data, Storage, Backup & Disaster Recovery configuration parameters."""
+    if dr_cfg.retention_days < 1:
+        raise ConfigurationError(
+            f"Invalid retention_days: {dr_cfg.retention_days}. Must be at least 1 day.",
+            details={"retention_days": dr_cfg.retention_days},
+        )
+    if dr_cfg.auto_backup_interval_hours < 1:
+        raise ConfigurationError(
+            f"Invalid auto_backup_interval_hours: {dr_cfg.auto_backup_interval_hours}. Must be at least 1 hour.",
+            details={"auto_backup_interval_hours": dr_cfg.auto_backup_interval_hours},
+        )
+    valid_compression = {"GZIP", "ZIP", "TAR", "NONE"}
+    if dr_cfg.compression_algorithm.upper() not in valid_compression:
+        raise ConfigurationError(
+            f"Invalid compression_algorithm: {dr_cfg.compression_algorithm}. Must be one of {sorted(valid_compression)}.",
+            details={"compression_algorithm": dr_cfg.compression_algorithm},
+        )
+
 
 
 
