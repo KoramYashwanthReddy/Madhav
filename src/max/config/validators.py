@@ -28,6 +28,7 @@ from max.config.sections import (
     DocumentSettings,
     VisionSettings,
     SpeechSettings,
+    NotificationSettings,
 )
 
 
@@ -610,4 +611,23 @@ def validate_speech_settings(speech_cfg: SpeechSettings) -> None:
                 "speech_threshold": speech_cfg.vad_speech_threshold,
                 "silence_threshold": speech_cfg.vad_silence_threshold,
             },
+        )
+
+
+def validate_notification_settings(notif_cfg: NotificationSettings) -> None:
+    """Validate Notification System subsystem configuration parameters."""
+    if notif_cfg.max_title_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_title_length: {notif_cfg.max_title_length}. Must be positive.",
+            details={"max_title_length": notif_cfg.max_title_length},
+        )
+    if notif_cfg.max_body_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_body_length: {notif_cfg.max_body_length}. Must be positive.",
+            details={"max_body_length": notif_cfg.max_body_length},
+        )
+    if notif_cfg.max_retries < 0:
+        raise ConfigurationError(
+            f"Invalid max_retries: {notif_cfg.max_retries}. Cannot be negative.",
+            details={"max_retries": notif_cfg.max_retries},
         )

@@ -837,3 +837,49 @@ class SpeechSettings(BaseModel):
         default=500, ge=50, le=10000, description="Minimum silence duration to trigger end of speech"
     )
 
+
+class NotificationSettings(BaseModel):
+    """Configuration parameters for Module 27 — Notification System."""
+
+    enabled: bool = Field(default=True, description="Enable Notification System subsystem")
+    default_channel: str = Field(default="IN_APP", description="Default notification channel")
+    max_title_length: int = Field(
+        default=200, ge=1, le=1000, description="Maximum title character length"
+    )
+    max_body_length: int = Field(
+        default=4000, ge=1, le=50000, description="Maximum body character length"
+    )
+    max_retries: int = Field(
+        default=3, ge=0, le=10, description="Maximum delivery retry attempts"
+    )
+    retry_delay_seconds: float = Field(
+        default=2.0, ge=0.1, le=300.0, description="Initial retry backoff delay"
+    )
+    rate_limit_enabled: bool = Field(
+        default=True, description="Enable notification rate limiting per user/channel"
+    )
+    dedup_enabled: bool = Field(
+        default=True, description="Enable notification deduplication"
+    )
+    grouping_enabled: bool = Field(
+        default=True, description="Enable notification grouping"
+    )
+    sensitive_content_protection: bool = Field(
+        default=True, description="Enable secret redaction and sensitivity channel restriction"
+    )
+    email_enabled: bool = Field(
+        default=False, description="Enable email notification channel"
+    )
+    desktop_enabled: bool = Field(
+        default=True, description="Enable desktop notification channel"
+    )
+    push_enabled: bool = Field(
+        default=False, description="Enable push notification channel"
+    )
+    speech_enabled: bool = Field(
+        default=True, description="Enable speech notification channel"
+    )
+    quiet_hours_enabled: bool = Field(
+        default=True, description="Enable user quiet hours evaluation"
+    )
+
