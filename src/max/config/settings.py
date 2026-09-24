@@ -16,6 +16,7 @@ from max.config.sections import (
     ConversationSettings,
     CORSSettings,
     FeatureFlags,
+    FilesystemSettings,
     IdentitySettings,
     KnowledgeSettings,
     LoggingSettings,
@@ -34,6 +35,7 @@ from max.config.validators import (
     validate_computer_control_settings,
     validate_context_settings,
     validate_conversation_settings,
+    validate_filesystem_settings,
     validate_knowledge_settings,
     validate_logging_settings,
     validate_memory_settings,
@@ -86,6 +88,7 @@ class Settings(BaseSettings):
     tools: ToolRegistrySettings = Field(default_factory=ToolRegistrySettings)
     security_module: SecurityModuleSettings = Field(default_factory=SecurityModuleSettings)
     computer_control: ComputerControlSettings = Field(default_factory=ComputerControlSettings)
+    filesystem: FilesystemSettings = Field(default_factory=FilesystemSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -107,6 +110,7 @@ class Settings(BaseSettings):
         validate_tool_settings(self.tools)
         validate_security_module_settings(self.security_module)
         validate_computer_control_settings(self.computer_control)
+        validate_filesystem_settings(self.filesystem)
 
 
     def safe_dict(self) -> dict[str, Any]:

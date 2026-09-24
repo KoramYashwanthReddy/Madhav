@@ -1,5 +1,6 @@
 """Configuration section models for MAX configuration system."""
 
+from typing import Any
 from pydantic import BaseModel, Field, SecretStr
 
 from max.common.types import LogLevel
@@ -412,4 +413,22 @@ class ComputerControlSettings(BaseModel):
     screen_capture_enabled: bool = Field(default=True, description="Enable screen capture observation")
     screen_retention_seconds: float = Field(default=60.0, description="Screen capture in-memory retention duration")
     max_page_size: int = Field(default=100, description="Maximum page size for computer control listings")
+
+
+class FilesystemSettings(BaseModel):
+    """Filesystem Agent subsystem configuration settings."""
+
+    enabled: bool = Field(default=True, description="Toggle filesystem agent active state")
+    dry_run: bool = Field(default=False, description="Enable dry-run simulation mode")
+    allowed_roots: list[Any] = Field(default_factory=list, description="Configured allowed directory sandbox root paths")
+    read_only_roots: list[Any] = Field(default_factory=list, description="Configured read-only directory root paths")
+    blocked_roots: list[Any] = Field(default_factory=list, description="Explicitly blocked directory root paths")
+    max_read_bytes: int = Field(default=10485760, description="Maximum allowed file read size in bytes (default: 10MB)")
+    max_write_bytes: int = Field(default=10485760, description="Maximum allowed file write size in bytes (default: 10MB)")
+    max_search_results: int = Field(default=1000, description="Maximum search results limit")
+    max_search_depth: int = Field(default=20, description="Maximum directory traversal depth for file search")
+    operation_timeout: float = Field(default=30.0, description="Default operation timeout in seconds")
+    sensitive_path_protection: bool = Field(default=True, description="Enable protected sensitive path security policies")
+    max_page_size: int = Field(default=100, description="Maximum page size for directory listings")
+
 

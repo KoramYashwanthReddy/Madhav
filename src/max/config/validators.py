@@ -9,6 +9,7 @@ from max.config.sections import (
     ContextManagementSettings,
     ConversationSettings,
     CORSSettings,
+    FilesystemSettings,
     KnowledgeSettings,
     LoggingSettings,
     MemorySettings,
@@ -391,4 +392,34 @@ def validate_computer_control_settings(computer_cfg: ComputerControlSettings) ->
             f"Invalid max_typed_text_length: {computer_cfg.max_typed_text_length}. Must be positive.",
             details={"max_typed_text_length": computer_cfg.max_typed_text_length},
         )
+
+
+def validate_filesystem_settings(fs_cfg: FilesystemSettings) -> None:
+    """Validate Filesystem Agent subsystem configuration parameters."""
+    if fs_cfg.max_read_bytes <= 0:
+        raise ConfigurationError(
+            f"Invalid max_read_bytes: {fs_cfg.max_read_bytes}. Must be positive.",
+            details={"max_read_bytes": fs_cfg.max_read_bytes},
+        )
+    if fs_cfg.max_write_bytes <= 0:
+        raise ConfigurationError(
+            f"Invalid max_write_bytes: {fs_cfg.max_write_bytes}. Must be positive.",
+            details={"max_write_bytes": fs_cfg.max_write_bytes},
+        )
+    if fs_cfg.max_search_results <= 0:
+        raise ConfigurationError(
+            f"Invalid max_search_results: {fs_cfg.max_search_results}. Must be positive.",
+            details={"max_search_results": fs_cfg.max_search_results},
+        )
+    if fs_cfg.max_search_depth <= 0:
+        raise ConfigurationError(
+            f"Invalid max_search_depth: {fs_cfg.max_search_depth}. Must be positive.",
+            details={"max_search_depth": fs_cfg.max_search_depth},
+        )
+    if fs_cfg.operation_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid operation_timeout: {fs_cfg.operation_timeout}. Must be positive.",
+            details={"operation_timeout": fs_cfg.operation_timeout},
+        )
+
 

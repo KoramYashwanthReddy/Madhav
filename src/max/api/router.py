@@ -8,6 +8,7 @@ from max.api.health import router as health_router
 from max.computer.api.routes import computer_router
 from max.context.api.routes import router as context_router
 from max.conversation.api.routes import router as conversation_router
+from max.filesystem.api.routes import router as filesystem_router
 from max.identity.api.routes import router as identity_router
 from max.knowledge.api.routes import router as knowledge_router
 from max.memory.api.routes import router as memory_router
@@ -43,5 +44,7 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(tools_router)
     v1_router.include_router(security_router)
     v1_router.include_router(computer_router)
+    v1_router.include_router(filesystem_router)
     app.include_router(v1_router)
+
 
