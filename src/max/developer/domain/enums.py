@@ -1,9 +1,9 @@
 """Domain enumerations for Module 23 — Developer Agent."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class DevSessionStatus(str, Enum):
+class DevSessionStatus(StrEnum):
     """Lifecycle states for a DeveloperSession."""
 
     OPEN = "OPEN"
@@ -11,7 +11,7 @@ class DevSessionStatus(str, Enum):
     ERROR = "ERROR"
 
 
-class WorkflowType(str, Enum):
+class WorkflowType(StrEnum):
     """High-level categories of developer workflows."""
 
     FEATURE = "FEATURE"
@@ -22,7 +22,7 @@ class WorkflowType(str, Enum):
     CUSTOM = "CUSTOM"
 
 
-class WorkflowStatus(str, Enum):
+class WorkflowStatus(StrEnum):
     """State machine statuses for a DeveloperWorkflow."""
 
     PENDING = "PENDING"
@@ -33,7 +33,7 @@ class WorkflowStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class WorkflowStep(str, Enum):
+class WorkflowStep(StrEnum):
     """Ordered steps within a developer workflow."""
 
     INIT = "INIT"
@@ -49,7 +49,7 @@ class WorkflowStep(str, Enum):
     DONE = "DONE"
 
 
-class PRStatus(str, Enum):
+class PRStatus(StrEnum):
     """Pull request lifecycle states."""
 
     DRAFT = "DRAFT"
@@ -61,7 +61,7 @@ class PRStatus(str, Enum):
     CLOSED = "CLOSED"
 
 
-class IssueStatus(str, Enum):
+class IssueStatus(StrEnum):
     """Issue tracker item states."""
 
     OPEN = "OPEN"
@@ -71,7 +71,7 @@ class IssueStatus(str, Enum):
     WONT_FIX = "WONT_FIX"
 
 
-class IssuePriority(str, Enum):
+class IssuePriority(StrEnum):
     """Priority levels for issues."""
 
     LOW = "LOW"
@@ -80,7 +80,7 @@ class IssuePriority(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class CIRunStatus(str, Enum):
+class CIRunStatus(StrEnum):
     """CI/CD pipeline run states."""
 
     QUEUED = "QUEUED"
@@ -91,7 +91,7 @@ class CIRunStatus(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class MergeStrategy(str, Enum):
+class MergeStrategy(StrEnum):
     """Strategies for merging branches."""
 
     MERGE_COMMIT = "MERGE_COMMIT"
@@ -99,7 +99,7 @@ class MergeStrategy(str, Enum):
     REBASE = "REBASE"
 
 
-class GitOperationRisk(str, Enum):
+class GitOperationRisk(StrEnum):
     """Risk classification for Git operations."""
 
     READ_ONLY = "READ_ONLY"

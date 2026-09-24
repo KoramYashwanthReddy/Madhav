@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from max.speech.audio.streaming import AudioOutputStream
 from max.speech.domain.enums import InterruptionReason, SpeechInputType, SpeechSessionStatus
-from max.speech.domain.exceptions import BargeInError, SpeechSessionError
+from max.speech.domain.exceptions import SpeechSessionError
 from max.speech.domain.models import SpeechInterruption, SpeechSession, VoiceConfiguration
 
 logger = logging.getLogger(__name__)

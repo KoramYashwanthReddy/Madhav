@@ -25,8 +25,8 @@ from max.document.domain.exceptions import (
 )
 from max.document.domain.models import (
     Document,
-    DocumentCitation,
     DocumentChange,
+    DocumentCitation,
     DocumentComparison,
     DocumentConversionRequest,
     DocumentConversionResult,

@@ -1,7 +1,7 @@
 """Domain models for Module 22 — Coding Agent."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -19,7 +19,7 @@ from max.coding.domain.enums import (
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class CodingObjective(BaseModel):

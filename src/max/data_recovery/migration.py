@@ -1,8 +1,7 @@
 """Schema Migration and Data Evolution Manager."""
 
-import datetime
 import logging
-from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings

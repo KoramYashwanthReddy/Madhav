@@ -3,20 +3,15 @@
 import datetime
 import logging
 from pathlib import Path
-from typing import Any
 
 from max.autonomy.approval import ApprovalService
 from max.autonomy.budget import AutonomyBudgetService, MissionCircuitBreaker
 from max.autonomy.domain import (
     ActionStatus,
-    ApprovalStatus,
-    AutonomyLevel,
-    Milestone,
     Mission,
     MissionAction,
     MissionResult,
     MissionStatus,
-    Objective,
     RiskLevel,
 )
 from max.autonomy.policy import AutonomyPolicyService
@@ -77,9 +72,9 @@ class MissionReplanningService:
         """Generate revised action sequence using Module 11 Reasoning Engine."""
         logger.info("Triggering replanning for mission %s following failure: %s", mission.mission_id, failure_reason)
 
-        plan_svc = PlanService()
+        PlanService()
         logger.info("Module 11 PlanService instantiated for mission %s replanning.", mission.mission_id)
-        
+
         step_base = len(mission.actions) + 1
         revised_steps = [
             MissionAction(
@@ -178,7 +173,7 @@ class MissionOrchestrator:
             if mission.status not in (MissionStatus.RUNNING, MissionStatus.REPLANNING):
                 break
 
-            action.started_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            action.started_at = datetime.datetime.now(datetime.UTC).isoformat()
 
             # Find matching pending approval if any
             matching_appr = next((a for a in mission.approvals if a.action_name == action.tool_id), None)
@@ -219,7 +214,7 @@ class MissionOrchestrator:
 
             # Action Authorized -> Execute via Tool Registry
             action.status = ActionStatus.RUNNING
-            start_t = datetime.datetime.now(datetime.timezone.utc)
+            start_t = datetime.datetime.now(datetime.UTC)
 
             try:
                 # Invoke tool safely via Module 14 Tool Registry
@@ -242,8 +237,8 @@ class MissionOrchestrator:
                         mock_res["file_path"] = action.arguments["file_path"]
                     action.result = mock_res
 
-                dur = (datetime.datetime.now(datetime.timezone.utc) - start_t).total_seconds()
-                action.completed_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+                dur = (datetime.datetime.now(datetime.UTC) - start_t).total_seconds()
+                action.completed_at = datetime.datetime.now(datetime.UTC).isoformat()
 
                 # Empirical Verification
                 v_ok, v_ev = self.verification_service.verify_action_result(action)

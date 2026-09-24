@@ -1,6 +1,7 @@
 """Unit tests for Redis Cache & Queue Infrastructure Manager."""
 
 import pytest
+
 from max.infrastructure.redis import RedisManager, get_redis_manager
 
 

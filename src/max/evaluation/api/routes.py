@@ -253,6 +253,8 @@ async def compare_runs(payload: RunCompareRequest) -> EvaluationComparison:
         raise HTTPException(status_code=400, detail=exc.message) from exc
 
 
+@router.get("", response_model=list[EvaluationMetric])
+@router.get("/", response_model=list[EvaluationMetric])
 @router.get("/metrics", response_model=list[EvaluationMetric])
 async def list_recent_metrics(run_id: str | None = Query(default=None)) -> list[EvaluationMetric]:
     """List aggregated evaluation metrics."""

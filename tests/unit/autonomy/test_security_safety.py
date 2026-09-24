@@ -1,6 +1,5 @@
 """Unit tests for Autonomy Safety, Simulation, and Resistance Tests."""
 
-import pytest
 from max.autonomy.approval import ApprovalService
 from max.autonomy.budget import AutonomyBudgetService
 from max.autonomy.orchestrator import MissionOrchestrator

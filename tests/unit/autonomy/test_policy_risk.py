@@ -1,7 +1,6 @@
 """Unit tests for Autonomy Risk Classification and 10-tier Policy Hierarchy."""
 
-import pytest
-from max.autonomy.domain import AutonomyLevel, Mission, MissionAction, RiskLevel
+from max.autonomy.domain import Mission, RiskLevel
 from max.autonomy.policy import AutonomyPolicyService, AutonomyRiskService
 
 

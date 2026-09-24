@@ -4,7 +4,7 @@ import hashlib
 import io
 import xml.etree.ElementTree as ET
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.document.domain.enums import DocumentFormat, DocumentSource, ElementType
 from max.document.domain.models import (
@@ -149,7 +149,7 @@ class PptxDocumentParser(BaseDocumentParser):
             source_type=DocumentSource.LOCAL_FILE,
             source_reference=source_reference or filename,
             content_hash=content_hash,
-            processed_at=datetime.now(timezone.utc),
+            processed_at=datetime.now(UTC),
             parser_name="PptxDocumentParser",
         )
 

@@ -10,12 +10,10 @@ from max.coding.domain.exceptions import CodingSessionNotFoundError
 from max.coding.domain.models import (
     ChangeSet,
     CodePlan,
-    CodeReview,
     CodingRequest,
     CodingResult,
     CodingSession,
     RepositoryContext,
-    TestRun,
 )
 
 router = APIRouter(prefix="/coding", tags=["Coding Agent"])

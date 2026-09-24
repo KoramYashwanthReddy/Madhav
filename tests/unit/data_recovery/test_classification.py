@@ -1,6 +1,6 @@
 """Unit tests for Data Classification Engine."""
 
-from max.data_recovery.classification import ClassificationLevel, DataClassifier, DataClassificationTag
+from max.data_recovery.classification import ClassificationLevel, DataClassifier
 
 
 def test_classify_domain_critical() -> None:

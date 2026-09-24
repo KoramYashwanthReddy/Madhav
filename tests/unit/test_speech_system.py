@@ -6,67 +6,50 @@ from fastapi.testclient import TestClient
 
 from max.api.router import register_routers
 from max.config.sections import SpeechSettings
-from max.speech.audio.devices import AudioDeviceRegistry, AudioInputDevice, AudioOutputDevice, MockAudioInputDevice, MockAudioOutputDevice
+from max.speech.audio.devices import (
+    MockAudioInputDevice,
+    MockAudioOutputDevice,
+)
 from max.speech.audio.preprocessing import AudioPreprocessor
 from max.speech.audio.streaming import AudioInputStream, AudioOutputStream
-from max.speech.audio.validation import AudioValidator, compute_audio_hash, detect_format_from_bytes, detect_format_from_extension
-from max.speech.container import SpeechContainer, get_speech_container, reset_speech_container
+from max.speech.audio.validation import (
+    AudioValidator,
+    detect_format_from_bytes,
+    detect_format_from_extension,
+)
+from max.speech.container import get_speech_container, reset_speech_container
 from max.speech.domain.enums import (
     AudioFormat,
-    AudioSourceType,
     InterruptionReason,
     SpeechActivityType,
-    SpeechInputType,
     SpeechProcessingStatus,
     SpeechSessionStatus,
-    TranscriptState,
-    VoiceGender,
 )
 from max.speech.domain.exceptions import (
-    AudioDeviceError,
-    AudioFormatError,
     AudioPermissionError,
     AudioTooLargeError,
-    AudioTooLongError,
-    BargeInError,
     SpeechCancelledError,
     SpeechError,
     SpeechInputError,
-    SpeechProviderError,
     SpeechSessionError,
-    VoiceNotFoundError,
 )
 from max.speech.domain.models import (
     AudioChunk,
     AudioMetadata,
-    AudioSource,
-    SpeechActivity,
-    SpeechInput,
-    SpeechInterruption,
     SpeechRecognitionRequest,
     SpeechSession,
     SpeechSynthesisRequest,
-    Transcript,
-    TranscriptSegment,
-    TranscriptWord,
-    Voice,
     VoiceConfiguration,
 )
 from max.speech.normalization.transcript_normalizer import TranscriptNormalizer
 from max.speech.security.enforcer import SpeechSecurityEnforcer
-from max.speech.services.speech_service import SpeechService
 from max.speech.services.tool_integration import register_speech_tools
 from max.speech.sessions.manager import SpeechSessionManager
-from max.speech.stt.local_stt import LocalSpeechToTextProvider
 from max.speech.stt.mock_stt import MockSpeechToTextProvider
-from max.speech.stt.registry import SpeechToTextProviderRegistry
-from max.speech.tts.local_tts import LocalTextToSpeechProvider
 from max.speech.tts.mock_tts import MockTextToSpeechProvider, _build_mock_wav_bytes
-from max.speech.tts.registry import TextToSpeechProviderRegistry
 from max.speech.vad.mock_vad import MockVADProvider
 from max.speech.vad.states import VADStateMachine
 from max.tools.services.registry import ToolRegistryService
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

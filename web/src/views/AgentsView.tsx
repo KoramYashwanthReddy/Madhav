@@ -22,8 +22,8 @@ export const AgentsView: React.FC = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '16px' }}>
-        {agents.map((ag) => (
-          <div key={ag.id} className="glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {Array.isArray(agents) && agents.map((ag) => (
+          <div key={ag.id || ag.name} className="glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
@@ -31,7 +31,7 @@ export const AgentsView: React.FC = () => {
                 </div>
                 <div>
                   <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-main)', margin: 0 }}>{ag.name}</h4>
-                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Module {ag.module_number} — {ag.role}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Module {ag.module_number || 13} — {ag.role}</span>
                 </div>
               </div>
 
@@ -43,16 +43,18 @@ export const AgentsView: React.FC = () => {
 
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>{ag.description}</p>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-              {ag.capabilities.map((cap, idx) => (
-                <span key={idx} style={{ fontSize: '11px', background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>
-                  {cap}
-                </span>
-              ))}
-            </div>
+            {Array.isArray(ag.capabilities) && (
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {ag.capabilities.map((cap, idx) => (
+                  <span key={idx} style={{ fontSize: '11px', background: 'rgba(255,255,255,0.06)', padding: '2px 8px', borderRadius: '4px', fontFamily: 'var(--font-mono)' }}>
+                    {typeof cap === 'string' ? cap : JSON.stringify(cap)}
+                  </span>
+                ))}
+              </div>
+            )}
 
             <div style={{ fontSize: '11px', color: 'var(--text-dim)', borderTop: '1px solid var(--border-glass)', paddingTop: '8px' }}>
-              Tasks Completed: <strong>{ag.tasks_completed}</strong>
+              Tasks Completed: <strong>{ag.tasks_completed || 0}</strong>
             </div>
           </div>
         ))}

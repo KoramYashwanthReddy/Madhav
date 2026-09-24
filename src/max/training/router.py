@@ -1,7 +1,6 @@
 """FastAPI Router for Module 40 — AI Training, Fine-Tuning & Model Improvement endpoints."""
 
-from typing import Any
-from fastapi import APIRouter, Depends, Body, Path, Query
+from fastapi import APIRouter, Body, Depends, Path, Query
 from pydantic import BaseModel, Field
 
 from max.core.request_id import get_request_id

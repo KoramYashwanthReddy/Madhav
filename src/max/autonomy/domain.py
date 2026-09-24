@@ -1,12 +1,13 @@
 """Domain models and data structures for Module 41 — Future Autonomous Intelligence."""
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 
-class AutonomyLevel(str, Enum):
+class AutonomyLevel(StrEnum):
     """Autonomy level hierarchy (Level 0 through Level 5)."""
 
     MANUAL = "MANUAL"  # Level 0: Reactive only
@@ -17,7 +18,7 @@ class AutonomyLevel(str, Enum):
     HIGH_AUTONOMY = "HIGH_AUTONOMY"  # Level 5: Long-running bounded objectives with full audit/kill-switch
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     """Risk severity classification for autonomous actions."""
 
     LOW = "LOW"  # Read-only, calculation, non-sensitive organization
@@ -26,7 +27,7 @@ class RiskLevel(str, Enum):
     CRITICAL = "CRITICAL"  # Deletions, financial, credentials, security, production changes
 
 
-class MissionStatus(str, Enum):
+class MissionStatus(StrEnum):
     """Mission execution lifecycle states."""
 
     DRAFT = "DRAFT"
@@ -46,7 +47,7 @@ class MissionStatus(str, Enum):
     ABORTED = "ABORTED"
 
 
-class ApprovalStatus(str, Enum):
+class ApprovalStatus(StrEnum):
     """Human approval state for requested actions."""
 
     PENDING = "PENDING"
@@ -56,7 +57,7 @@ class ApprovalStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class ActionStatus(str, Enum):
+class ActionStatus(StrEnum):
     """Status of an individual atomic step action."""
 
     PLANNED = "PLANNED"
@@ -70,7 +71,7 @@ class ActionStatus(str, Enum):
     VERIFICATION_FAILED = "VERIFICATION_FAILED"
 
 
-class SimulationMode(str, Enum):
+class SimulationMode(StrEnum):
     """Autonomy execution environment simulation mode."""
 
     DRY_RUN = "DRY_RUN"  # Plan and check permissions, no side effects

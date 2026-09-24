@@ -47,7 +47,7 @@ class AudioInputStream:
         try:
             chunk = await asyncio.wait_for(self._queue.get(), timeout=timeout_seconds)
             return chunk
-        except asyncio.TimeoutError:
+        except TimeoutError:
             return None
 
     async def flush(self) -> None:
@@ -109,7 +109,7 @@ class AudioOutputStream:
 
         try:
             return await asyncio.wait_for(self._queue.get(), timeout=timeout_seconds)
-        except asyncio.TimeoutError:
+        except TimeoutError:
             return None
 
     async def flush(self) -> None:

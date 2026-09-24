@@ -3,11 +3,17 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from max.notifications.channels.registry import NotificationChannelRegistry
-from max.notifications.domain.enums import NotificationChannelType, NotificationDeliveryStatus, NotificationStatus
-from max.notifications.domain.models import Notification, NotificationDelivery, NotificationDeliveryAttempt
+from max.notifications.domain.enums import (
+    NotificationChannelType,
+    NotificationDeliveryStatus,
+    NotificationStatus,
+)
+from max.notifications.domain.models import (
+    Notification,
+    NotificationDelivery,
+)
 from max.notifications.policies.policy_service import NotificationPolicyService, PolicyDecisionEnum
 
 logger = logging.getLogger(__name__)

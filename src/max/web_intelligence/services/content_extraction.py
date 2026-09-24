@@ -1,6 +1,5 @@
 """ContentExtractionService for parsing, sectioning, and bounding web document text."""
 
-import re
 
 from max.web_intelligence.domain.models import ContentSection, WebContent, WebDocument
 

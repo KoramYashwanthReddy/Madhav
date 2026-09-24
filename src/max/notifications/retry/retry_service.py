@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import logging
 
-from max.notifications.domain.enums import NotificationDeliveryStatus
 from max.notifications.domain.models import NotificationDelivery, NotificationDeliveryAttempt
 
 logger = logging.getLogger(__name__)

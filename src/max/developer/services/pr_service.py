@@ -5,12 +5,10 @@ require PermissionGate approval before proceeding.
 """
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.developer.domain.enums import MergeStrategy, PRStatus
 from max.developer.domain.exceptions import (
-    DevPermissionDeniedError,
-    DevPRNotFoundError,
     PRConflictError,
 )
 from max.developer.domain.models import DevAuditEvent, PullRequest
@@ -25,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class PRService:

@@ -4,10 +4,9 @@ All models are immutable Pydantic value objects representing browser sessions,
 tabs, pages, elements, navigation, interactions, security policies, and audit logs.
 """
 
-from datetime import UTC, datetime
-import os
-from typing import Any
 import uuid
+from datetime import UTC, datetime
+from typing import Any
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -393,6 +392,10 @@ class BrowserExtractResult(BaseModel):
     text: str | None = Field(default=None)
     links: list[BrowserLink] = Field(default_factory=list)
     forms: list[BrowserForm] = Field(default_factory=list)
+
+    @property
+    def extracted_text(self) -> str:
+        return self.text or ""
 
 
 class BrowserDownload(BaseModel):

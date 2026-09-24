@@ -33,13 +33,22 @@ from datetime import UTC, datetime
 from typing import Any
 
 from max.config.sections import TerminalSettings
+
+# Module 15 integration
+from max.security.domain import (
+    PermissionAction,
+    PermissionRequest,
+    PermissionResource,
+    PermissionSubject,
+    PermissionSubjectType,
+    ResourceSensitivity,
+    RiskLevel,
+)
+from max.security.services.gate import PermissionGate
 from max.terminal.backends.base import TerminalBackend
 from max.terminal.domain.enums import CommandFailureReason, CommandStatus, TerminalShell
 from max.terminal.domain.exceptions import (
-    CommandPermissionDeniedError,
     CommandPolicyRejectionError,
-    ShellUnavailableError,
-    TerminalSubsystemDisabledError,
 )
 from max.terminal.domain.models import (
     CommandRequest,
@@ -53,18 +62,6 @@ from max.terminal.repositories.repositories import (
     TerminalTraceRepository,
 )
 from max.terminal.security.command_policy import CommandPolicyService
-
-# Module 15 integration
-from max.security.domain import (
-    PermissionAction,
-    PermissionRequest,
-    PermissionResource,
-    PermissionSubject,
-    PermissionSubjectType,
-    ResourceSensitivity,
-    RiskLevel,
-)
-from max.security.services.gate import PermissionGate
 
 
 class TerminalService:
@@ -309,7 +306,7 @@ class TerminalService:
         """Build and submit a PermissionRequest to Module 15 PermissionGate."""
         # Map command risk classification to Module 15 RiskLevel
         # (preliminary classification — full classification happens in step 3)
-        cmd_lower = request.command.lower().rstrip(".exe")
+        cmd_lower = request.command.lower().removesuffix(".exe")
         from max.terminal.security.command_policy import _CRITICAL_COMMANDS, _HIGH_RISK_COMMANDS
 
         if cmd_lower in _CRITICAL_COMMANDS:

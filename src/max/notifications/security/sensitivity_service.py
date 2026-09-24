@@ -6,7 +6,7 @@ import logging
 import re
 
 from max.notifications.domain.enums import NotificationChannelType, NotificationSensitivity
-from max.notifications.domain.models import Notification, NotificationContent
+from max.notifications.domain.models import NotificationContent
 
 logger = logging.getLogger(__name__)
 

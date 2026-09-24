@@ -1,19 +1,15 @@
 """Master CodingService orchestrating coding sessions and coding lifecycle."""
 
 import logging
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime
 
 from max.coding.domain.enums import ChangeType, CodingStatus
 from max.coding.domain.exceptions import CodingSessionNotFoundError
 from max.coding.domain.models import (
     ChangeSet,
-    CodePlan,
     CodingRequest,
     CodingResult,
     CodingSession,
-    Patch,
-    RepositoryContext,
 )
 from max.coding.repositories.repositories import (
     ChangeSetRepository,
@@ -33,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class CodingService:

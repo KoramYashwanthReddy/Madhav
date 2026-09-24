@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from max.vision.domain.enums import VisionCapability, VisionInputType, VisionModelCapability
+from max.vision.domain.enums import VisionCapability, VisionInputType
 from max.vision.domain.models import (
     VisionAnalysisResult,
     VisionChart,
@@ -18,8 +18,8 @@ from max.vision.domain.models import (
     VisionImage,
     VisionModel,
     VisionModelConfiguration,
-    VisionOCRResult,
     VisionObjectDetection,
+    VisionOCRResult,
     VisionRequest,
     VisionUIAnalysis,
 )

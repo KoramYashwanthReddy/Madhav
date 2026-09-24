@@ -1,6 +1,7 @@
 """Unit tests for PostgreSQL Database Infrastructure Manager."""
 
 import pytest
+
 from max.infrastructure.database import DatabaseManager, get_database_manager
 
 

@@ -1,7 +1,6 @@
 """In-memory repositories for terminal command execution records and trace events."""
 
 import threading
-from typing import Any
 
 from max.terminal.domain.models import CommandResult, TerminalSession, TerminalTraceEvent
 

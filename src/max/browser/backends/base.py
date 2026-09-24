@@ -1,15 +1,11 @@
 """Abstract base class for Browser Agent backends (Module 20)."""
 
 from abc import ABC, abstractmethod
-from typing import Any
 
 from max.browser.domain.models import (
-    BrowserActionRequest,
-    BrowserActionResult,
     BrowserClickRequest,
     BrowserClickResult,
     BrowserDownload,
-    BrowserElement,
     BrowserElementLocator,
     BrowserExtractRequest,
     BrowserExtractResult,

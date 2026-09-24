@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from max.web_intelligence.domain.models import Evidence, ResearchResult
+from max.web_intelligence.domain.models import ResearchResult
 
 
 class WebRAGIntegrationAdapter:

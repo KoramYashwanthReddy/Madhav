@@ -1,6 +1,7 @@
 """Unit tests for MinIO / S3 Object Storage Infrastructure Manager."""
 
 import pytest
+
 from max.infrastructure.storage import StorageManager, get_storage_manager
 
 

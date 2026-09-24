@@ -5,12 +5,11 @@ sensitive field masking, Prompt Injection Defense, Module 17 filesystem sandbox 
 and Module 15 PermissionGate integration.
 """
 
-from typing import Any
 import re
-from urllib.parse import urlparse
 import uuid
+from typing import Any
+from urllib.parse import urlparse
 
-from max.config.sections import BrowserSettings
 from max.browser.domain.enums import (
     BrowserActionType,
 )
@@ -24,12 +23,17 @@ from max.browser.domain.exceptions import (
 from max.browser.domain.models import (
     BrowserObservation,
 )
+from max.config.sections import BrowserSettings
 from max.security.domain.decision import PermissionRequest
-from max.security.domain.enums import PermissionAction, PermissionSubjectType, ResourceSensitivity, RiskLevel
+from max.security.domain.enums import (
+    PermissionAction,
+    PermissionSubjectType,
+    ResourceSensitivity,
+    RiskLevel,
+)
 from max.security.domain.resource import PermissionResource
 from max.security.domain.subject import PermissionSubject
 from max.security.services.gate import PermissionGate
-
 
 SENSITIVE_FIELD_PATTERNS = re.compile(
     r"(password|passwd|secret|api_?key|token|auth|credit_?card|cc_|card_number|cvv|ssn|social_?security|otp)",

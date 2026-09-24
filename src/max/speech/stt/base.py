@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from max.speech.audio.streaming import AudioInputStream
 from max.speech.domain.enums import AudioFormat
@@ -34,7 +35,7 @@ class SpeechToTextProvider(ABC):
         """Perform non-streaming transcription of an audio payload."""
 
     @abstractmethod
-    async def transcribe_stream(
+    def transcribe_stream(
         self, stream: AudioInputStream, request: SpeechRecognitionRequest
     ) -> AsyncGenerator[Transcript, None]:
         """Perform real-time streaming transcription of an AudioInputStream."""

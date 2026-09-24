@@ -17,9 +17,8 @@ from __future__ import annotations
 import hashlib
 import logging
 import struct
-from typing import Any
 
-from max.vision.domain.enums import VisionColorSpace, VisionFormat
+from max.vision.domain.enums import VisionFormat
 from max.vision.domain.exceptions import (
     ImageDecodeError,
     ImageTooLargeError,

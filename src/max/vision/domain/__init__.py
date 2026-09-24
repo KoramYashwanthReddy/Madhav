@@ -39,6 +39,7 @@ from max.vision.domain.models import (
     VisionChart,
     VisionCitation,
     VisionClassification,
+    VisionConfidence,
     VisionCoordinateSystem,
     VisionDescription,
     VisionDiagram,
@@ -51,13 +52,13 @@ from max.vision.domain.models import (
     VisionMetadata,
     VisionModel,
     VisionModelConfiguration,
+    VisionObject,
+    VisionObjectDetection,
     VisionObservation,
     VisionOCRBlock,
     VisionOCRLine,
     VisionOCRResult,
     VisionOCRWord,
-    VisionObject,
-    VisionObjectDetection,
     VisionPoint,
     VisionPolygon,
     VisionProcessingError,
@@ -71,7 +72,6 @@ from max.vision.domain.models import (
     VisionTextRegion,
     VisionUIAnalysis,
     VisionUIElement,
-    VisionConfidence,
 )
 
 __all__ = [

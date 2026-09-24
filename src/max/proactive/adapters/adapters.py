@@ -155,7 +155,11 @@ class PermissionGateAdapter:
         if self._gate and hasattr(self._gate, "check"):
             try:
                 from max.security.domain.decision import PermissionRequest
-                from max.security.domain.enums import PermissionAction, PermissionDecisionStatus, PermissionSubjectType
+                from max.security.domain.enums import (
+                    PermissionAction,
+                    PermissionDecisionStatus,
+                    PermissionSubjectType,
+                )
                 from max.security.domain.resource import PermissionResource
                 from max.security.domain.subject import PermissionSubject
 

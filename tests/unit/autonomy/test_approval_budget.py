@@ -1,6 +1,5 @@
 """Unit tests for Approval Service and Autonomy Budget Enforcement."""
 
-import pytest
 from max.autonomy.approval import ApprovalService
 from max.autonomy.budget import AutonomyBudgetService, MissionCircuitBreaker
 from max.autonomy.domain import ApprovalStatus, Mission, MissionStatus, ResourceBudget, RiskLevel

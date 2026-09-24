@@ -6,8 +6,8 @@ callers (agents, tools, tasks, API routes) use this service.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import logging
+from datetime import UTC, datetime
 from typing import Any
 
 from max.config.sections import NotificationSettings
@@ -23,14 +23,11 @@ from max.notifications.domain.enums import (
     NotificationSourceType,
     NotificationStatus,
 )
-from max.notifications.domain.exceptions import NotificationNotFoundError, NotificationValidationError
 from max.notifications.domain.models import (
     Notification,
-    NotificationAcknowledgement,
     NotificationAction,
     NotificationAuditEvent,
     NotificationContent,
-    NotificationDelivery,
     NotificationPreference,
     NotificationRecipient,
     NotificationScheduleReference,
@@ -43,7 +40,6 @@ from max.notifications.rate_limiting.rate_limit_service import NotificationRateL
 from max.notifications.repositories.repositories import (
     MemoryNotificationAuditRepository,
     MemoryNotificationDeliveryRepository,
-    MemoryNotificationPreferenceRepository,
     MemoryNotificationRepository,
     MemoryNotificationTemplateRepository,
 )
@@ -55,7 +51,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class NotificationService:

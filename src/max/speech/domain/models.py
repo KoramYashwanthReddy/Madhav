@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 import uuid
+from datetime import UTC, datetime
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -12,7 +12,6 @@ from max.speech.domain.enums import (
     AudioFormat,
     AudioSourceType,
     InterruptionReason,
-    RawAudioRetention,
     SpeechActivityType,
     SpeechEventType,
     SpeechInputType,
@@ -24,7 +23,7 @@ from max.speech.domain.enums import (
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 def _generate_id(prefix: str) -> str:

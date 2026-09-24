@@ -39,7 +39,7 @@ class TestTerminalToolRegistration:
 
     def test_idempotent_registration(self, tool_registry):
         """Registering the same tools twice must not create duplicates."""
-        ids_first = register_terminal_tools(tool_registry)
+        register_terminal_tools(tool_registry)
         ids_second = register_terminal_tools(tool_registry)
         assert len(ids_second) == 0  # Second call returns empty (already registered)
 

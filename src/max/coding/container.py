@@ -1,12 +1,12 @@
 """Global dependency injection container for Module 22 — Coding Agent."""
 
-from max.config.settings import get_settings
 from max.coding.repositories.repositories import (
     ChangeSetRepository,
     CodingAuditRepository,
     CodingSessionRepository,
 )
 from max.coding.services.coding_service import CodingService
+from max.config.settings import get_settings
 
 
 class CodingContainer:

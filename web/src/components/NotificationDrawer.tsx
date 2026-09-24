@@ -61,7 +61,7 @@ export const NotificationDrawer: React.FC = () => {
         {/* List Content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {/* Pending Security Approvals Section */}
-          {pendingApprovals.length > 0 && (
+          {Array.isArray(pendingApprovals) && pendingApprovals.length > 0 && (
             <div style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: 'var(--radius-md)', padding: '14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'hsl(350, 89%, 65%)', fontWeight: 600, fontSize: '13px', marginBottom: '6px' }}>
                 <ShieldAlert size={16} />
@@ -73,7 +73,7 @@ export const NotificationDrawer: React.FC = () => {
             </div>
           )}
 
-          {notifications.length === 0 ? (
+          {!Array.isArray(notifications) || notifications.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)', fontSize: '13px' }}>
               No recent notifications or proactive intelligence alerts.
             </div>

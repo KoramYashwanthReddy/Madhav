@@ -16,21 +16,18 @@ Tests cover:
 
 import os
 from tempfile import TemporaryDirectory
+
 import pytest
 
 from max.browser.backends.mock import MockBrowserBackend
 from max.browser.domain.enums import (
-    BrowserActionType,
     BrowserStatus,
-    BrowserTabStatus,
     BrowserVerificationStatus,
 )
 from max.browser.domain.exceptions import (
     BrowserDomainBlockedError,
-    BrowserError,
     BrowserNavigationBlockedError,
     BrowserSessionNotFoundError,
-    BrowserTabNotFoundError,
 )
 from max.browser.domain.models import (
     BrowserElementLocator,
@@ -45,7 +42,6 @@ from max.browser.services.browser_service import BrowserService
 from max.browser.services.tool_integration import BROWSER_TOOLS, register_browser_tools
 from max.config.sections import BrowserSettings
 from max.tools.services.registry import ToolRegistryService
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -492,7 +488,7 @@ def test_browser_tool_registration():
 def test_browser_tool_registration_idempotent():
     """Registering tools twice should not duplicate entries."""
     tool_registry = ToolRegistryService(auto_load_dev_tools=False)
-    ids1 = register_browser_tools(tool_registry)
+    register_browser_tools(tool_registry)
     ids2 = register_browser_tools(tool_registry)
     # Second call returns empty since all are already registered
     assert len(ids2) == 0

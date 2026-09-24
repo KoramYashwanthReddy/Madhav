@@ -6,7 +6,6 @@ from fastapi.testclient import TestClient
 from max.integrations.container import get_integration_container, reset_integration_container
 from max.main import app
 from max.scheduler.container import get_scheduler_container, reset_scheduler_container
-from max.tools.services.registry import ToolRegistryService
 
 
 @pytest.fixture(autouse=True)

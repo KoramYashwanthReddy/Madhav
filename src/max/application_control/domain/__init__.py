@@ -98,6 +98,11 @@ __all__ = [
     "ApplicationProtectedError",
     "ApplicationRateLimitedError",
     "ApplicationPolicyBlockedError",
+    "ApplicationBlockedError",
+    "ApplicationElevationDeniedError",
+    "ApplicationInstanceLimitExceededError",
+    "ApplicationPolicyViolationError",
+    "ApplicationProcessNotFoundError",
     # Models
     "ApplicationId",
     "ApplicationVersion",

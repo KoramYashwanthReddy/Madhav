@@ -4,7 +4,7 @@ import hashlib
 import io
 import xml.etree.ElementTree as ET
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.document.domain.enums import DocumentFormat, DocumentSource, ElementType
 from max.document.domain.models import (
@@ -133,7 +133,7 @@ class XlsxDocumentParser(BaseDocumentParser):
                             cells_vals: list[str] = []
                             for c in row.findall("ns:c", ns):
                                 val_elem = c.find("ns:v", ns)
-                                val = val_elem.text if val_elem is not None else ""
+                                val = (val_elem.text if val_elem is not None else "") or ""
                                 if c.attrib.get("t") == "s" and val.isdigit():
                                     val_idx = int(val)
                                     val = shared_strings[val_idx] if val_idx < len(shared_strings) else val
@@ -192,7 +192,7 @@ class XlsxDocumentParser(BaseDocumentParser):
             source_type=DocumentSource.LOCAL_FILE,
             source_reference=source_reference or filename,
             content_hash=content_hash,
-            processed_at=datetime.now(timezone.utc),
+            processed_at=datetime.now(UTC),
             parser_name="XlsxDocumentParser",
         )
 

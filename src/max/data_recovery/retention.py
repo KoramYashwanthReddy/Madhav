@@ -3,6 +3,7 @@
 import datetime
 import logging
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings
@@ -52,7 +53,7 @@ class RetentionManager:
 
     def mark_soft_delete(self, entity_id: str, domain_name: str) -> dict[str, Any]:
         """Apply soft-delete tombstone to entity record."""
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
         tag = DataClassifier.classify_domain(domain_name)
         policy = self.get_policy(tag.level)
         purge_due = now + datetime.timedelta(days=policy.soft_delete_ttl_days)

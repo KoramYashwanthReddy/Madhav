@@ -3,6 +3,7 @@
 import hashlib
 import hmac
 import json
+
 import pytest
 
 from max.integrations.container import get_integration_container, reset_integration_container

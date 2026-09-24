@@ -14,7 +14,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from max.terminal.backends.base import TerminalBackend
-from max.terminal.domain.enums import CommandFailureReason, CommandStatus, TerminalShell
+from max.terminal.domain.enums import CommandStatus, TerminalShell
 from max.terminal.domain.models import CommandRequest, CommandResult
 
 

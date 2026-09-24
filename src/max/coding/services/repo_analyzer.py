@@ -1,11 +1,10 @@
 """RepositoryAnalyzer service for project type detection and metadata extraction."""
 
 import os
-from typing import Any
 
 from max.coding.domain.enums import ProjectType
 from max.coding.domain.exceptions import RepositoryNotFoundError
-from max.coding.domain.models import DependencyGraph, ProjectMetadata, RepositoryContext
+from max.coding.domain.models import ProjectMetadata, RepositoryContext
 from max.filesystem.container import get_filesystem_container
 from max.filesystem.domain.action import FileOperationRequest
 from max.filesystem.domain.enums import FileOperationType
@@ -62,7 +61,7 @@ class RepositoryAnalyzer:
                 if n:
                     root_filenames.append(n)
             elif hasattr(item, "name"):
-                root_filenames.append(getattr(item, "name"))
+                root_filenames.append(item.name)
             elif isinstance(item, str):
                 root_filenames.append(item)
 

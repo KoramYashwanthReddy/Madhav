@@ -5,15 +5,12 @@ import hashlib
 import json
 import logging
 import os
-import random
-from typing import Any
 
 from max.config.settings import Settings, get_settings
-from max.data_recovery.service import get_data_recovery_service
 from max.training.domain import (
     Dataset,
-    DatasetStatus,
     DatasetStats,
+    DatasetStatus,
     DatasetVersion,
     TrainingSample,
     ValidationReport,
@@ -148,7 +145,7 @@ class DatasetService:
 
     def create_dataset(self, name: str, description: str = "", samples: list[TrainingSample] | None = None) -> Dataset:
         """Create new dataset entity with initial v1 version."""
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         dataset_id = f"ds_{hashlib.sha256(name.encode('utf-8')).hexdigest()[:10]}"
 
         sample_list = samples or [
@@ -209,7 +206,7 @@ class DatasetService:
 
     def get_dataset(self, dataset_id: str) -> Dataset:
         """Retrieve dataset entity metadata."""
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         return Dataset(
             dataset_id=dataset_id,
             name="MAX Instruction Tuning Set",

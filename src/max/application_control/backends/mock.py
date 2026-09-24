@@ -15,7 +15,6 @@ from max.application_control.domain.enums import (
     ApplicationActionStatus,
     ApplicationActionType,
     ApplicationHealthStatus,
-    ApplicationSource,
     ApplicationState,
     ApplicationType,
 )
@@ -23,10 +22,8 @@ from max.application_control.domain.models import (
     Application,
     ApplicationActionRequest,
     ApplicationActionResult,
-    ApplicationCapability,
     ApplicationExecutable,
     ApplicationInstance,
-    ApplicationMetadata,
     ApplicationWindow,
 )
 

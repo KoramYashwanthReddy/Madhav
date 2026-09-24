@@ -5,7 +5,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Query, status
 
 from max.web_intelligence.container import get_web_intelligence_container
-from max.web_intelligence.domain.exceptions import ResearchNotFoundError, SourceNotFoundError
+from max.web_intelligence.domain.exceptions import ResearchNotFoundError
 from max.web_intelligence.domain.models import (
     Citation,
     Evidence,

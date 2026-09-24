@@ -25,6 +25,7 @@ from max.application_control.backends.base import ApplicationControlBackend
 from max.application_control.domain.enums import (
     ApplicationActionFailureReason,
     ApplicationActionStatus,
+    ApplicationActionType,
     ApplicationHealthStatus,
     ApplicationSource,
     ApplicationState,
@@ -99,7 +100,7 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
                                         app = _registry_entry_to_application(entry)
                                         if app.application_id not in apps:
                                             apps[app.application_id] = app
-                            except (OSError, WindowsError):
+                            except OSError:
                                 continue
                 except (OSError, FileNotFoundError):
                     continue
@@ -185,8 +186,9 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
         except Exception:
             return []
 
-    def get_running_instances(self, application_id: str) -> list[ApplicationInstance]:
+    def get_running_instances(self, app_id: str | None = None) -> list[ApplicationInstance]:
         """Return running instances for an application identified by name fragment."""
+        application_id = app_id or ""
         try:
             import psutil  # type: ignore[import]
         except ImportError:
@@ -278,47 +280,50 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
     # Lifecycle Actions
     # ------------------------------------------------------------------
 
-    def launch_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
+    def launch_application(
+        self, app_or_request: Any, request: ApplicationActionRequest | None = None
+    ) -> ApplicationActionResult:
         """Launch using subprocess.Popen with shell=False."""
+        req = request or (app_or_request if isinstance(app_or_request, ApplicationActionRequest) else ApplicationActionRequest(action_type=ApplicationActionType.LAUNCH, application_id=str(app_or_request)))
         start = _now()
-        if not request.application_id:
-            return self._make_failed(request, start, ApplicationActionFailureReason.APPLICATION_NOT_FOUND, "No application_id provided")
+        if not req.application_id:
+            return self._make_failed(req, start, ApplicationActionFailureReason.APPLICATION_NOT_FOUND, "No application_id provided")
 
-        exe_path = request.metadata.get("executable_path", "") if request.metadata else ""
+        exe_path = req.metadata.get("executable_path", "") if req.metadata else ""
         if not exe_path:
-            return self._make_failed(request, start, ApplicationActionFailureReason.INVALID_EXECUTABLE, "No executable path resolved")
+            return self._make_failed(req, start, ApplicationActionFailureReason.INVALID_EXECUTABLE, "No executable path resolved")
 
         if not Path(exe_path).exists():
-            return self._make_failed(request, start, ApplicationActionFailureReason.INVALID_EXECUTABLE, f"Executable not found: {exe_path}")
+            return self._make_failed(req, start, ApplicationActionFailureReason.INVALID_EXECUTABLE, f"Executable not found: {exe_path}")
 
-        cmd = [exe_path] + request.arguments
+        cmd = [exe_path] + req.arguments
 
         try:
             proc = subprocess.Popen(  # noqa: S603
                 cmd,
                 shell=False,  # SECURITY: always False
-                cwd=request.working_directory or None,
+                cwd=req.working_directory or None,
                 close_fds=True,
             )
 
             # Optionally wait for process to be confirmed running
-            if request.wait_for_start:
-                deadline = time.monotonic() + min(request.timeout, 15.0)
+            if req.wait_for_start:
+                deadline = time.monotonic() + min(req.timeout, 15.0)
                 while time.monotonic() < deadline:
                     if proc.poll() is None:  # still alive
                         break
                     time.sleep(0.2)
 
             if proc.returncode is not None and proc.returncode != 0:
-                return self._make_failed(request, start, ApplicationActionFailureReason.APPLICATION_NOT_FOUND, f"Process exited immediately with code {proc.returncode}")
+                return self._make_failed(req, start, ApplicationActionFailureReason.APPLICATION_NOT_FOUND, f"Process exited immediately with code {proc.returncode}")
 
-            instance_id = f"inst_{proc.pid}_{request.application_id[:8]}"
+            instance_id = f"inst_{proc.pid}_{req.application_id[:8]}"
             end = _now()
             return ApplicationActionResult(
-                action_id=request.action_id,
-                action_type=request.action_type,
+                action_id=req.action_id,
+                action_type=req.action_type,
                 status=ApplicationActionStatus.COMPLETED,
-                application_id=request.application_id,
+                application_id=req.application_id,
                 instance_id=instance_id,
                 launched_instance_id=instance_id,
                 previous_state=ApplicationState.NOT_RUNNING,
@@ -328,32 +333,35 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
                 completed_at=end,
             )
         except Exception as exc:
-            return self._make_failed(request, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
+            return self._make_failed(req, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
 
-    def focus_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
+    def focus_application(
+        self, instance_or_request: Any, request: ApplicationActionRequest | None = None
+    ) -> ApplicationActionResult:
         """Focus application window using win32gui."""
+        req = request or (instance_or_request if isinstance(instance_or_request, ApplicationActionRequest) else ApplicationActionRequest(action_type=ApplicationActionType.FOCUS))
         start = _now()
         try:
-            import win32gui  # type: ignore[import]
             import win32con  # type: ignore[import]
+            import win32gui  # type: ignore[import]
 
-            hwnd = self._find_hwnd(request)
+            hwnd = self._find_hwnd(req)
             if not hwnd:
-                return self._make_failed(request, start, ApplicationActionFailureReason.WINDOW_NOT_FOUND, "No window found for application")
+                return self._make_failed(req, start, ApplicationActionFailureReason.WINDOW_NOT_FOUND, "No window found for application")
             win32gui.ShowWindow(hwnd, win32con.SW_RESTORE)
             win32gui.SetForegroundWindow(hwnd)
             end = _now()
-            return self._make_success(request, start, end, ApplicationState.FOCUSED)
+            return self._make_success(req, start, end, ApplicationState.FOCUSED)
         except ImportError:
-            return self._make_failed(request, start, ApplicationActionFailureReason.BACKEND_UNAVAILABLE, "pywin32 not available")
+            return self._make_failed(req, start, ApplicationActionFailureReason.BACKEND_UNAVAILABLE, "pywin32 not available")
         except Exception as exc:
-            return self._make_failed(request, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
+            return self._make_failed(req, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
 
     def minimize_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
         start = _now()
         try:
-            import win32gui  # type: ignore[import]
             import win32con  # type: ignore[import]
+            import win32gui  # type: ignore[import]
             hwnd = self._find_hwnd(request)
             if not hwnd:
                 return self._make_failed(request, start, ApplicationActionFailureReason.WINDOW_NOT_FOUND, "No window found")
@@ -368,8 +376,8 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
     def maximize_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
         start = _now()
         try:
-            import win32gui  # type: ignore[import]
             import win32con  # type: ignore[import]
+            import win32gui  # type: ignore[import]
             hwnd = self._find_hwnd(request)
             if not hwnd:
                 return self._make_failed(request, start, ApplicationActionFailureReason.WINDOW_NOT_FOUND, "No window found")
@@ -384,8 +392,8 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
     def restore_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
         start = _now()
         try:
-            import win32gui  # type: ignore[import]
             import win32con  # type: ignore[import]
+            import win32gui  # type: ignore[import]
             hwnd = self._find_hwnd(request)
             if not hwnd:
                 return self._make_failed(request, start, ApplicationActionFailureReason.WINDOW_NOT_FOUND, "No window found")
@@ -397,17 +405,20 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
         except Exception as exc:
             return self._make_failed(request, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
 
-    def close_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
+    def close_application(
+        self, instance_or_request: Any, request: ApplicationActionRequest | None = None
+    ) -> ApplicationActionResult:
         """Graceful close: WM_CLOSE → wait → verify."""
+        req = request or (instance_or_request if isinstance(instance_or_request, ApplicationActionRequest) else ApplicationActionRequest(action_type=ApplicationActionType.CLOSE))
         start = _now()
-        pid = request.process_id or (request.metadata or {}).get("process_id")
+        pid = req.process_id or (req.metadata or {}).get("process_id")
         if not pid:
-            return self._make_failed(request, start, ApplicationActionFailureReason.INSTANCE_NOT_FOUND, "process_id required for close")
+            return self._make_failed(req, start, ApplicationActionFailureReason.INSTANCE_NOT_FOUND, "process_id required for close")
 
         try:
-            import win32gui  # type: ignore[import]
             import win32con  # type: ignore[import]
-            hwnd = self._find_hwnd(request)
+            import win32gui  # type: ignore[import]
+            hwnd = self._find_hwnd(req)
             if hwnd:
                 win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
         except ImportError:
@@ -430,15 +441,18 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
 
         end = _now()
         if closed:
-            return self._make_success(request, start, end, ApplicationState.STOPPED, prev_state=ApplicationState.RUNNING)
-        return self._make_failed(request, start, ApplicationActionFailureReason.CLOSE_TIMEOUT, f"Application did not close within {_CLOSE_TIMEOUT_DEFAULT}s")
+            return self._make_success(req, start, end, ApplicationState.STOPPED, prev_state=ApplicationState.RUNNING)
+        return self._make_failed(req, start, ApplicationActionFailureReason.CLOSE_TIMEOUT, f"Application did not close within {_CLOSE_TIMEOUT_DEFAULT}s")
 
-    def force_terminate_application(self, request: ApplicationActionRequest) -> ApplicationActionResult:
+    def force_terminate_application(
+        self, instance_or_request: Any, request: ApplicationActionRequest | None = None
+    ) -> ApplicationActionResult:
         """Force terminate — CRITICAL risk, exact PID only, no arbitrary kill."""
+        req = request or (instance_or_request if isinstance(instance_or_request, ApplicationActionRequest) else ApplicationActionRequest(action_type=ApplicationActionType.FORCE_TERMINATE))
         start = _now()
-        pid = request.process_id or (request.metadata or {}).get("process_id")
+        pid = req.process_id or (req.metadata or {}).get("process_id")
         if not pid:
-            return self._make_failed(request, start, ApplicationActionFailureReason.INSTANCE_NOT_FOUND, "process_id required for force_terminate")
+            return self._make_failed(req, start, ApplicationActionFailureReason.INSTANCE_NOT_FOUND, "process_id required for force_terminate")
 
         try:
             import psutil  # type: ignore[import]
@@ -450,7 +464,7 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
                 proc.kill()
                 proc.wait(timeout=3.0)
             end = _now()
-            return self._make_success(request, start, end, ApplicationState.STOPPED, prev_state=ApplicationState.RUNNING)
+            return self._make_success(req, start, end, ApplicationState.STOPPED, prev_state=ApplicationState.RUNNING)
         except ImportError:
             # Fallback: taskkill /F /PID
             try:
@@ -461,11 +475,11 @@ class WindowsApplicationControlBackend(ApplicationControlBackend):
                     timeout=10.0,
                 )
                 end = _now()
-                return self._make_success(request, start, end, ApplicationState.STOPPED, prev_state=ApplicationState.RUNNING)
+                return self._make_success(req, start, end, ApplicationState.STOPPED, prev_state=ApplicationState.RUNNING)
             except Exception as exc:
-                return self._make_failed(request, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
+                return self._make_failed(req, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
         except Exception as exc:
-            return self._make_failed(request, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
+            return self._make_failed(req, start, ApplicationActionFailureReason.INTERNAL_ERROR, str(exc))
 
     def get_application_state(self, process_id: int) -> tuple[str, bool]:
         """Return (state_string, is_responding) for the given PID."""

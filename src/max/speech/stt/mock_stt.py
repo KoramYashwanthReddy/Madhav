@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import time
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from max.speech.audio.streaming import AudioInputStream
 from max.speech.domain.enums import AudioFormat, SpeechProcessingStatus, TranscriptState

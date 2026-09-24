@@ -4,15 +4,12 @@ Orchestrates application discovery, lifecycle operations (launch, focus, close, 
 window management, policy enforcement, status monitoring, and audit logging.
 """
 
-from datetime import UTC, datetime
 import logging
+from datetime import UTC, datetime
 from typing import Any
-import uuid
 
-from max.config.sections import ApplicationControlSettings
 from max.application_control.backends.base import ApplicationControlBackend
 from max.application_control.domain.enums import (
-    ApplicationActionFailureReason,
     ApplicationActionStatus,
     ApplicationActionType,
     ApplicationAuditEventType,
@@ -20,7 +17,6 @@ from max.application_control.domain.enums import (
     ApplicationStatus,
 )
 from max.application_control.domain.exceptions import (
-    ApplicationControlError,
     ApplicationNotFoundError,
     ApplicationProcessNotFoundError,
 )
@@ -40,6 +36,7 @@ from max.application_control.repositories.repositories import (
     ApplicationRepository,
 )
 from max.application_control.security.app_policy import ApplicationPolicyService
+from max.config.sections import ApplicationControlSettings
 
 logger = logging.getLogger(__name__)
 
@@ -108,7 +105,8 @@ class ApplicationControlService:
             # Fallback: query backend directly for running apps or apps by executable
             discovered = self.discover_applications(force_refresh=True)
             for d in discovered:
-                if d.app_id == query or d.executable.lower() == query.lower() or d.display_name.lower() == query.lower():
+                exe_str = d.executable.lower() if d.executable else ""
+                if d.app_id == query or exe_str == query.lower() or d.display_name.lower() == query.lower():
                     return d
             raise ApplicationNotFoundError(f"Application matching '{query}' was not found.")
         return app
@@ -129,7 +127,7 @@ class ApplicationControlService:
 
         req = ApplicationActionRequest(
             action_type=ApplicationActionType.LAUNCH,
-            app_id=app.app_id,
+            application_id=app.app_id,
             arguments=arguments or [],
             working_directory=working_directory,
             elevate=elevate,
@@ -147,21 +145,19 @@ class ApplicationControlService:
             self.audit_repo.record(
                 ApplicationAuditEvent(
                     event_type=ApplicationAuditEventType.LAUNCHED,
-                    app_id=app.app_id,
+                    application_id=app.app_id,
                     instance_id=result.instance.instance_id,
                     action_id=req.action_id,
-                    status=ApplicationActionStatus.SUCCESS,
-                    details={"pid": result.instance.pid, "arguments": arguments},
+                    details={"status": "SUCCESS", "pid": result.instance.pid, "arguments": arguments},
                 )
             )
         else:
             self.audit_repo.record(
                 ApplicationAuditEvent(
                     event_type=ApplicationAuditEventType.LAUNCH_FAILED,
-                    app_id=app.app_id,
+                    application_id=app.app_id,
                     action_id=req.action_id,
-                    status=ApplicationActionStatus.FAILED,
-                    error_message=result.error_message,
+                    details={"status": "FAILED", "error_message": result.error_message},
                 )
             )
 
@@ -199,7 +195,7 @@ class ApplicationControlService:
 
         req = ApplicationActionRequest(
             action_type=ApplicationActionType.FOCUS,
-            app_id=app.app_id,
+            application_id=app.app_id,
             instance_id=instance.instance_id if instance else None,
         )
 
@@ -219,10 +215,10 @@ class ApplicationControlService:
             self.audit_repo.record(
                 ApplicationAuditEvent(
                     event_type=ApplicationAuditEventType.FOCUSED,
-                    app_id=app.app_id,
+                    application_id=app.app_id,
                     instance_id=instance.instance_id if instance else None,
                     action_id=req.action_id,
-                    status=ApplicationActionStatus.SUCCESS,
+                    details={"status": "SUCCESS"},
                 )
             )
 
@@ -241,10 +237,10 @@ class ApplicationControlService:
 
         self.policy_service.validate_action(app, "app_close")
 
-        action_type = ApplicationActionType.CLOSE if graceful else ApplicationActionType.TERMINATE
+        action_type = ApplicationActionType.CLOSE if graceful else ApplicationActionType.FORCE_TERMINATE
         req = ApplicationActionRequest(
             action_type=action_type,
-            app_id=app.app_id,
+            application_id=app.app_id,
             instance_id=instance.instance_id if instance else None,
             graceful=graceful,
             timeout=timeout,
@@ -255,7 +251,7 @@ class ApplicationControlService:
             if result.is_success:
                 updated_inst = instance.model_copy(
                     update={
-                        "status": ApplicationStatus.CLOSED if graceful else ApplicationStatus.TERMINATED,
+                        "status": ApplicationStatus.CLOSED,
                         "exit_code": 0,
                     }
                 )
@@ -266,7 +262,7 @@ class ApplicationControlService:
             app_insts = [i for i in running if i.app_id == app.app_id]
             if not app_insts:
                 return ApplicationActionResult(
-                    request=req,
+                    action_id=req.action_id,
                     status=ApplicationActionStatus.SUCCESS,
                     message=f"No active running instances found for '{app.display_name}'.",
                 )
@@ -278,13 +274,13 @@ class ApplicationControlService:
                     self.instance_repo.save(
                         inst.model_copy(
                             update={
-                                "status": ApplicationStatus.CLOSED if graceful else ApplicationStatus.TERMINATED
+                                "status": ApplicationStatus.CLOSED
                             }
                         )
                     )
                 last_res = res
             result = last_res or ApplicationActionResult(
-                request=req,
+                action_id=req.action_id,
                 status=ApplicationActionStatus.SUCCESS,
                 message=f"Closed instances of '{app.display_name}'.",
             )
@@ -295,11 +291,11 @@ class ApplicationControlService:
 
         self.audit_repo.record(
             ApplicationAuditEvent(
-                event_type=ApplicationAuditEventType.CLOSED if graceful else ApplicationAuditEventType.TERMINATED,
-                app_id=app.app_id,
+                event_type=ApplicationAuditEventType.CLOSED,
+                application_id=app.app_id,
                 instance_id=instance.instance_id if instance else None,
                 action_id=req.action_id,
-                status=ApplicationActionStatus.SUCCESS if result.is_success else ApplicationActionStatus.FAILED,
+                details={"status": "SUCCESS" if result.is_success else "FAILED"},
             )
         )
 
@@ -314,7 +310,7 @@ class ApplicationControlService:
         """Restart an application by closing running instances and launching a new instance."""
         target = self._resolve_target(query)
         app = target["app"]
-        instance = target["instance"]
+        target["instance"]
 
         self.policy_service.validate_action(app, "app_restart")
 
@@ -391,7 +387,7 @@ class ApplicationControlService:
         self.audit_repo.record(
             ApplicationAuditEvent(
                 event_type=ApplicationAuditEventType.POLICY_UPDATED,
-                app_id=policy.app_id,
+                application_id=policy.app_id,
                 details={
                     "allowed": policy.allowed,
                     "allow_elevation": policy.allow_elevation,

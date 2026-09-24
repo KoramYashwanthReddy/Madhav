@@ -2,7 +2,6 @@
 
 import fnmatch
 import re
-from typing import Any
 
 from max.coding.domain.exceptions import ProtectedPathError
 

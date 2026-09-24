@@ -4,7 +4,6 @@ import logging
 from urllib.parse import urlparse
 
 from max.browser.container import get_browser_container
-from max.web_intelligence.domain.enums import ContentTrustLevel
 from max.web_intelligence.domain.exceptions import DomainBlockedError, SourceAcquisitionError
 from max.web_intelligence.domain.models import Source, WebDocument
 from max.web_intelligence.security.prompt_injection import PromptInjectionEnforcer
@@ -51,18 +50,19 @@ class ContentAcquisitionService:
 
             # Create temporary session & tab in Module 20
             session = await b_service.create_session(owner_id="system_web_intel")
-            tab = await b_service.create_tab(session.id)
+            tab = await b_service.create_tab(session.session_id)
 
             # Navigate to URL
-            nav_result = await b_service.navigate(session.id, tab.id, url)
+            nav_result = await b_service.navigate(session.session_id, url=url, tab_id=tab.tab_id)
             if not nav_result.success:
-                raise SourceAcquisitionError(url, nav_result.error_message or "Navigation failed")
+                raise SourceAcquisitionError(url, "Navigation failed")
 
             # Extract visible page text
-            extracted_text = await b_service.extract_text(session.id, tab.id)
+            extract_res = await b_service.extract_content(session.session_id, target="text", tab_id=tab.tab_id)
+            extracted_text = extract_res.extracted_text
 
             # Close browser session cleanly
-            await b_service.close_session(session.id)
+            await b_service.close_session(session.session_id)
 
             # Wrap content strictly into UNTRUSTED_WEB_CONTENT container
             web_content = PromptInjectionEnforcer.wrap_as_untrusted_data(

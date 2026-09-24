@@ -4,7 +4,6 @@ Uses Playwright async API for Chromium / Firefox / WebKit.
 Detects browser availability cleanly without auto-downloading during runtime.
 """
 
-from datetime import UTC, datetime
 import logging
 import os
 import threading
@@ -12,17 +11,14 @@ from typing import Any
 
 from max.browser.backends.base import BrowserBackend
 from max.browser.domain.enums import (
-    BrowserActionStatus,
-    BrowserActionType,
     BrowserElementType,
     BrowserEngine,
     BrowserStatus,
     BrowserTabStatus,
-    BrowserType,
     BrowserVerificationStatus,
 )
 from max.browser.domain.exceptions import (
-    BrowserElementNotFoundError,
+    BrowserElementNotInteractableError,
     BrowserLaunchError,
     BrowserNavigationError,
     BrowserNotFoundError,
@@ -38,8 +34,6 @@ from max.browser.domain.models import (
     BrowserElementLocator,
     BrowserExtractRequest,
     BrowserExtractResult,
-    BrowserForm,
-    BrowserInput,
     BrowserLink,
     BrowserNavigationRequest,
     BrowserNavigationResult,
@@ -66,7 +60,8 @@ logger = logging.getLogger(__name__)
 class PlaywrightBrowserBackend(BrowserBackend):
     """Playwright-backed browser engine for Chromium, Firefox, WebKit."""
 
-    def __init__(self) -> None:
+    def __init__(self, headless: bool = True) -> None:
+        self.headless = headless
         self._lock = threading.RLock()
         self._pw: Any = None
         self._browser: Any = None
@@ -341,7 +336,7 @@ class PlaywrightBrowserBackend(BrowserBackend):
 
             current_y = await page.evaluate("window.scrollY;")
             return BrowserScrollResult(success=True, current_scroll_y=int(current_y or 0))
-        except Exception as e:
+        except Exception:
             return BrowserScrollResult(success=False)
 
     async def wait_for_condition(

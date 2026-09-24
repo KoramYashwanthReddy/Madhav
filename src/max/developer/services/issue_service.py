@@ -5,10 +5,9 @@ GitHub API integration is a future layer beyond Module 23.
 """
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.developer.domain.enums import IssuePriority, IssueStatus
-from max.developer.domain.exceptions import DevIssueNotFoundError, DevSessionNotFoundError
 from max.developer.domain.models import DevAuditEvent, DeveloperIssue
 from max.developer.repositories.repositories import (
     DevAuditRepository,
@@ -20,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class IssueService:

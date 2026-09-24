@@ -5,7 +5,7 @@ import { ShieldAlert, CheckCircle2, XCircle, Terminal, AlertTriangle } from 'luc
 export const ApprovalModal: React.FC = () => {
   const { pendingApprovals, handleApprovalResponse } = useWebApp();
 
-  if (pendingApprovals.length === 0) return null;
+  if (!Array.isArray(pendingApprovals) || pendingApprovals.length === 0) return null;
 
   const current = pendingApprovals[0];
 

@@ -1,6 +1,7 @@
 """Unit tests for At-Rest Encryption Manager."""
 
 import pytest
+
 from max.data_recovery.encryption import DataEncryptionManager
 
 

@@ -22,11 +22,9 @@ from max.document.domain.enums import (
 from max.document.domain.exceptions import (
     DocumentNotFoundError,
     DocumentTooLargeError,
-    DocumentValidationError,
 )
 from max.document.domain.models import (
     Document,
-    DocumentConversionRequest,
     DocumentGenerationRequest,
     DocumentSearchRequest,
     DocumentVersion,
@@ -42,7 +40,6 @@ from max.document.security.prompt_injection import DocumentSecurityEnforcer
 from max.document.services.document_service import DocumentService
 from max.document.services.tool_integration import register_document_tools
 from max.tools.services.registry import ToolRegistryService
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -801,7 +798,7 @@ class TestDocumentToolRegistration:
 
     def test_register_document_tools_idempotent(self):
         registry = ToolRegistryService()
-        first = register_document_tools(registry)
+        register_document_tools(registry)
         second = register_document_tools(registry)
         assert len(second) == 0  # No new tools on second call
 

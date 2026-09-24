@@ -1,25 +1,20 @@
 """Master WebIntelligenceService orchestrating the 10-stage research pipeline."""
 
-import asyncio
 import logging
-from datetime import datetime, timezone
-from typing import Any
+from datetime import UTC, datetime
 
 from max.config.sections import WebIntelligenceSettings
 from max.web_intelligence.domain.enums import ResearchStatus
 from max.web_intelligence.domain.exceptions import (
     ResearchCancelledError,
     ResearchNotFoundError,
-    ResearchTimeoutError,
 )
 from max.web_intelligence.domain.models import (
     Citation,
     Evidence,
     EvidenceConflict,
-    ResearchObjective,
     ResearchRequest,
     ResearchResult,
-    Source,
 )
 from max.web_intelligence.providers.base import BaseSearchProvider
 from max.web_intelligence.providers.mock import MockSearchProvider
@@ -45,7 +40,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class WebIntelligenceService:
@@ -154,9 +149,9 @@ class WebIntelligenceService:
             all_evidence: list[Evidence] = []
             for doc in acquired_docs:
                 self.extractor.extract_and_section_content(doc)
-                src = self.source_repo.get(doc.source_id)
-                if src:
-                    ev_items = self.evidence_svc.extract_evidence(request, src, doc)
+                src_obj = self.source_repo.get(doc.source_id)
+                if src_obj is not None:
+                    ev_items = self.evidence_svc.extract_evidence(request, src_obj, doc)
                     for ev in ev_items:
                         self.evidence_repo.save(ev)
                         all_evidence.append(ev)

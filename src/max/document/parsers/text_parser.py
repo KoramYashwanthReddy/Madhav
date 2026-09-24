@@ -1,7 +1,7 @@
 """Plain text parser for Module 24 — Document Intelligence."""
 
 import hashlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.document.domain.enums import DocumentFormat, DocumentSource, ElementType
 from max.document.domain.models import (
@@ -38,7 +38,7 @@ class TextDocumentParser(BaseDocumentParser):
         except UnicodeDecodeError:
             text = content_bytes.decode("latin-1", errors="replace")
 
-        lines = text.splitlines()
+        text.splitlines()
         paragraphs_raw = [p.strip() for p in text.split("\n\n") if p.strip()]
 
         paragraphs: list[DocumentParagraph] = []
@@ -84,7 +84,7 @@ class TextDocumentParser(BaseDocumentParser):
             source_type=DocumentSource.LOCAL_FILE,
             source_reference=source_reference or filename,
             content_hash=content_hash,
-            processed_at=datetime.now(timezone.utc),
+            processed_at=datetime.now(UTC),
             parser_name="TextDocumentParser",
         )
 

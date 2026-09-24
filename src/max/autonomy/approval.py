@@ -2,6 +2,7 @@
 
 import datetime
 import logging
+
 from max.autonomy.domain import ApprovalRequest, ApprovalStatus, Mission, RiskLevel
 from max.config.settings import Settings, get_settings
 
@@ -25,7 +26,7 @@ class ApprovalService:
         timeout_seconds: int = 600,
     ) -> ApprovalRequest:
         """Create new pending approval request with expiration timestamp."""
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
         expires_at = (now + datetime.timedelta(seconds=timeout_seconds)).isoformat()
         approval_id = f"appr_{mission.mission_id}_{len(self._approvals) + 1}"
 
@@ -77,7 +78,7 @@ class ApprovalService:
         if req.status != ApprovalStatus.PENDING:
             raise ValueError(f"Cannot approve request '{approval_id}' in status '{req.status.value}'.")
 
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         req.status = ApprovalStatus.APPROVED
         req.approved_by = user_id
         req.decision_at = now_iso
@@ -90,7 +91,7 @@ class ApprovalService:
         if req.status != ApprovalStatus.PENDING:
             raise ValueError(f"Cannot deny request '{approval_id}' in status '{req.status.value}'.")
 
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         req.status = ApprovalStatus.DENIED
         req.approved_by = user_id
         req.decision_at = now_iso
@@ -100,7 +101,7 @@ class ApprovalService:
     def _check_expiration(self, req: ApprovalRequest) -> None:
         """Check if request has passed expiration timestamp and mark EXPIRED."""
         if req.status == ApprovalStatus.PENDING:
-            now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            now_iso = datetime.datetime.now(datetime.UTC).isoformat()
             if now_iso > req.expires_at:
                 req.status = ApprovalStatus.EXPIRED
                 logger.warning("Approval request %s EXPIRED.", req.approval_id)

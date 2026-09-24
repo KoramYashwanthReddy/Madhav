@@ -23,7 +23,7 @@ class EvidenceService:
         text = document.content.raw_text
 
         # Split text into candidate sentence chunks
-        sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if len(s.strip()) > 15]
+        [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if len(s.strip()) > 15]
 
         topic_terms = [t.lower() for t in request.objective.topic.split() if len(t) > 2]
 

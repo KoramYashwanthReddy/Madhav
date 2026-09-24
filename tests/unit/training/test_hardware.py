@@ -1,7 +1,11 @@
 """Unit tests for Hardware Detection and Pre-Flight Resource Estimation."""
 
-from max.training.domain import LoRAConfig, TrainingConfig, TrainingMethod
-from max.training.hardware import GPULockManager, HardwareDetectionService, ResourceEstimationService
+from max.training.domain import TrainingConfig, TrainingMethod
+from max.training.hardware import (
+    GPULockManager,
+    HardwareDetectionService,
+    ResourceEstimationService,
+)
 
 
 def test_hardware_detection_profile() -> None:

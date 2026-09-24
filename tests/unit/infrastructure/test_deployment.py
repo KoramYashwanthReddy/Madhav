@@ -1,6 +1,7 @@
 """Unit tests for Deployment Manager, GPU detection, and system resource metrics."""
 
 import pytest
+
 from max.infrastructure.deployment import DeploymentManager, get_deployment_manager
 
 

@@ -94,6 +94,95 @@ export const SettingsView: React.FC = () => {
           </div>
         </div>
 
+        {/* Voice System Settings (Module 26) */}
+        <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Volume2 size={20} style={{ color: 'var(--accent-cyan)' }} />
+            <h3 style={{ fontSize: '16px', fontWeight: 600, margin: 0 }}>Voice System Configuration (Module 26)</h3>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)', display: 'block' }}>Voice Input (STT)</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Enable speech-to-text recording</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => updatePreferences({ voice_input_enabled: !preferences.voice_input_enabled })}
+                className="btn btn-secondary"
+                style={{ padding: '4px 10px', fontSize: '12px' }}
+              >
+                {preferences.voice_input_enabled ? 'Enabled' : 'Disabled'}
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+              <div>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)', display: 'block' }}>Voice Output (TTS)</span>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Enable text-to-speech audio</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => updatePreferences({ voice_output_enabled: !preferences.voice_output_enabled })}
+                className="btn btn-secondary"
+                style={{ padding: '4px 10px', fontSize: '12px' }}
+              >
+                {preferences.voice_output_enabled ? 'Enabled' : 'Disabled'}
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)' }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main)', display: 'block' }}>Auto Speak AI Responses</span>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Automatically speak responses in standard chat mode</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => updatePreferences({ auto_speak: !preferences.auto_speak })}
+              className="btn btn-secondary"
+              style={{ padding: '4px 10px', fontSize: '12px' }}
+            >
+              {preferences.auto_speak ? 'Enabled' : 'Disabled'}
+            </button>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div>
+              <label style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>Speech Speed ({preferences.speech_speed}x)</label>
+              <select
+                value={preferences.speech_speed}
+                onChange={(e) => updatePreferences({ speech_speed: parseFloat(e.target.value) })}
+                className="input-field"
+                style={{ marginTop: '4px' }}
+              >
+                <option value="0.75">0.75x (Slower)</option>
+                <option value="1.0">1.0x (Normal)</option>
+                <option value="1.25">1.25x (Faster)</option>
+                <option value="1.5">1.5x (Fast)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>Speech Recognition Language</label>
+              <select
+                value={preferences.voice_language}
+                onChange={(e) => updatePreferences({ voice_language: e.target.value })}
+                className="input-field"
+                style={{ marginTop: '4px' }}
+              >
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="es-ES">Spanish (ES)</option>
+                <option value="fr-FR">French (FR)</option>
+                <option value="de-DE">German (DE)</option>
+                <option value="ja-JP">Japanese (JP)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         {/* Accessibility & UX Settings */}
         <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>

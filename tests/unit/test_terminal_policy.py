@@ -5,7 +5,6 @@ import pytest
 from max.terminal.domain.enums import (
     CommandCategory,
     CommandRiskLevel,
-    TerminalShell,
 )
 from max.terminal.domain.exceptions import CommandPolicyRejectionError
 from max.terminal.domain.models import CommandRequest

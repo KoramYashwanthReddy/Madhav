@@ -5,10 +5,9 @@ Coding work is delegated exclusively to Module 22 (CodingService).
 """
 
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.developer.domain.enums import (
-    MergeStrategy,
     PRStatus,
     WorkflowStatus,
     WorkflowStep,
@@ -35,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 # Ordered step sequences per workflow type
@@ -317,16 +316,16 @@ class WorkflowService:
             await self._git.push(repo_path, branch=branch, set_upstream=True)
 
         elif step == WorkflowStep.OPEN_PR:
-            default_branch = getattr(session, "repository", None)
-            if default_branch:
-                default_branch = getattr(default_branch, "default_branch", self._default_branch)
+            default_branch_raw = getattr(session, "repository", None)
+            if default_branch_raw:
+                target_branch = str(getattr(default_branch_raw, "default_branch", self._default_branch) or self._default_branch)
             else:
-                default_branch = self._default_branch
+                target_branch = str(self._default_branch)
             pr = self._pr_service.create_pr(
                 session_id=workflow.session_id,
                 title=f"{workflow.workflow_type.value}: {workflow.objective[:80]}",
                 source_branch=workflow.branch_name or "",
-                target_branch=default_branch,
+                target_branch=target_branch,
                 description=workflow.objective,
                 linked_workflow_id=workflow.id,
                 linked_issue_id=workflow.linked_issue_id,

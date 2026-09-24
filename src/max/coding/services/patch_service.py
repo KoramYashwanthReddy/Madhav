@@ -3,9 +3,10 @@
 import difflib
 import hashlib
 import os
+from datetime import UTC
 
 from max.coding.domain.enums import ChangeType
-from max.coding.domain.exceptions import CodingAgentError, RollbackFailedError, StalePatchError
+from max.coding.domain.exceptions import RollbackFailedError, StalePatchError
 from max.coding.domain.models import ChangeSet, Patch, PatchHunk
 from max.coding.security.prompt_injection import CodeSecurityEnforcer
 from max.filesystem.container import get_filesystem_container
@@ -95,7 +96,7 @@ class PatchService:
                         pass
 
                     if not current_text and os.path.exists(full_path):
-                        with open(full_path, "r", encoding="utf-8", errors="replace") as f:
+                        with open(full_path, encoding="utf-8", errors="replace") as f:
                             current_text = f.read()
 
                     # Stale patch detection check
@@ -147,9 +148,9 @@ class PatchService:
                         os.remove(full_path)
 
         changeset.is_applied = True
-        from datetime import datetime, timezone
+        from datetime import datetime
 
-        changeset.applied_at = datetime.now(timezone.utc)
+        changeset.applied_at = datetime.now(UTC)
 
     async def rollback_changeset(self, repo_root: str, changeset: ChangeSet) -> None:
         """Rollback an applied ChangeSet by restoring original file content from backup_data."""

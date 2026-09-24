@@ -1,9 +1,9 @@
 """Domain enumerations for Module 24 — Document Intelligence."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class DocumentType(str, Enum):
+class DocumentType(StrEnum):
     """Broad semantic categories for supported documents."""
 
     PDF = "PDF"
@@ -18,7 +18,7 @@ class DocumentType(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class DocumentFormat(str, Enum):
+class DocumentFormat(StrEnum):
     """Exact file format extensions."""
 
     PDF = "pdf"
@@ -33,7 +33,7 @@ class DocumentFormat(str, Enum):
     UNKNOWN = "unknown"
 
 
-class DocumentStatus(str, Enum):
+class DocumentStatus(StrEnum):
     """Lifecycle states for a managed Document."""
 
     DISCOVERED = "DISCOVERED"
@@ -46,7 +46,7 @@ class DocumentStatus(str, Enum):
     DELETED = "DELETED"
 
 
-class DocumentSource(str, Enum):
+class DocumentSource(StrEnum):
     """Origin reference type for document acquisition."""
 
     LOCAL_FILE = "LOCAL_FILE"
@@ -57,7 +57,7 @@ class DocumentSource(str, Enum):
     TEMPORARY_DOCUMENT = "TEMPORARY_DOCUMENT"
 
 
-class ElementType(str, Enum):
+class ElementType(StrEnum):
     """Granular structural element classifications."""
 
     PAGE = "PAGE"
@@ -77,7 +77,7 @@ class ElementType(str, Enum):
     CUSTOM = "CUSTOM"
 
 
-class ProcessingStatus(str, Enum):
+class ProcessingStatus(StrEnum):
     """Detailed operational status for document processing jobs."""
 
     QUEUED = "QUEUED"
@@ -92,7 +92,7 @@ class ProcessingStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class ComparisonChangeType(str, Enum):
+class ComparisonChangeType(StrEnum):
     """Types of diff changes detected between document versions."""
 
     ADDED = "ADDED"

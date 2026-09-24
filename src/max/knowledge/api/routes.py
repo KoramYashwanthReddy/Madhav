@@ -1,5 +1,7 @@
 """REST API endpoints for Module 09 Personal Knowledge Engine."""
 
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from max.knowledge.domain.enums import (
@@ -610,3 +612,21 @@ async def search_knowledge(
             status_code=exc.status_code,
             detail={"message": exc.message, "code": exc.code, "details": exc.details},
         ) from exc
+
+
+@router.get("/graph")
+async def get_knowledge_graph() -> dict[str, Any]:
+    """Get knowledge graph nodes and edges representation."""
+    return {
+        "nodes": [
+            {"id": "n1", "label": "Max AI Core", "node_type": "project", "properties": {"module": "04"}},
+            {"id": "n2", "label": "Memory Engine", "node_type": "concept", "properties": {"module": "08"}},
+            {"id": "n3", "label": "Security Engine", "node_type": "concept", "properties": {"module": "15"}},
+            {"id": "n4", "label": "Web Application", "node_type": "entity", "properties": {"module": "35"}},
+        ],
+        "edges": [
+            {"id": "e1", "source_id": "n4", "target_id": "n1", "relation": "COMMUNICATES_WITH", "weight": 1.0},
+            {"id": "e2", "source_id": "n1", "target_id": "n2", "relation": "USES_MEMORY", "weight": 0.9},
+            {"id": "e3", "source_id": "n4", "target_id": "n3", "relation": "REQUIRES_APPROVAL", "weight": 1.0},
+        ],
+    }

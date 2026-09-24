@@ -3,6 +3,7 @@
 import logging
 import time
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.common.interfaces import HealthCheckProvider
@@ -38,7 +39,7 @@ class RedisManager(HealthCheckProvider):
         """Ping Redis instance and return structured status."""
         start = time.perf_counter()
         latency = (time.perf_counter() - start) * 1000.0
-        
+
         status = RedisHealthStatus(
             status="ok" if self._connected else "error",
             provider="redis",

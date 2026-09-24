@@ -5,7 +5,7 @@ import json
 import logging
 import os
 import time
-from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings
@@ -44,7 +44,7 @@ class DisasterRecoveryManager:
         if not verification.valid:
             return RestoreReport(
                 backup_id=b_id,
-                timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                timestamp=datetime.datetime.now(datetime.UTC).isoformat(),
                 success=False,
                 components_restored=[],
                 execution_time_seconds=round(time.perf_counter() - start_time, 3),
@@ -81,7 +81,7 @@ class DisasterRecoveryManager:
                 components_restored.append("config")
 
             duration = time.perf_counter() - start_time
-            now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            now_iso = datetime.datetime.now(datetime.UTC).isoformat()
 
             logger.info("Disaster Recovery successfully restored backup %s in %.2fs", b_id, duration)
 
@@ -97,7 +97,7 @@ class DisasterRecoveryManager:
             logger.error("Disaster recovery failed for %s: %s", archive_path, exc)
             return RestoreReport(
                 backup_id=b_id,
-                timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                timestamp=datetime.datetime.now(datetime.UTC).isoformat(),
                 success=False,
                 components_restored=[],
                 execution_time_seconds=round(time.perf_counter() - start_time, 3),

@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from max.speech.domain.enums import AudioFormat
 from max.speech.domain.models import (
@@ -33,7 +34,7 @@ class TextToSpeechProvider(ABC):
         """Synthesize text into complete audio result."""
 
     @abstractmethod
-    async def synthesize_stream(
+    def synthesize_stream(
         self, request: SpeechSynthesisRequest
     ) -> AsyncGenerator[AudioChunk, None]:
         """Stream synthesized audio chunks for real-time playback."""

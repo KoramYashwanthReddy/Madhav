@@ -1,6 +1,5 @@
 """Unit tests for Model Promotion, Evaluation Benchmark, and Rollback."""
 
-import pytest
 from max.training.domain import ModelArtifact, PromotionStatus, TrainingConfig, TrainingJob
 from max.training.evaluation import TrainingEvaluationService
 from max.training.promotion import ModelPromotionService

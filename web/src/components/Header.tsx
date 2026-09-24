@@ -72,7 +72,7 @@ export const Header: React.FC = () => {
       {/* Right Action Icons */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         {/* Security Approvals Pill */}
-        {pendingApprovals.length > 0 && (
+        {Array.isArray(pendingApprovals) && pendingApprovals.length > 0 && (
           <button
             onClick={() => setIsNotificationDrawerOpen(true)}
             className="btn btn-danger"

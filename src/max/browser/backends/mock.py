@@ -5,25 +5,18 @@ Simulates browser sessions, tabs, navigation, observations, DOM elements, clicks
 typing, form submissions, screenshots, downloads, and uploads.
 """
 
-from datetime import UTC, datetime
 import os
 import threading
-from typing import Any
-import uuid
+from datetime import UTC, datetime
 
 from max.browser.backends.base import BrowserBackend
 from max.browser.domain.enums import (
-    BrowserActionStatus,
-    BrowserActionType,
     BrowserElementType,
-    BrowserEngine,
     BrowserStatus,
     BrowserTabStatus,
-    BrowserType,
     BrowserVerificationStatus,
 )
 from max.browser.domain.exceptions import (
-    BrowserElementNotFoundError,
     BrowserNavigationError,
     BrowserSessionNotFoundError,
     BrowserTabNotFoundError,
@@ -43,7 +36,6 @@ from max.browser.domain.models import (
     BrowserNavigationRequest,
     BrowserNavigationResult,
     BrowserObservation,
-    BrowserPage,
     BrowserPageMetadata,
     BrowserScreenshotRequest,
     BrowserScreenshotResult,

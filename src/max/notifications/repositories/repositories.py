@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
-from max.notifications.domain.enums import NotificationCategory, NotificationChannelType, NotificationReadState, NotificationSeverity, NotificationStatus
+from max.notifications.domain.enums import (
+    NotificationCategory,
+    NotificationReadState,
+    NotificationSeverity,
+    NotificationStatus,
+)
 from max.notifications.domain.exceptions import NotificationNotFoundError
 from max.notifications.domain.models import (
     Notification,

@@ -4,7 +4,7 @@ import hashlib
 import json
 import logging
 import os
-from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings

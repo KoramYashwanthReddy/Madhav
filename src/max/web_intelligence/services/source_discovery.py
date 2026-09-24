@@ -1,6 +1,5 @@
 """SourceDiscoveryService for discovering, classifying, and deduplicating web sources."""
 
-from urllib.parse import urlparse
 
 from max.web_intelligence.domain.enums import (
     SourceAuthority,
@@ -10,7 +9,6 @@ from max.web_intelligence.domain.enums import (
 from max.web_intelligence.domain.models import (
     ResearchQuery,
     ResearchRequest,
-    SearchResult,
     Source,
     SourceMetadata,
     SourceTrustMetadata,

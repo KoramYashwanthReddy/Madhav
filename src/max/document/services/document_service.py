@@ -3,7 +3,7 @@
 import difflib
 import hashlib
 import logging
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from max.document.adapters.filesystem_adapter import DocumentFilesystemAdapter
@@ -18,7 +18,6 @@ from max.document.domain.enums import (
     ProcessingStatus,
 )
 from max.document.domain.exceptions import (
-    DocumentNotFoundError,
     DocumentTooLargeError,
     DocumentValidationError,
 )
@@ -56,7 +55,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class DocumentService:
@@ -233,7 +232,7 @@ class DocumentService:
 
         return DocumentSummary(
             document_id=doc.id,
-            title=meta.title if meta else doc.filename,
+            title=(meta.title if meta and meta.title else doc.filename),
             doc_type=doc.doc_type,
             format=doc.format,
             summary_text=summary_txt,

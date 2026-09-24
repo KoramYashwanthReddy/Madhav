@@ -1,9 +1,8 @@
 """Unit tests for Module 19 — Application Control."""
 
-import pytest
-from unittest.mock import MagicMock
 
-from max.config.sections import ApplicationControlSettings
+import pytest
+
 from max.application_control import (
     ApplicationControlContainer,
     ApplicationControlService,
@@ -13,42 +12,31 @@ from max.application_control import (
 from max.application_control.backends.mock import MockApplicationControlBackend
 from max.application_control.domain.enums import (
     ApplicationActionFailureReason,
-    ApplicationActionStatus,
     ApplicationActionType,
     ApplicationAuditEventType,
     ApplicationCategory,
     ApplicationState,
     ApplicationStatus,
-    ApplicationType,
 )
 from max.application_control.domain.exceptions import (
     ApplicationBlockedError,
-    ApplicationControlError,
-    ApplicationElevationDeniedError,
     ApplicationInstanceLimitExceededError,
-    ApplicationNotFoundError,
-    ApplicationPolicyViolationError,
-    ApplicationProcessNotFoundError,
 )
 from max.application_control.domain.models import (
     Application,
     ApplicationActionRequest,
-    ApplicationActionResult,
     ApplicationAuditEvent,
     ApplicationInstance,
-    ApplicationPolicy,
-    ApplicationWindow,
 )
 from max.application_control.repositories import (
     ApplicationAuditRepository,
     ApplicationInstanceRepository,
-    ApplicationPolicyRepository,
     ApplicationRepository,
 )
 from max.application_control.security.app_policy import ApplicationPolicyService
 from max.application_control.services.tool_integration import register_application_tools
+from max.config.sections import ApplicationControlSettings
 from max.tools.services.registry import ToolRegistryService
-
 
 # ---------------------------------------------------------------------------
 # Domain Models & Enums Tests

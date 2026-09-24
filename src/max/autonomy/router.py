@@ -1,6 +1,7 @@
 """FastAPI Router for Module 41 — Future Autonomous Intelligence endpoints."""
 
 from typing import Any
+
 from fastapi import APIRouter, Depends, Path, Query
 from pydantic import BaseModel, Field
 

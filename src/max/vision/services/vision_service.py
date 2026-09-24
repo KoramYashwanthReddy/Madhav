@@ -34,7 +34,6 @@ from typing import Any
 
 from max.vision.domain.enums import (
     VisionCapability,
-    VisionFormat,
     VisionInputType,
     VisionProcessingStatus,
 )
@@ -43,15 +42,12 @@ from max.vision.domain.exceptions import (
     UnsupportedImageFormatError,
     VisionError,
     VisionInputError,
-    VisionModelUnavailableError,
-    VisionProcessingTimeoutError,
 )
 from max.vision.domain.models import (
     VisionAnalysisResult,
     VisionDimensions,
     VisionImage,
     VisionInput,
-    VisionMetadata,
     VisionModel,
     VisionModelConfiguration,
     VisionProcessingError,
@@ -413,7 +409,8 @@ class VisionService:
         if result.ocr is not None:
             wrapped_ocr = self._security.wrap_ocr_as_untrusted(result.ocr)
             result = result.model_copy(update={"ocr": wrapped_ocr})
-            ocr_text = result.ocr.full_text
+            if result.ocr is not None:
+                ocr_text = result.ocr.full_text
 
         face_detected = result.safety.face_detected if result.safety else False
         safety = self._security.build_safety_metadata(

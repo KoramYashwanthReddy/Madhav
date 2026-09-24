@@ -2,10 +2,11 @@
 
 import enum
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 
-class ClassificationLevel(str, enum.Enum):
+class ClassificationLevel(enum.StrEnum):
     """Sensitivity taxonomy classification levels for MAX platform data."""
 
     PUBLIC = "PUBLIC"

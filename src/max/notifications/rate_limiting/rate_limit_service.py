@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import time
-from typing import Any
 
 from max.notifications.domain.enums import NotificationChannelType
 from max.notifications.domain.models import Notification

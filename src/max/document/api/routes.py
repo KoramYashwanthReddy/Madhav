@@ -5,7 +5,7 @@ from typing import Any
 from fastapi import APIRouter, HTTPException, Query, status
 
 from max.document.container import get_document_container
-from max.document.domain.enums import DocumentFormat, DocumentSource, DocumentType
+from max.document.domain.enums import DocumentFormat, DocumentSource
 from max.document.domain.exceptions import (
     DocumentConversionError,
     DocumentGenerationError,

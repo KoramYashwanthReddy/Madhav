@@ -13,13 +13,11 @@ All results are hardcoded deterministic stubs.
 
 from __future__ import annotations
 
-import uuid
 from datetime import UTC, datetime
 
 from max.vision.domain.enums import (
     VisionCapability,
     VisionChartType,
-    VisionColorSpace,
     VisionConfidenceLevel,
     VisionInputType,
     VisionModelCapability,
@@ -43,14 +41,13 @@ from max.vision.domain.models import (
     VisionImage,
     VisionModel,
     VisionModelConfiguration,
+    VisionObject,
+    VisionObjectDetection,
     VisionObservation,
     VisionOCRBlock,
     VisionOCRLine,
     VisionOCRResult,
     VisionOCRWord,
-    VisionObject,
-    VisionObjectDetection,
-    VisionProcessingError,
     VisionProvenance,
     VisionRequest,
     VisionUIAnalysis,
@@ -307,7 +304,6 @@ class MockVisionProvider(VisionProvider):
         model_config: VisionModelConfiguration,
     ) -> VisionAnalysisResult:
         """Full analysis routing — calls individual capability methods based on request."""
-        from datetime import UTC, datetime
 
         result = VisionAnalysisResult(
             request_id=request.request_id,

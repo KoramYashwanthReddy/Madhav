@@ -4,12 +4,10 @@ Provides thread-safe in-memory repositories for applications, instances,
 policies, and audit logs.
 """
 
-from datetime import UTC, datetime
+from collections.abc import Sequence
 from threading import RLock
-from typing import Sequence
-import uuid
 
-from max.application_control.domain.enums import ApplicationCategory, ApplicationStatus
+from max.application_control.domain.enums import ApplicationCategory
 from max.application_control.domain.models import (
     Application,
     ApplicationAuditEvent,
@@ -53,14 +51,16 @@ class ApplicationRepository:
 
             # Match executable name or display name
             for app in self._apps.values():
-                if app.executable.lower() == q or app.executable.lower() == f"{q}.exe":
+                exe_str = app.executable.filename.lower() if app.executable else ""
+                if exe_str == q or exe_str == f"{q}.exe":
                     return app
                 if app.display_name.lower() == q:
                     return app
 
             # Substring match on display name or executable
             for app in self._apps.values():
-                if q in app.display_name.lower() or q in app.executable.lower():
+                exe_str = app.executable.filename.lower() if app.executable else ""
+                if q in app.display_name.lower() or (exe_str and q in exe_str):
                     return app
 
             return None

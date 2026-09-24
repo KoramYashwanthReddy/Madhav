@@ -1,6 +1,5 @@
 """Global dependency injection container for Module 20 — Browser Agent."""
 
-from max.config.settings import get_settings
 from max.browser.backends.base import BrowserBackend
 from max.browser.backends.mock import MockBrowserBackend
 from max.browser.backends.playwright import PlaywrightBrowserBackend
@@ -11,6 +10,7 @@ from max.browser.repositories.repositories import (
 )
 from max.browser.security.browser_policy import BrowserPolicyService
 from max.browser.services.browser_service import BrowserService
+from max.config.settings import get_settings
 from max.security.container import get_security_container
 from max.security.services.gate import PermissionGate
 

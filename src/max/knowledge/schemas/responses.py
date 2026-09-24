@@ -1,7 +1,7 @@
 """API response DTO models for Personal Knowledge Engine endpoints."""
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Generic, TypeVar
 
 from pydantic import BaseModel, Field
 
@@ -183,8 +183,6 @@ class KnowledgeSummaryResponse(BaseModel):
     collection: KnowledgeCollectionResponse | None
     version_count: int
 
-
-from typing import Generic, TypeVar
 
 T = TypeVar("T")
 

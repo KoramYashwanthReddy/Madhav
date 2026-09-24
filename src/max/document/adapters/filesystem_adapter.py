@@ -24,7 +24,7 @@ class DocumentFilesystemAdapter:
         if self._fs is not None:
             req = FileOperationRequest(
                 operation_type=FileOperationType.READ_FILE,
-                target_path=abs_path,
+                source=abs_path,
                 owner_id=owner_id,
             )
             result = await self._fs.execute_operation(req)
@@ -53,8 +53,8 @@ class DocumentFilesystemAdapter:
         if self._fs is not None:
             req = FileOperationRequest(
                 operation_type=FileOperationType.WRITE_FILE,
-                target_path=abs_path,
-                content=content.decode("utf-8", errors="replace"),
+                source=abs_path,
+                parameters={"content": content.decode("utf-8", errors="replace")},
                 owner_id=owner_id,
             )
             result = await self._fs.execute_operation(req)

@@ -1,6 +1,5 @@
 """Global dependency injection container for Module 19 — Application Control."""
 
-from max.config.settings import get_settings
 from max.application_control.backends.base import ApplicationControlBackend
 from max.application_control.backends.mock import MockApplicationControlBackend
 from max.application_control.backends.windows import WindowsApplicationControlBackend
@@ -12,6 +11,7 @@ from max.application_control.repositories.repositories import (
 )
 from max.application_control.security.app_policy import ApplicationPolicyService
 from max.application_control.services.application_control_service import ApplicationControlService
+from max.config.settings import get_settings
 from max.security.container import get_security_container
 from max.security.services.gate import PermissionGate
 

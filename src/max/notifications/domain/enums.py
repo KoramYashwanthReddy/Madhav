@@ -1,9 +1,9 @@
 """Enumerations for Module 27 — Notification System."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class NotificationStatus(str, Enum):
+class NotificationStatus(StrEnum):
     """Lifecycle states of a Notification."""
 
     CREATED = "CREATED"
@@ -22,7 +22,7 @@ class NotificationStatus(str, Enum):
     SUPPRESSED = "SUPPRESSED"
 
 
-class NotificationCategory(str, Enum):
+class NotificationCategory(StrEnum):
     """Extensible classification categories for notifications."""
 
     INFO = "INFO"
@@ -42,7 +42,7 @@ class NotificationCategory(str, Enum):
     INTEGRATION = "INTEGRATION"
 
 
-class NotificationSeverity(str, Enum):
+class NotificationSeverity(StrEnum):
     """Descriptive severity metadata."""
 
     LOW = "LOW"
@@ -51,7 +51,7 @@ class NotificationSeverity(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class NotificationPriority(str, Enum):
+class NotificationPriority(StrEnum):
     """Delivery priority determining routing order."""
 
     LOW = "LOW"
@@ -60,7 +60,7 @@ class NotificationPriority(str, Enum):
     URGENT = "URGENT"
 
 
-class NotificationChannelType(str, Enum):
+class NotificationChannelType(StrEnum):
     """Provider-neutral delivery channel types."""
 
     IN_APP = "IN_APP"
@@ -72,7 +72,7 @@ class NotificationChannelType(str, Enum):
     MOBILE = "MOBILE"
 
 
-class NotificationSourceType(str, Enum):
+class NotificationSourceType(StrEnum):
     """Origin generator of a notification request."""
 
     TASK_ENGINE = "TASK_ENGINE"
@@ -86,7 +86,7 @@ class NotificationSourceType(str, Enum):
     AUTOMATION = "AUTOMATION"
 
 
-class NotificationActionType(str, Enum):
+class NotificationActionType(StrEnum):
     """Action intent classifications for actionable notifications."""
 
     URL = "URL"
@@ -96,7 +96,7 @@ class NotificationActionType(str, Enum):
     INTENT = "INTENT"
 
 
-class NotificationSensitivity(str, Enum):
+class NotificationSensitivity(StrEnum):
     """Privacy and security sensitivity classification for content protection."""
 
     PUBLIC = "PUBLIC"
@@ -106,7 +106,7 @@ class NotificationSensitivity(str, Enum):
     HIGHLY_SENSITIVE = "HIGHLY_SENSITIVE"
 
 
-class NotificationDeliveryStatus(str, Enum):
+class NotificationDeliveryStatus(StrEnum):
     """Individual per-channel delivery attempt status."""
 
     QUEUED = "QUEUED"
@@ -116,7 +116,7 @@ class NotificationDeliveryStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class NotificationReadState(str, Enum):
+class NotificationReadState(StrEnum):
     """Read & acknowledgement state of a notification."""
 
     UNREAD = "UNREAD"
@@ -125,7 +125,7 @@ class NotificationReadState(str, Enum):
     DISMISSED = "DISMISSED"
 
 
-class NotificationEventType(str, Enum):
+class NotificationEventType(StrEnum):
     """Structured observable audit event types."""
 
     NOTIFICATION_CREATED = "notification_created"

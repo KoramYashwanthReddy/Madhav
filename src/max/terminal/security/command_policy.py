@@ -27,7 +27,6 @@ from max.terminal.domain.enums import CommandCategory, CommandRiskLevel
 from max.terminal.domain.exceptions import CommandPolicyRejectionError
 from max.terminal.domain.models import CommandClassification, CommandRequest
 
-
 # ---------------------------------------------------------------------------
 # Policy tables
 # ---------------------------------------------------------------------------

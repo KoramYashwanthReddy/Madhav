@@ -1,8 +1,9 @@
 """Unit tests for Training Engine, Checkpointing, and Job State Machine."""
 
 import os
+
+from max.training.domain import JobStatus, TrainingConfig, TrainingJob
 from max.training.engine import CheckpointManager, MockTrainingBackend, TrainingJobService
-from max.training.domain import JobStatus, LoRAConfig, TrainingConfig, TrainingJob
 
 
 def test_checkpoint_creation() -> None:

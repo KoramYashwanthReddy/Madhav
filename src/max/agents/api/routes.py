@@ -232,11 +232,9 @@ def list_agents(
     service: AgentService = Depends(get_agent_service),
 ) -> list[AgentResponse]:
     """List registered agents with optional owner filter and pagination."""
-    agents = service.list_agents(owner_id=owner_id)
-    start_idx = (page - 1) * page_size
-    end_idx = start_idx + page_size
-    paged = agents[start_idx:end_idx]
-    return [_to_agent_response(a) for a in paged]
+    offset = (page - 1) * page_size
+    agents_list, _ = service.list_agents(owner_id=owner_id, limit=page_size, offset=offset)
+    return [_to_agent_response(a) for a in agents_list]
 
 
 @router.post("/select", response_model=AgentSelectionResponse)

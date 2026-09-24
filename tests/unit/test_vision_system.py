@@ -2,11 +2,13 @@
 
 import hashlib
 import struct
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from max.api.router import register_routers
+from max.tools.services.registry import ToolRegistryService
 from max.vision.container import get_vision_container, reset_vision_container
 from max.vision.domain.enums import (
     VisionCapability,
@@ -15,7 +17,6 @@ from max.vision.domain.enums import (
     VisionConfidenceLevel,
     VisionFormat,
     VisionInputType,
-    VisionModelCapability,
     VisionModelStatus,
     VisionObservationType,
     VisionProcessingStatus,
@@ -31,7 +32,6 @@ from max.vision.domain.exceptions import (
     UnsupportedImageFormatError,
     VisionError,
     VisionInputError,
-    VisionPermissionError,
     VisionSecurityError,
 )
 from max.vision.domain.models import (
@@ -43,11 +43,9 @@ from max.vision.domain.models import (
     VisionImage,
     VisionInput,
     VisionMetadata,
-    VisionModel,
     VisionModelConfiguration,
     VisionOCRResult,
     VisionProcessingOptions,
-    VisionProvenance,
     VisionRequest,
     VisionSource,
 )
@@ -63,8 +61,6 @@ from max.vision.providers.mock_provider import MockVisionProvider
 from max.vision.security.enforcer import VisionSecurityEnforcer
 from max.vision.services.tool_integration import VISION_TOOLS, register_vision_tools
 from max.vision.services.vision_service import VisionCache, VisionService
-from max.tools.services.registry import ToolRegistryService
-
 
 # ---------------------------------------------------------------------------
 # Helpers: minimal valid PNG
@@ -817,7 +813,7 @@ class TestVisionToolIntegration:
         assert len(ids) == len(VISION_TOOLS)
 
     def test_register_idempotent(self, tool_registry):
-        ids1 = register_vision_tools(tool_registry)
+        register_vision_tools(tool_registry)
         ids2 = register_vision_tools(tool_registry)
         assert len(ids2) == 0  # All already registered
 

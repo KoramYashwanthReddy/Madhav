@@ -1,6 +1,11 @@
 """Unit tests for Dataset Validation, Preprocessing, Versioning, and Leakage Detection."""
 
-from max.training.datasets import DataCleaner, DatasetService, DatasetValidationService, LeakageDetector
+from max.training.datasets import (
+    DataCleaner,
+    DatasetService,
+    DatasetValidationService,
+    LeakageDetector,
+)
 from max.training.domain import DatasetStatus, TrainingSample
 
 

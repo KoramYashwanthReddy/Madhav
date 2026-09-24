@@ -6,7 +6,6 @@ Registers controlled speech tools with Module 14 ToolRegistry.
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from max.tools.domain.enums import ToolCapability, ToolCategory, ToolRiskLevel, ToolSource
 from max.tools.services.registry import ToolRegistryService

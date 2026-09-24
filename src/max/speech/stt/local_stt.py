@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from max.speech.audio.streaming import AudioInputStream
 from max.speech.domain.enums import AudioFormat, SpeechProcessingStatus, TranscriptState
@@ -91,7 +92,7 @@ class LocalSpeechToTextProvider(SpeechToTextProvider):
     async def transcribe_stream(
         self, stream: AudioInputStream, request: SpeechRecognitionRequest
     ) -> AsyncGenerator[Transcript, None]:
-        chunk = await stream.read(timeout_seconds=0.5)
+        await stream.read(timeout_seconds=0.5)
         text = "Streaming local transcription..."
         yield Transcript(
             session_id=request.session_id,

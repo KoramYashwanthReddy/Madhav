@@ -1,10 +1,10 @@
 """Domain models for Module 21 — Web Intelligence."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
-from pydantic import BaseModel, Field, HttpUrl
+from pydantic import BaseModel, Field
 
 from max.web_intelligence.domain.enums import (
     CitationStyle,
@@ -24,7 +24,7 @@ from max.web_intelligence.domain.enums import (
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class ResearchObjective(BaseModel):

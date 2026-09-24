@@ -1,6 +1,7 @@
 """End-to-end API tests for Module 17 — Filesystem Agent REST API endpoints."""
 
 from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 

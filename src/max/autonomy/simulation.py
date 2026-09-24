@@ -6,12 +6,8 @@ from typing import Any
 from max.autonomy.approval import ApprovalService
 from max.autonomy.budget import AutonomyBudgetService
 from max.autonomy.domain import (
-    ActionStatus,
-    ApprovalStatus,
-    AutonomyLevel,
     Mission,
     MissionAction,
-    MissionResult,
     MissionStatus,
     RiskLevel,
     SimulationMode,
@@ -94,7 +90,7 @@ class AutonomySimulationService:
         blocked_attempts = []
         for sample in malicious_inputs:
             # Pass malicious prompt into policy evaluation
-            risk = self.policy_service.risk_service.classify_risk("execute_command", sample)
+            self.policy_service.risk_service.classify_risk("execute_command", sample)
             test_mission = Mission(
                 mission_id="test_inj_mission",
                 title="Prompt Injection Test",

@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from datetime import datetime, time, timezone
 import logging
+from datetime import UTC, datetime, time
+from typing import Any
 
 from max.notifications.domain.enums import (
     NotificationCategory,
@@ -50,7 +51,7 @@ class NotificationPreferenceService:
         if not pref.quiet_hours_enabled:
             return False
 
-        now = (current_dt or datetime.now(timezone.utc)).time()
+        now = (current_dt or datetime.now(UTC)).time()
         start = _parse_time(pref.quiet_hours_start)
         end = _parse_time(pref.quiet_hours_end)
 

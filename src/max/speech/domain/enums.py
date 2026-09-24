@@ -1,9 +1,9 @@
 """Enumerations for Module 26 — Speech System."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class SpeechSessionStatus(str, Enum):
+class SpeechSessionStatus(StrEnum):
     """Lifecycle states of a Speech Session."""
 
     CREATED = "CREATED"
@@ -22,7 +22,7 @@ class SpeechSessionStatus(str, Enum):
     FAILED = "FAILED"
 
 
-class SpeechInputType(str, Enum):
+class SpeechInputType(StrEnum):
     """Source categories for incoming speech audio input."""
 
     MICROPHONE = "MICROPHONE"
@@ -34,7 +34,7 @@ class SpeechInputType(str, Enum):
     TEST_AUDIO = "TEST_AUDIO"
 
 
-class AudioSourceType(str, Enum):
+class AudioSourceType(StrEnum):
     """Audio source origin classifications."""
 
     MICROPHONE = "MICROPHONE"
@@ -43,7 +43,7 @@ class AudioSourceType(str, Enum):
     SYNTHETIC = "SYNTHETIC"
 
 
-class AudioFormat(str, Enum):
+class AudioFormat(StrEnum):
     """Supported audio format codings & containers."""
 
     WAV = "WAV"
@@ -57,7 +57,7 @@ class AudioFormat(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class SpeechActivityType(str, Enum):
+class SpeechActivityType(StrEnum):
     """Voice activity detection states."""
 
     SILENCE = "SILENCE"
@@ -67,7 +67,7 @@ class SpeechActivityType(str, Enum):
     END_OF_SPEECH = "END_OF_SPEECH"
 
 
-class SpeechProcessingStatus(str, Enum):
+class SpeechProcessingStatus(StrEnum):
     """Status of STT / TTS processing tasks."""
 
     IDLE = "IDLE"
@@ -78,7 +78,7 @@ class SpeechProcessingStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class InterruptionReason(str, Enum):
+class InterruptionReason(StrEnum):
     """Triggers for speech interruption / barge-in."""
 
     USER_SPEECH = "USER_SPEECH"
@@ -88,7 +88,7 @@ class InterruptionReason(str, Enum):
     ERROR = "ERROR"
 
 
-class SpeechEventType(str, Enum):
+class SpeechEventType(StrEnum):
     """Structured observable speech event types (NO raw audio in event payloads)."""
 
     SESSION_CREATED = "session_created"
@@ -112,7 +112,7 @@ class SpeechEventType(str, Enum):
     SESSION_FAILED = "session_failed"
 
 
-class TranscriptState(str, Enum):
+class TranscriptState(StrEnum):
     """Streaming transcript confidence & finality state."""
 
     PARTIAL = "PARTIAL"
@@ -120,7 +120,7 @@ class TranscriptState(str, Enum):
     CORRECTED = "CORRECTED"
 
 
-class VoiceGender(str, Enum):
+class VoiceGender(StrEnum):
     """Voice gender attributes exposed by providers."""
 
     MALE = "MALE"
@@ -129,7 +129,7 @@ class VoiceGender(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class RawAudioRetention(str, Enum):
+class RawAudioRetention(StrEnum):
     """Privacy lifecycle for raw audio recordings."""
 
     TEMPORARY = "TEMPORARY"

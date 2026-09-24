@@ -1,5 +1,7 @@
 """Module 41 — Future Autonomous Intelligence package."""
 
+from max.autonomy.approval import ApprovalService
+from max.autonomy.budget import AutonomyBudgetService, MissionCircuitBreaker
 from max.autonomy.domain import (
     ActionStatus,
     ApprovalRequest,
@@ -17,9 +19,6 @@ from max.autonomy.domain import (
     RiskLevel,
     SimulationMode,
 )
-from max.autonomy.policy import AutonomyPolicyService, AutonomyRiskService
-from max.autonomy.approval import ApprovalService
-from max.autonomy.budget import AutonomyBudgetService, MissionCircuitBreaker
 from max.autonomy.orchestrator import (
     MissionExecutionService,
     MissionOrchestrator,
@@ -27,8 +26,9 @@ from max.autonomy.orchestrator import (
     MissionReplanningService,
     MissionVerificationService,
 )
-from max.autonomy.simulation import AutonomySimulationService
+from max.autonomy.policy import AutonomyPolicyService, AutonomyRiskService
 from max.autonomy.service import AutonomyService, get_autonomy_service
+from max.autonomy.simulation import AutonomySimulationService
 
 __all__ = [
     "ActionStatus",

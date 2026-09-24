@@ -4,7 +4,7 @@ import re
 
 from max.coding.domain.enums import FailureCategory
 from max.coding.domain.exceptions import MaxFixAttemptsExceededError
-from max.coding.domain.models import DebugFinding, DebugSession, TestRun
+from max.coding.domain.models import DebugFinding, DebugSession
 
 
 class DebuggerService:

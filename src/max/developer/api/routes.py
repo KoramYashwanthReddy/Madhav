@@ -8,8 +8,6 @@ from pydantic import BaseModel, Field
 from max.developer.container import get_developer_container
 from max.developer.domain.enums import IssuePriority, MergeStrategy, WorkflowType
 from max.developer.domain.exceptions import (
-    DeveloperAgentError,
-    DevIssueNotFoundError,
     DevPRNotFoundError,
     DevSessionNotFoundError,
     DevWorkflowNotFoundError,

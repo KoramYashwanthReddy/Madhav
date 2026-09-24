@@ -2,16 +2,14 @@
 
 from __future__ import annotations
 
-from enum import Enum
 import logging
-from typing import Any
+from enum import StrEnum
 
 from pydantic import BaseModel, Field
 
 from max.notifications.domain.enums import (
     NotificationChannelType,
     NotificationSensitivity,
-    NotificationSeverity,
 )
 from max.notifications.domain.models import Notification, NotificationPreference
 from max.notifications.preferences.preference_service import NotificationPreferenceService
@@ -19,7 +17,7 @@ from max.notifications.preferences.preference_service import NotificationPrefere
 logger = logging.getLogger(__name__)
 
 
-class PolicyDecisionEnum(str, Enum):
+class PolicyDecisionEnum(StrEnum):
     """Possible policy decisions."""
 
     ALLOW = "ALLOW"

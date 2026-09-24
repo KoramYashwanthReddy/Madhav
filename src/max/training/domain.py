@@ -2,12 +2,11 @@
 
 import enum
 from typing import Any
+
 from pydantic import BaseModel, Field
 
-from max.version import VERSION
 
-
-class DatasetStatus(str, enum.Enum):
+class DatasetStatus(enum.StrEnum):
     """Lifecycle status for training datasets."""
 
     DRAFT = "DRAFT"
@@ -18,7 +17,7 @@ class DatasetStatus(str, enum.Enum):
     DELETED = "DELETED"
 
 
-class TrainingMethod(str, enum.Enum):
+class TrainingMethod(enum.StrEnum):
     """Supported model fine-tuning and training methods."""
 
     SFT = "SFT"
@@ -29,7 +28,7 @@ class TrainingMethod(str, enum.Enum):
     PREFERENCE_OPTIMIZATION = "PREFERENCE_OPTIMIZATION"
 
 
-class JobStatus(str, enum.Enum):
+class JobStatus(enum.StrEnum):
     """Lifecycle state machine for training jobs."""
 
     QUEUED = "QUEUED"
@@ -46,7 +45,7 @@ class JobStatus(str, enum.Enum):
     REJECTED = "REJECTED"
 
 
-class JobPriority(str, enum.Enum):
+class JobPriority(enum.StrEnum):
     """Training job execution priority."""
 
     LOW = "LOW"
@@ -54,7 +53,7 @@ class JobPriority(str, enum.Enum):
     HIGH = "HIGH"
 
 
-class PromotionStatus(str, enum.Enum):
+class PromotionStatus(enum.StrEnum):
     """Model promotion lifecycle state."""
 
     TRAINED = "TRAINED"

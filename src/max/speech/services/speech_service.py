@@ -8,32 +8,26 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from max.config.sections import SpeechSettings
 from max.speech.audio.devices import AudioDeviceRegistry, AudioInputDevice, AudioOutputDevice
-from max.speech.audio.preprocessing import AudioPreprocessor, PreprocessedAudio
+from max.speech.audio.preprocessing import AudioPreprocessor
 from max.speech.audio.streaming import AudioInputStream, AudioOutputStream
 from max.speech.audio.validation import AudioValidator
 from max.speech.domain.enums import (
-    AudioFormat,
     InterruptionReason,
     SpeechInputType,
-    SpeechProcessingStatus,
     SpeechSessionStatus,
 )
 from max.speech.domain.exceptions import (
-    AudioPermissionError,
     SpeechError,
     SpeechInputError,
-    SpeechProviderError,
 )
 from max.speech.domain.models import (
     AudioChunk,
-    AudioMetadata,
     LanguageDetectionResult,
     SpeechActivity,
-    SpeechInput,
     SpeechInterruption,
     SpeechRecognitionRequest,
     SpeechRecognitionResult,
@@ -128,7 +122,7 @@ class SpeechService:
         provider_name: str | None = None,
     ) -> SpeechRecognitionResult:
         """Perform full speech-to-text recognition pipeline on audio bytes."""
-        start_time = time.monotonic()
+        time.monotonic()
 
         # Validate input
         metadata = self._validator.validate(data)

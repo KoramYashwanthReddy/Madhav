@@ -3,6 +3,7 @@
 import logging
 import time
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.common.interfaces import HealthCheckProvider
@@ -41,7 +42,7 @@ class DatabaseManager(HealthCheckProvider):
         start = time.perf_counter()
         # Simulated database ping / health validation
         latency = (time.perf_counter() - start) * 1000.0
-        
+
         status = DatabaseHealthStatus(
             status="ok" if self._connected else "error",
             provider="postgresql",

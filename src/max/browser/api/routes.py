@@ -1,20 +1,25 @@
 """FastAPI API routes for Module 20 — Browser Agent."""
 
 from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from max.browser.container import BrowserContainer, get_browser_container
+from max.browser.domain.exceptions import (
+    BrowserDomainBlockedError,
+    BrowserElementNotFoundError,
+    BrowserError,
+    BrowserNavigationBlockedError,
+    BrowserPermissionDeniedError,
+    BrowserSessionNotFoundError,
+    BrowserTabNotFoundError,
+)
 from max.browser.domain.models import (
     BrowserClickRequest,
     BrowserClickResult,
-    BrowserConfiguration,
-    BrowserExtractRequest,
     BrowserExtractResult,
-    BrowserForm,
-    BrowserLink,
     BrowserNavigationResult,
     BrowserObservation,
-    BrowserScreenshotRequest,
     BrowserScreenshotResult,
     BrowserScrollRequest,
     BrowserScrollResult,
@@ -26,16 +31,6 @@ from max.browser.domain.models import (
     BrowserTypeResult,
     BrowserWaitRequest,
     BrowserWaitResult,
-)
-from max.browser.domain.enums import BrowserEngine, BrowserType
-from max.browser.domain.exceptions import (
-    BrowserDomainBlockedError,
-    BrowserElementNotFoundError,
-    BrowserError,
-    BrowserNavigationBlockedError,
-    BrowserPermissionDeniedError,
-    BrowserSessionNotFoundError,
-    BrowserTabNotFoundError,
 )
 from max.browser.services.browser_service import BrowserService
 

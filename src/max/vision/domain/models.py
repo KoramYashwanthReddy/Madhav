@@ -28,7 +28,6 @@ from max.vision.domain.enums import (
     VisionUIElementType,
 )
 
-
 # ---------------------------------------------------------------------------
 # Geometry
 # ---------------------------------------------------------------------------
@@ -137,7 +136,7 @@ class VisionConfidence(BaseModel):
         high_threshold: float = 0.85,
         medium_threshold: float = 0.60,
         low_threshold: float = 0.40,
-    ) -> "VisionConfidence":
+    ) -> VisionConfidence:
         if score >= high_threshold:
             level = VisionConfidenceLevel.HIGH
         elif score >= medium_threshold:

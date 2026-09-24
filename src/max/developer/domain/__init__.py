@@ -14,12 +14,12 @@ from max.developer.domain.enums import (
 )
 from max.developer.domain.exceptions import (
     BranchNotFoundError,
+    DeveloperAgentError,
     DevIssueNotFoundError,
     DevPermissionDeniedError,
     DevPRNotFoundError,
     DevSessionNotFoundError,
     DevWorkflowNotFoundError,
-    DeveloperAgentError,
     GitOperationError,
     PRConflictError,
     RepositoryNotFoundError,

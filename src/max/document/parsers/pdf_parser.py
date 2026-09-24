@@ -3,7 +3,7 @@
 import hashlib
 import io
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.document.domain.enums import DocumentFormat, DocumentSource, ElementType
 from max.document.domain.models import (
@@ -22,12 +22,12 @@ from max.document.parsers.base import BaseDocumentParser
 try:
     import pypdf
 except ImportError:
-    pypdf = None
+    pypdf = None  # type: ignore[assignment]
 
 try:
     import fitz  # PyMuPDF
 except ImportError:
-    fitz = None
+    fitz = None  # type: ignore[assignment]
 
 
 class PdfDocumentParser(BaseDocumentParser):
@@ -106,7 +106,7 @@ class PdfDocumentParser(BaseDocumentParser):
                     p_text = page_obj.extract_text() or ""
                     full_text_parts.append(p_text)
 
-                    p_elements: list[str] = []
+                    p_elements = []
                     lines = [ln.strip() for ln in p_text.splitlines() if ln.strip()]
                     for lno, line in enumerate(lines, start=1):
                         loc = DocumentLocation(page_number=pno + 1, row_index=lno)
@@ -183,7 +183,7 @@ class PdfDocumentParser(BaseDocumentParser):
             source_type=DocumentSource.LOCAL_FILE,
             source_reference=source_reference or filename,
             content_hash=content_hash,
-            processed_at=datetime.now(timezone.utc),
+            processed_at=datetime.now(UTC),
             parser_name="PdfDocumentParser",
         )
 

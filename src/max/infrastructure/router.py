@@ -1,18 +1,24 @@
 """FastAPI Router for Module 38 — Infrastructure & Production Deployment endpoints."""
 
-from typing import Any
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Query
 
 from max.core.request_id import get_request_id
 from max.core.responses import APIResponse
-from max.infrastructure.deployment import DeploymentStatus, GPUInfo, InfrastructureMetrics, get_deployment_manager
+from max.infrastructure.deployment import (
+    DeploymentStatus,
+    GPUInfo,
+    InfrastructureMetrics,
+    get_deployment_manager,
+)
 from max.infrastructure.secrets import SecretRotationMetadata, get_secret_manager
 from max.infrastructure.storage import get_storage_manager
 
 router = APIRouter(prefix="/infrastructure", tags=["Infrastructure & Deployment"])
+system_router = APIRouter(prefix="/system", tags=["System Infrastructure"])
 
 
 @router.get("/status", response_model=APIResponse[DeploymentStatus])
+@system_router.get("/status", response_model=APIResponse[DeploymentStatus])
 async def get_infrastructure_status() -> APIResponse[DeploymentStatus]:
     """Retrieve aggregate deployment status, service health checks, GPU info, and system metrics."""
     deploy_mgr = get_deployment_manager()

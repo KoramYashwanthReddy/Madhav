@@ -1,9 +1,9 @@
 """Enums for Module 22 — Coding Agent."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class CodingStatus(str, Enum):
+class CodingStatus(StrEnum):
     """Lifecycle state transitions for a Coding Session or Task."""
 
     CREATED = "CREATED"
@@ -21,7 +21,7 @@ class CodingStatus(str, Enum):
     PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED"
 
 
-class CodingMode(str, Enum):
+class CodingMode(StrEnum):
     """Structured operational modes for Coding Agent execution."""
 
     CODE_EXPLANATION = "CODE_EXPLANATION"
@@ -39,7 +39,7 @@ class CodingMode(str, Enum):
     BUILD_DEBUGGING = "BUILD_DEBUGGING"
 
 
-class ProjectType(str, Enum):
+class ProjectType(StrEnum):
     """Ecosystem project type classification."""
 
     PYTHON = "PYTHON"
@@ -55,7 +55,7 @@ class ProjectType(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class IssueSeverity(str, Enum):
+class IssueSeverity(StrEnum):
     """Severity classification for code issues and security findings."""
 
     LOW = "LOW"
@@ -64,7 +64,7 @@ class IssueSeverity(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class IssueCategory(str, Enum):
+class IssueCategory(StrEnum):
     """Category classification of code defects."""
 
     SYNTAX = "SYNTAX"
@@ -77,7 +77,7 @@ class IssueCategory(str, Enum):
     DEPRECATION = "DEPRECATION"
 
 
-class ChangeType(str, Enum):
+class ChangeType(StrEnum):
     """Type of file system patch change operation."""
 
     CREATE_FILE = "CREATE_FILE"
@@ -86,7 +86,7 @@ class ChangeType(str, Enum):
     RENAME_FILE = "RENAME_FILE"
 
 
-class SymbolType(str, Enum):
+class SymbolType(StrEnum):
     """Classification of code symbols."""
 
     CLASS = "CLASS"
@@ -103,7 +103,7 @@ class SymbolType(str, Enum):
     TEST = "TEST"
 
 
-class FailureCategory(str, Enum):
+class FailureCategory(StrEnum):
     """Category of build/test/command execution failures."""
 
     CODE_ERROR = "CODE_ERROR"

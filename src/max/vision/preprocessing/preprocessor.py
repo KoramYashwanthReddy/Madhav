@@ -16,7 +16,7 @@ from typing import Any
 
 from max.vision.domain.enums import VisionColorSpace, VisionFormat
 from max.vision.domain.exceptions import ImageDecodeError
-from max.vision.domain.models import VisionBoundingBox, VisionDimensions, VisionProcessingOptions
+from max.vision.domain.models import VisionProcessingOptions
 
 logger = logging.getLogger(__name__)
 
@@ -133,7 +133,7 @@ class ImagePreprocessor:
         options: VisionProcessingOptions,
     ) -> PreprocessedImage:
         """PIL-based preprocessing implementation."""
-        img = PILImage.open(io.BytesIO(data))
+        img: Any = PILImage.open(io.BytesIO(data))
         img.load()
 
         original_width, original_height = img.size
@@ -186,7 +186,8 @@ class ImagePreprocessor:
                 else:
                     new_h = max_dim
                     new_w = max(1, int(img.width * max_dim / img.height))
-                img = img.resize((new_w, new_h), PILImage.LANCZOS)
+                resample = getattr(getattr(PILImage, "Resampling", PILImage), "LANCZOS", 1)
+                img = img.resize((new_w, new_h), resample)
                 was_resized = True
 
         # Ensure RGB for JPEG output (JPEG doesn't support RGBA)

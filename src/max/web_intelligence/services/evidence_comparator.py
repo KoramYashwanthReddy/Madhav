@@ -14,7 +14,7 @@ class EvidenceComparator:
     ) -> list[EvidenceConflict]:
         """Detect conflicts or discrepancies across extracted evidence items."""
         conflicts: list[EvidenceConflict] = []
-        source_map = {s.id: s for s in sources}
+        {s.id: s for s in sources}
 
         # Pairwise check for date or factual contradictions
         for i in range(len(evidence_list)):

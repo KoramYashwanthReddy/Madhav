@@ -1,7 +1,13 @@
 """Security, Privacy, Data Poisoning, and Resource Limit Tests for Training Module."""
 
 import pytest
-from max.training.domain import LoRAConfig, PromotionStatus, TrainingConfig, TrainingMethod, TrainingSample
+
+from max.training.domain import (
+    PromotionStatus,
+    TrainingConfig,
+    TrainingMethod,
+    TrainingSample,
+)
 from max.training.engine import TrainingJobService
 from max.training.hardware import ResourceEstimationService
 from max.training.promotion import ModelPromotionRecord, ModelPromotionService
@@ -24,7 +30,7 @@ def test_prompt_injection_dataset_sample_remains_passive_data() -> None:
 
 def test_unfeasible_training_config_fails_preflight() -> None:
     """Verify that unfeasible training configs (excessive sequence length / batch) fail before starting."""
-    est_svc = ResourceEstimationService()
+    ResourceEstimationService()
     # Huge sequence length and batch size that exceeds VRAM
     excessive_config = TrainingConfig(
         model_id="max-huge-base",

@@ -4,7 +4,6 @@ import os
 import re
 
 from max.coding.domain.enums import SymbolType
-from max.coding.domain.exceptions import CodingAgentError
 from max.coding.domain.models import CodeSymbol
 from max.coding.security.prompt_injection import CodeSecurityEnforcer
 from max.filesystem.container import get_filesystem_container
@@ -49,7 +48,7 @@ class CodeSearchService:
             pass
 
         if not text and os.path.exists(full_path):
-            with open(full_path, "r", encoding="utf-8", errors="replace") as f:
+            with open(full_path, encoding="utf-8", errors="replace") as f:
                 text = f.read()
 
         if start_line or end_line:
@@ -65,7 +64,7 @@ class CodeSearchService:
     ) -> list[dict[str, str]]:
         """Search code files for matching text queries."""
         req = FileOperationRequest(
-            operation_type=FileOperationType.SEARCH_FILES,
+            operation_type=FileOperationType.SEARCH,
             source=repo_root,
             owner_id="system",
             parameters={"query": query, "pattern": pattern},

@@ -29,7 +29,7 @@ from max.vision.domain.exceptions import (
     ScreenCapturePermissionError,
     VisionSecurityError,
 )
-from max.vision.domain.models import VisionBoundingBox, VisionOCRResult, VisionSafetyMetadata
+from max.vision.domain.models import VisionOCRResult, VisionSafetyMetadata
 
 logger = logging.getLogger(__name__)
 

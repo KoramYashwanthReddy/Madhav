@@ -4,7 +4,7 @@ import hashlib
 import io
 import xml.etree.ElementTree as ET
 import zipfile
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.document.domain.enums import DocumentFormat, DocumentSource, ElementType
 from max.document.domain.models import (
@@ -27,7 +27,7 @@ from max.document.parsers.base import BaseDocumentParser
 try:
     import docx
 except ImportError:
-    docx = None
+    docx = None  # type: ignore[assignment]
 
 
 class DocxDocumentParser(BaseDocumentParser):
@@ -69,9 +69,10 @@ class DocxDocumentParser(BaseDocumentParser):
                     full_text_parts.append(p_text)
                     loc = DocumentLocation(page_number=1, row_index=p_idx)
 
-                    if p.style.name.startswith("Heading"):
+                    style_name = getattr(p.style, "name", "") or ""
+                    if style_name.startswith("Heading"):
                         try:
-                            level = int(p.style.name.replace("Heading", "").strip())
+                            level = int(style_name.replace("Heading", "").strip())
                         except ValueError:
                             level = 1
                         hdg = DocumentHeading(text=p_text, level=level, location=loc)
@@ -144,8 +145,8 @@ class DocxDocumentParser(BaseDocumentParser):
                     xml_content = z.read("word/document.xml")
                     root = ET.fromstring(xml_content)
                     ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
-                    for p in root.findall(".//w:p", ns):
-                        texts = [t.text for t in p.findall(".//w:t", ns) if t.text]
+                    for elem_p in root.findall(".//w:p", ns):
+                        texts = [t.text for t in elem_p.findall(".//w:t", ns) if t.text]
                         p_text = "".join(texts).strip()
                         if p_text:
                             full_text_parts.append(p_text)
@@ -195,7 +196,7 @@ class DocxDocumentParser(BaseDocumentParser):
             source_type=DocumentSource.LOCAL_FILE,
             source_reference=source_reference or filename,
             content_hash=content_hash,
-            processed_at=datetime.now(timezone.utc),
+            processed_at=datetime.now(UTC),
             parser_name="DocxDocumentParser",
         )
 

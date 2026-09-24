@@ -8,21 +8,19 @@ from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel, Field
 
 from max.speech.container import get_speech_container
-from max.speech.domain.enums import AudioFormat, InterruptionReason, SpeechInputType, SpeechSessionStatus
+from max.speech.domain.enums import (
+    InterruptionReason,
+    SpeechInputType,
+)
 from max.speech.domain.exceptions import (
-    AudioDeviceError,
     AudioFormatError,
     AudioPermissionError,
     AudioTooLargeError,
     AudioTooLongError,
-    BargeInError,
     SpeechError,
     SpeechInputError,
     SpeechModelUnavailableError,
-    SpeechProviderError,
     SpeechSessionError,
-    SynthesisError,
-    TranscriptionError,
     VoiceNotFoundError,
 )
 

@@ -7,10 +7,9 @@ and mock device implementations for continuous integration and unit testing.
 from __future__ import annotations
 
 import logging
-from typing import Any
+
 from pydantic import BaseModel, Field
 
-from max.speech.domain.enums import AudioFormat
 from max.speech.domain.exceptions import AudioDeviceError
 
 logger = logging.getLogger(__name__)

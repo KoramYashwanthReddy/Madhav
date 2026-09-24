@@ -1,18 +1,15 @@
 """Centralized Training Service Facade for Module 40."""
 
 import logging
-from typing import Any
 
 from max.config.settings import Settings, get_settings
 from max.training.datasets import DatasetService, DatasetValidationService
 from max.training.domain import (
     Dataset,
-    ModelArtifact,
     ResourceEstimation,
     TrainingConfig,
     TrainingHardwareProfile,
     TrainingJob,
-    TrainingReport,
     TrainingSample,
     ValidationReport,
 )

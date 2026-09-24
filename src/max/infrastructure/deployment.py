@@ -1,10 +1,9 @@
 """Deployment Manager, GPU Hardware Detection, and System Readiness Aggregator."""
 
 import logging
-import os
-import platform
-import psutil
 from typing import Any
+
+import psutil
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings

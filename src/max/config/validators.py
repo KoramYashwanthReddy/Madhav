@@ -1,46 +1,47 @@
 """Configuration validators and sanity checks for MAX configuration."""
 
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+
 from max.config.enums import Environment
 from max.config.errors import ConfigurationError
 from max.config.sections import (
     AgentSettings,
     ApplicationControlSettings,
     ApplicationSettings,
+    AutonomySettings,
     BrowserSettings,
+    CodingAgentSettings,
     ComputerControlSettings,
     ContextManagementSettings,
     ConversationSettings,
     CORSSettings,
+    DataRecoverySettings,
+    DeveloperAgentSettings,
+    DocumentSettings,
+    EvaluationSettings,
     FilesystemSettings,
+    InfrastructureSettings,
+    IntegrationsSettings,
     KnowledgeSettings,
     LoggingSettings,
     MemorySettings,
+    NotificationSettings,
+    ObservabilitySettings,
+    PersonalizationSettings,
+    ProactiveSettings,
     RAGSettings,
     ReasoningSettings,
+    SchedulerSettings,
     SecurityModuleSettings,
     SecuritySettings,
     ServerSettings,
+    SpeechSettings,
     TaskSettings,
     ToolRegistrySettings,
-    WebIntelligenceSettings,
-    CodingAgentSettings,
-    DeveloperAgentSettings,
-    DocumentSettings,
-    VisionSettings,
-    SpeechSettings,
-    NotificationSettings,
-    SchedulerSettings,
-    IntegrationsSettings,
-    ProactiveSettings,
-    PersonalizationSettings,
-    EvaluationSettings,
-    ObservabilitySettings,
-    InfrastructureSettings,
-    DataRecoverySettings,
     TrainingSettings,
-    AutonomySettings,
+    VisionSettings,
+    WebIntelligenceSettings,
 )
-from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 def validate_server_settings(server: ServerSettings) -> None:

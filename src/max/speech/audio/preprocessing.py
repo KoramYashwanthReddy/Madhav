@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import logging
 import struct
-from typing import Any
 
 from max.speech.domain.enums import AudioFormat
 from max.speech.domain.models import AudioMetadata

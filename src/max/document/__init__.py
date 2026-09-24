@@ -11,7 +11,11 @@ Provides structured understanding of documents:
  - Full audit trail and version history
 """
 
-from max.document.container import DocumentContainer, get_document_container, reset_document_container
+from max.document.container import (
+    DocumentContainer,
+    get_document_container,
+    reset_document_container,
+)
 from max.document.domain.enums import (
     ComparisonChangeType,
     DocumentFormat,

@@ -1,6 +1,6 @@
 """In-memory repositories for Module 23 — Developer Agent."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.developer.domain.exceptions import (
     DevIssueNotFoundError,
@@ -18,7 +18,7 @@ from max.developer.domain.models import (
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class DevSessionRepository:

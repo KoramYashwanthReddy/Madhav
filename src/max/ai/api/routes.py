@@ -3,7 +3,9 @@
 from typing import Any
 
 from fastapi import APIRouter, Depends, Query
+from pydantic import BaseModel, Field
 
+from max.ai.domain.enums import AIRole
 from max.ai.domain.messages import AIMessage
 from max.ai.domain.parameters import GenerationParameters
 from max.ai.domain.requests import AIRequest
@@ -97,3 +99,35 @@ async def get_runtime_capabilities(
         data=RuntimeCapabilitiesResponse(**caps.model_dump()),
         request_id=get_request_id(),
     )
+
+
+chat_router = APIRouter(prefix="/chat", tags=["Chat Workspace"])
+
+
+class ChatCompletionRequest(BaseModel):
+    prompt: str = Field(min_length=1)
+    model_id: str | None = None
+
+
+@chat_router.post("/completions")
+async def chat_completions(
+    payload: ChatCompletionRequest,
+    manager: AIRuntimeManager = Depends(get_ai_runtime_manager),
+) -> dict[str, Any]:
+    """Simple chat completion endpoint for Web Client integration."""
+    req_id = get_request_id()
+    ai_request = AIRequest(
+        request_id=req_id,
+        messages=[AIMessage(role=AIRole.USER, content=payload.prompt)],
+        generation=GenerationParameters(temperature=0.7, max_tokens=1024),
+        timeout=30.0,
+    )
+    provider = payload.model_id if payload.model_id and payload.model_id in ("stub", "local", "ollama", "openai") else None
+    response = await manager.generate(ai_request, provider_override=provider)
+    return {
+        "id": f"msg-{req_id[:8]}",
+        "sender": "assistant",
+        "text": response.content,
+        "timestamp": response.created_at.isoformat(),
+        "model": response.model_reference,
+    }

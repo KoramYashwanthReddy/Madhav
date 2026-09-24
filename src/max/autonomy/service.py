@@ -15,7 +15,6 @@ from max.autonomy.domain import (
     MissionResult,
     MissionStatus,
     ResourceBudget,
-    RiskLevel,
 )
 from max.autonomy.orchestrator import MissionOrchestrator
 from max.autonomy.policy import AutonomyPolicyService

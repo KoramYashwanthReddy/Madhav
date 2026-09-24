@@ -5,9 +5,10 @@ CommandRequest. No subprocess calls are made from this service.
 """
 
 import asyncio
+import inspect
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.developer.domain.enums import GitOperationRisk
 from max.developer.domain.exceptions import (
@@ -26,11 +27,11 @@ from max.security.domain.decision import PermissionRequest
 from max.security.domain.enums import (
     PermissionAction,
     PermissionDecisionStatus,
+    PermissionSubjectType,
     RiskLevel,
 )
 from max.security.domain.resource import PermissionResource
 from max.security.domain.subject import PermissionSubject
-from max.security.domain.enums import PermissionSubjectType
 from max.security.services.gate import PermissionGate
 from max.terminal.domain.enums import CommandStatus, TerminalShell
 from max.terminal.domain.models import CommandRequest, CommandResult
@@ -40,7 +41,7 @@ logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class GitService:
@@ -142,7 +143,7 @@ class GitService:
                 metadata={"notes": verdict.notes},
             )
             if hasattr(self._gate, "evaluate"):
-                eval_fn = getattr(self._gate, "evaluate")
+                eval_fn = self._gate.evaluate
                 decision = await eval_fn(perm_request) if asyncio.iscoroutinefunction(eval_fn) else eval_fn(perm_request)
             else:
                 decision = self._gate.check(perm_request)
@@ -168,7 +169,9 @@ class GitService:
             )
 
         req = self._make_request(args, working_directory=working_directory)
-        result = await self._terminal.execute_command(req)
+        result = self._terminal.execute_command(req)
+        if inspect.isawaitable(result):
+            result = await result
         exit_code = getattr(result, "exit_code", 0)
         if not isinstance(exit_code, int):
             exit_code = 0

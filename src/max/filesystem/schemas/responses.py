@@ -1,6 +1,7 @@
 """Pydantic response schemas for API endpoints of Module 17 Filesystem Agent."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -10,10 +11,10 @@ class StatusResponse(BaseModel):
     enabled: bool
     dry_run: bool
     backend_type: str
-    allowed_roots: List[str]
-    read_only_roots: List[str]
-    blocked_roots: List[str]
-    capabilities: List[str]
+    allowed_roots: list[str]
+    read_only_roots: list[str]
+    blocked_roots: list[str]
+    capabilities: list[str]
     permission_gate_active: bool
 
 
@@ -33,11 +34,11 @@ class FileMetadataResponse(BaseModel):
     size: int
     created_at: str
     modified_at: str
-    accessed_at: Optional[str] = None
+    accessed_at: str | None = None
     extension: str = ""
-    mime_type: Optional[str] = None
+    mime_type: str | None = None
     is_symlink: bool = False
-    symlink_target: Optional[str] = None
+    symlink_target: str | None = None
 
 
 class DirectoryEntrySchema(BaseModel):
@@ -56,7 +57,7 @@ class DirectoryResponse(BaseModel):
     """Response for directory listing."""
 
     path: str
-    entries: List[DirectoryEntrySchema]
+    entries: list[DirectoryEntrySchema]
     count: int
     truncated: bool = False
     limit: int = 100
@@ -81,7 +82,7 @@ class WriteFileResponse(BaseModel):
     bytes_written: int
     created: bool = False
     overwritten: bool = False
-    hash: Optional[str] = None
+    hash: str | None = None
 
 
 class SearchEntrySchema(BaseModel):
@@ -97,8 +98,8 @@ class SearchResponse(BaseModel):
     """Response for filesystem search."""
 
     root_path: str
-    query: Optional[str] = None
-    results: List[SearchEntrySchema]
+    query: str | None = None
+    results: list[SearchEntrySchema]
     count: int
     truncated: bool = False
     limit_reached: bool = False
@@ -133,7 +134,7 @@ class FileOperationFailureResponse(BaseModel):
     reason: str
     message: str
     timestamp: str
-    details: Dict[str, Any] = Field(default_factory=dict)
+    details: dict[str, Any] = Field(default_factory=dict)
 
 
 class FileOperationResponse(BaseModel):
@@ -143,7 +144,7 @@ class FileOperationResponse(BaseModel):
     operation_type: str
     status: str
     source: str
-    destination: Optional[str] = None
+    destination: str | None = None
     duration: float = 0.0
-    observed_state: Dict[str, Any] = Field(default_factory=dict)
-    failure: Optional[FileOperationFailureResponse] = None
+    observed_state: dict[str, Any] = Field(default_factory=dict)
+    failure: FileOperationFailureResponse | None = None

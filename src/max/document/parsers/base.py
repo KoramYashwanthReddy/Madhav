@@ -1,7 +1,6 @@
 """Base parser interface for Module 24 — Document Intelligence."""
 
 from abc import ABC, abstractmethod
-from typing import Any
 
 from max.document.domain.enums import DocumentFormat
 from max.document.domain.models import DocumentExtractionResult

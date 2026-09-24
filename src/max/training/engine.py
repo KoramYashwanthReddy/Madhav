@@ -3,14 +3,12 @@
 import abc
 import datetime
 import hashlib
-import json
 import logging
 import os
 import time
 from typing import Any
 
 from max.config.settings import Settings, get_settings
-from max.data_recovery.service import get_data_recovery_service
 from max.training.domain import (
     JobStatus,
     ModelArtifact,
@@ -19,7 +17,6 @@ from max.training.domain import (
     TrainingMetric,
 )
 from max.training.hardware import GPULockManager, ResourceEstimationService
-from max.version import VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -37,12 +34,12 @@ class CheckpointManager:
 
     def create_checkpoint(self, job_id: str, step: int, loss: float, adapter_weights: bytes | None = None) -> ModelArtifact:
         """Create timestamped checkpoint artifact."""
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         chk_dir = self._get_artifacts_dir()
         file_name = f"chk_{job_id}_step{step}.safetensors"
         file_path = os.path.join(chk_dir, file_name)
 
-        data = adapter_weights or f"CHECKPOINT_WEIGHTS_JOB_{job_id}_STEP_{step}_LOSS_{loss}".encode("utf-8")
+        data = adapter_weights or f"CHECKPOINT_WEIGHTS_JOB_{job_id}_STEP_{step}_LOSS_{loss}".encode()
         with open(file_path, "wb") as f:
             f.write(data)
 
@@ -81,7 +78,7 @@ class MockTrainingBackend(TrainingBackend):
     def execute_job(self, job: TrainingJob) -> TrainingJob:
         """Execute deterministic mock training loop."""
         job.status = JobStatus.RUNNING
-        job.started_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        job.started_at = datetime.datetime.now(datetime.UTC).isoformat()
         job.last_heartbeat = job.started_at
 
         total_steps = job.config.max_steps
@@ -98,7 +95,7 @@ class MockTrainingBackend(TrainingBackend):
                 learning_rate=job.config.learning_rate,
                 vram_allocated_mb=vram_mb,
                 cpu_percent=15.2,
-                timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                timestamp=datetime.datetime.now(datetime.UTC).isoformat(),
             )
             job.metrics.append(metric)
             job.current_step = step
@@ -111,9 +108,9 @@ class MockTrainingBackend(TrainingBackend):
                 job.artifacts.append(chk_art)
 
         # Create final LoRA adapter artifact
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         adapter_path = os.path.join(self.checkpoint_mgr._get_artifacts_dir(), f"adapter_{job.job_id}.safetensors")
-        adapter_data = f"LORA_ADAPTER_WEIGHTS_JOB_{job.job_id}".encode("utf-8")
+        adapter_data = f"LORA_ADAPTER_WEIGHTS_JOB_{job.job_id}".encode()
         with open(adapter_path, "wb") as f:
             f.write(adapter_data)
 
@@ -144,8 +141,8 @@ class HuggingFaceTrainingBackend(TrainingBackend):
     def execute_job(self, job: TrainingJob) -> TrainingJob:
         """Execute HuggingFace PEFT / TRL SFTTrainer or fallback if dependencies missing."""
         try:
-            import peft  # type: ignore
-            import transformers  # type: ignore
+            import peft  # type: ignore # noqa: F401
+            import transformers  # type: ignore # noqa: F401
 
             logger.info("Executing HuggingFace PEFT training job %s", job.job_id)
             return self.mock_fallback.execute_job(job)
@@ -169,7 +166,7 @@ class TrainingJobService:
         if not est.is_feasible:
             raise ValueError(f"Training Pre-flight Resource Check Failed: {est.feasibility_reason}")
 
-        job_id = f"tr_job_{hashlib.sha256(f'{dataset_id}_{base_model_id}_{time.time()}'.encode('utf-8')).hexdigest()[:10]}"
+        job_id = f"tr_job_{hashlib.sha256(f'{dataset_id}_{base_model_id}_{time.time()}'.encode()).hexdigest()[:10]}"
         job = TrainingJob(
             job_id=job_id,
             dataset_id=dataset_id,
@@ -195,6 +192,7 @@ class TrainingJobService:
 
         try:
             mode = self.settings.training.backend_mode.upper()
+            backend: Any
             if mode == "HUGGINGFACE":
                 backend = HuggingFaceTrainingBackend(self.settings)
             else:
@@ -220,7 +218,7 @@ class TrainingJobService:
         if job_id in self._jobs:
             return self._jobs[job_id]
 
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         dummy = TrainingJob(
             job_id=job_id,
             dataset_id="ds_123",

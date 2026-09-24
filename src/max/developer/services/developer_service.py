@@ -8,7 +8,6 @@ import logging
 
 from max.developer.domain.enums import IssuePriority, IssueStatus, MergeStrategy, WorkflowType
 from max.developer.domain.models import (
-    DevAuditEvent,
     DeveloperIssue,
     DeveloperSession,
     DeveloperWorkflow,

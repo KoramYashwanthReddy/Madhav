@@ -4,11 +4,10 @@ Evaluates safety policies, permission gates, path security, elevation checks,
 and instance limits before executing any application control actions.
 """
 
-from typing import Any
 import os
 import uuid
+from typing import Any
 
-from max.config.sections import ApplicationControlSettings
 from max.application_control.domain.enums import ApplicationType
 from max.application_control.domain.exceptions import (
     ApplicationBlockedError,
@@ -16,11 +15,12 @@ from max.application_control.domain.exceptions import (
     ApplicationInstanceLimitExceededError,
     ApplicationPolicyViolationError,
 )
-from max.application_control.domain.models import Application, ApplicationPolicy
+from max.application_control.domain.models import Application
 from max.application_control.repositories.repositories import (
     ApplicationInstanceRepository,
     ApplicationPolicyRepository,
 )
+from max.config.sections import ApplicationControlSettings
 from max.security.services.gate import PermissionGate
 
 
@@ -48,7 +48,7 @@ class ApplicationPolicyService:
         """Validate if an application can be launched under current policies and permissions."""
         if not self.settings.enabled:
             raise ApplicationPolicyViolationError(
-                f"Application control subsystem is disabled."
+                "Application control subsystem is disabled."
             )
 
         exe_path = app.executable.path if (app.executable and hasattr(app.executable, "path")) else str(app.executable or "")
@@ -100,8 +100,13 @@ class ApplicationPolicyService:
 
         # Check Module 15 Permission Gate if attached
         if self.permission_gate is not None:
-            from max.security.domain.enums import PermissionAction, PermissionSubjectType, ResourceSensitivity, RiskLevel
-            from max.security.domain.permission import PermissionRequest
+            from max.security.domain.decision import PermissionRequest
+            from max.security.domain.enums import (
+                PermissionAction,
+                PermissionSubjectType,
+                ResourceSensitivity,
+                RiskLevel,
+            )
             from max.security.domain.resource import PermissionResource
             from max.security.domain.subject import PermissionSubject
 
@@ -119,7 +124,7 @@ class ApplicationPolicyService:
                     sensitivity=ResourceSensitivity.NORMAL,
                     attributes={
                         "app_name": app.display_name,
-                        "executable": app.executable,
+                        "executable": str(app.executable) if app.executable else "",
                         "elevate": elevate,
                     },
                 ),
@@ -127,7 +132,7 @@ class ApplicationPolicyService:
                 risk_level=RiskLevel.HIGH if elevate else RiskLevel.MEDIUM,
                 tool_reference="app.launch",
             )
-            decision = self.permission_gate.check_permission(perm_req)
+            decision = self.permission_gate.check(perm_req)
             if not decision.is_allowed:
                 raise ApplicationPolicyViolationError(
                     f"Permission denied to launch '{app.display_name}': {decision.reason}"
@@ -152,8 +157,13 @@ class ApplicationPolicyService:
             )
 
         if self.permission_gate is not None:
-            from max.security.domain.enums import PermissionAction, PermissionSubjectType, ResourceSensitivity, RiskLevel
-            from max.security.domain.permission import PermissionRequest
+            from max.security.domain.decision import PermissionRequest
+            from max.security.domain.enums import (
+                PermissionAction,
+                PermissionSubjectType,
+                ResourceSensitivity,
+                RiskLevel,
+            )
             from max.security.domain.resource import PermissionResource
             from max.security.domain.subject import PermissionSubject
 
@@ -175,7 +185,7 @@ class ApplicationPolicyService:
                 risk_level=RiskLevel.MEDIUM,
                 tool_reference=action_name,
             )
-            decision = self.permission_gate.check_permission(perm_req)
+            decision = self.permission_gate.check(perm_req)
             if not decision.is_allowed:
                 raise ApplicationPolicyViolationError(
                     f"Permission denied for action '{action_name}' on '{app.display_name}': {decision.reason}"

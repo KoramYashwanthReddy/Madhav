@@ -1,10 +1,11 @@
 """Global dependency injection container for Module 18 — Terminal Agent."""
 
 from max.config.settings import get_settings
+from max.security.container import get_security_container
+from max.security.services.gate import PermissionGate
 from max.terminal.backends.base import TerminalBackend
 from max.terminal.backends.mock import MockTerminalBackend
 from max.terminal.backends.windows import WindowsTerminalBackend
-from max.terminal.domain.enums import TerminalShell
 from max.terminal.repositories.repositories import (
     CommandExecutionRepository,
     TerminalSessionRepository,
@@ -12,8 +13,6 @@ from max.terminal.repositories.repositories import (
 )
 from max.terminal.security.command_policy import CommandPolicyService
 from max.terminal.services.terminal_service import TerminalService
-from max.security.container import get_security_container
-from max.security.services.gate import PermissionGate
 
 
 class TerminalContainer:

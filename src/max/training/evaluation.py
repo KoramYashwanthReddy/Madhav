@@ -1,12 +1,12 @@
 """Evaluation System Integration and Baseline Comparison."""
 
 import logging
-from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings
 from max.evaluation.container import EvaluationContainer
-from max.training.domain import ModelArtifact, TrainingJob
+from max.training.domain import TrainingJob
 
 logger = logging.getLogger(__name__)
 

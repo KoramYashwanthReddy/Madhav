@@ -198,6 +198,16 @@ export interface SecurityApprovalRequest {
   requested_at: string;
 }
 
+export type VoiceState =
+  | 'idle'
+  | 'listening'
+  | 'processing'
+  | 'thinking'
+  | 'speaking'
+  | 'error'
+  | 'permission_denied'
+  | 'unsupported';
+
 export interface UserPreferences {
   theme: 'dark' | 'glass' | 'high-contrast';
   autonomy_level: AutonomyLevel;
@@ -205,4 +215,10 @@ export interface UserPreferences {
   api_endpoint: string;
   enable_sound_effects: boolean;
   reduced_motion: boolean;
+  voice_input_enabled: boolean;
+  voice_output_enabled: boolean;
+  auto_speak: boolean;
+  selected_voice: string;
+  speech_speed: number;
+  voice_language: string;
 }

@@ -305,8 +305,21 @@ async def get_execution_timeline(execution_id: str) -> ExecutionTimelineResponse
     )
 
 
+audit_router = APIRouter(prefix="/audit", tags=["Audit Logs"])
+
+
 @router.get(
     "/audit",
+    response_model=AuditSearchResponseSchema,
+    summary="Search append-only audit records",
+)
+@audit_router.get(
+    "/logs",
+    response_model=AuditSearchResponseSchema,
+    summary="Search append-only audit records",
+)
+@audit_router.get(
+    "",
     response_model=AuditSearchResponseSchema,
     summary="Search append-only audit records",
 )

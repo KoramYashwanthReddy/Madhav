@@ -5,9 +5,8 @@ import hashlib
 import json
 import logging
 import os
-import tarfile
-import zipfile
 from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings
@@ -52,7 +51,7 @@ class BackupManager:
 
     def create_backup(self, backup_type: str = "FULL") -> BackupMetadata:
         """Execute atomic system backup and produce verified archive file."""
-        now = datetime.datetime.now(datetime.timezone.utc)
+        now = datetime.datetime.now(datetime.UTC)
         timestamp_str = now.strftime("%Y%m%dT%H%M%SZ")
         backup_id = f"max_backup_{timestamp_str}"
         target_dir = self._get_backup_dir()
@@ -61,8 +60,8 @@ class BackupManager:
 
         # Collect component backup snapshots
         db_mgr = get_database_manager()
-        redis_mgr = get_redis_manager()
-        storage_mgr = get_storage_manager()
+        get_redis_manager()
+        get_storage_manager()
 
         backup_payload: dict[str, Any] = {
             "backup_id": backup_id,

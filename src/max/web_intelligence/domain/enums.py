@@ -1,9 +1,9 @@
 """Enums for Module 21 — Web Intelligence."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class ResearchStatus(str, Enum):
+class ResearchStatus(StrEnum):
     """Lifecycle status of a research request."""
 
     CREATED = "CREATED"
@@ -22,7 +22,7 @@ class ResearchStatus(str, Enum):
     PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED"
 
 
-class ResearchMode(str, Enum):
+class ResearchMode(StrEnum):
     """Mode governing research intensity and operational approach."""
 
     QUICK_LOOKUP = "QUICK_LOOKUP"
@@ -33,7 +33,7 @@ class ResearchMode(str, Enum):
     DOCUMENTED_RESEARCH = "DOCUMENTED_RESEARCH"
 
 
-class ResearchDepth(str, Enum):
+class ResearchDepth(StrEnum):
     """Depth tier for search and source acquisition."""
 
     SHALLOW = "SHALLOW"
@@ -42,7 +42,7 @@ class ResearchDepth(str, Enum):
     EXHAUSTIVE = "EXHAUSTIVE"
 
 
-class ResearchPriority(str, Enum):
+class ResearchPriority(StrEnum):
     """Execution priority level."""
 
     LOW = "LOW"
@@ -51,7 +51,7 @@ class ResearchPriority(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class SourceType(str, Enum):
+class SourceType(StrEnum):
     """Classification of web source types."""
 
     OFFICIAL_WEBSITE = "OFFICIAL_WEBSITE"
@@ -68,7 +68,7 @@ class SourceType(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class SourceFreshness(str, Enum):
+class SourceFreshness(StrEnum):
     """Evaluation of source publication/update age."""
 
     VERY_FRESH = "VERY_FRESH"
@@ -79,7 +79,7 @@ class SourceFreshness(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class SourceAuthority(str, Enum):
+class SourceAuthority(StrEnum):
     """Authority tier of a source for a specific claim."""
 
     PRIMARY_SOURCE = "PRIMARY_SOURCE"
@@ -88,7 +88,7 @@ class SourceAuthority(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class FreshnessPolicy(str, Enum):
+class FreshnessPolicy(StrEnum):
     """Required maximum freshness constraint for research."""
 
     REAL_TIME = "REAL_TIME"
@@ -99,7 +99,7 @@ class FreshnessPolicy(str, Enum):
     NO_REQUIREMENT = "NO_REQUIREMENT"
 
 
-class EvidenceType(str, Enum):
+class EvidenceType(StrEnum):
     """Type classification of evidence item."""
 
     DIRECT_FACT = "DIRECT_FACT"
@@ -110,7 +110,7 @@ class EvidenceType(str, Enum):
     INFERENCE = "INFERENCE"
 
 
-class EvidenceConfidence(str, Enum):
+class EvidenceConfidence(StrEnum):
     """Qualitative confidence assessment for evidence."""
 
     HIGH = "HIGH"
@@ -119,7 +119,7 @@ class EvidenceConfidence(str, Enum):
     UNCERTAIN = "UNCERTAIN"
 
 
-class ConflictType(str, Enum):
+class ConflictType(StrEnum):
     """Classification of contradictory evidence between sources."""
 
     DATE_MISMATCH = "DATE_MISMATCH"
@@ -129,7 +129,7 @@ class ConflictType(str, Enum):
     PARTIAL_DISAGREEMENT = "PARTIAL_DISAGREEMENT"
 
 
-class CitationStyle(str, Enum):
+class CitationStyle(StrEnum):
     """Supported citation formatting styles."""
 
     APA = "APA"
@@ -139,7 +139,7 @@ class CitationStyle(str, Enum):
     SIMPLE = "SIMPLE"
 
 
-class ContentTrustLevel(str, Enum):
+class ContentTrustLevel(StrEnum):
     """Content trust taxonomy boundaries."""
 
     UNTRUSTED_WEB_CONTENT = "UNTRUSTED_WEB_CONTENT"

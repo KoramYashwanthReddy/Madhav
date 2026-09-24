@@ -1,7 +1,6 @@
 """Autonomy Resource Budget Tracking and Circuit Breaker Engine."""
 
 import logging
-from typing import Any
 
 from max.autonomy.domain import Mission, MissionStatus
 from max.config.settings import Settings, get_settings

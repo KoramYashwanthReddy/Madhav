@@ -1,7 +1,6 @@
 """In-memory repository abstractions for Module 22 — Coding Agent."""
 
 import logging
-from typing import Any
 
 from max.coding.domain.models import ChangeSet, CodingAuditEvent, CodingSession
 

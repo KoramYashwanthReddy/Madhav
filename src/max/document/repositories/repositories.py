@@ -1,6 +1,6 @@
 """In-memory repositories for Module 24 — Document Intelligence."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from max.document.domain.exceptions import DocumentNotFoundError
@@ -12,7 +12,7 @@ from max.document.domain.models import (
 
 
 def _utc_now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class DocumentRepository:

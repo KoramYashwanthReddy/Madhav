@@ -21,7 +21,7 @@ from max.memory.schemas.responses import (
 )
 from max.memory.services.memory_service import MemoryService
 
-router = APIRouter(prefix="/memories", tags=["Memory Engine"])
+router = APIRouter(prefix="/memory", tags=["Memory Engine"])
 
 _memory_service_instance: MemoryService | None = None
 

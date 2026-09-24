@@ -1,5 +1,11 @@
 """Module 40 — AI Training, Fine-Tuning & Model Improvement package."""
 
+from max.training.datasets import (
+    DataCleaner,
+    DatasetService,
+    DatasetValidationService,
+    LeakageDetector,
+)
 from max.training.domain import (
     Dataset,
     DatasetStatus,
@@ -19,10 +25,13 @@ from max.training.domain import (
     TrainingSample,
     ValidationReport,
 )
-from max.training.hardware import GPULockManager, HardwareDetectionService, ResourceEstimationService
-from max.training.datasets import DataCleaner, DatasetService, DatasetValidationService, LeakageDetector
 from max.training.engine import CheckpointManager, MockTrainingBackend, TrainingJobService
 from max.training.evaluation import EvaluationComparisonReport, TrainingEvaluationService
+from max.training.hardware import (
+    GPULockManager,
+    HardwareDetectionService,
+    ResourceEstimationService,
+)
 from max.training.promotion import ModelPromotionRecord, ModelPromotionService
 from max.training.service import TrainingService, get_training_service
 

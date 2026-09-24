@@ -1,66 +1,45 @@
 """Comprehensive unit test suite for Module 27 — Notification System."""
 
-from datetime import datetime, time, timezone
+from datetime import UTC, datetime
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from max.api.router import register_routers
 from max.config.sections import NotificationSettings
-from max.notifications.channels.desktop import MockDesktopNotificationProvider
-from max.notifications.channels.email import EmailNotificationProvider
-from max.notifications.channels.in_app import InAppNotificationProvider
-from max.notifications.channels.push import MockPushNotificationProvider
-from max.notifications.channels.registry import NotificationChannelRegistry
-from max.notifications.channels.speech_adapter import SpeechNotificationAdapter
-from max.notifications.container import NotificationContainer, get_notification_container, reset_notification_container
+from max.notifications.container import get_notification_container, reset_notification_container
 from max.notifications.deduplication.dedup_service import NotificationDeduplicationService
 from max.notifications.domain.enums import (
     NotificationActionType,
     NotificationCategory,
     NotificationChannelType,
-    NotificationDeliveryStatus,
-    NotificationPriority,
     NotificationReadState,
     NotificationSensitivity,
     NotificationSeverity,
-    NotificationSourceType,
     NotificationStatus,
 )
 from max.notifications.domain.exceptions import (
-    NotificationChannelError,
-    NotificationError,
-    NotificationNotFoundError,
-    NotificationPermissionError,
     NotificationValidationError,
 )
 from max.notifications.domain.models import (
     Notification,
     NotificationAction,
     NotificationContent,
-    NotificationDelivery,
     NotificationPreference,
-    NotificationRecipient,
-    NotificationSource,
 )
 from max.notifications.grouping.grouping_service import NotificationGroupingService
 from max.notifications.policies.policy_service import NotificationPolicyService, PolicyDecisionEnum
 from max.notifications.preferences.preference_service import NotificationPreferenceService
 from max.notifications.rate_limiting.rate_limit_service import NotificationRateLimitService
 from max.notifications.repositories.repositories import (
-    MemoryNotificationAuditRepository,
-    MemoryNotificationDeliveryRepository,
     MemoryNotificationPreferenceRepository,
     MemoryNotificationRepository,
-    MemoryNotificationTemplateRepository,
 )
 from max.notifications.retry.retry_service import NotificationRetryService
-from max.notifications.routing.router import NotificationRouter
 from max.notifications.security.sensitivity_service import NotificationSensitivityService
-from max.notifications.services.notification_service import NotificationService
 from max.notifications.services.tool_integration import register_notification_tools
 from max.tools.services.registry import ToolRegistryService
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -176,8 +155,8 @@ class TestPreferencesAndQuietHours:
             quiet_hours_start="22:00",
             quiet_hours_end="07:00",
         )
-        dt_night = datetime(2026, 9, 24, 23, 30, tzinfo=timezone.utc)
-        dt_day = datetime(2026, 9, 24, 12, 0, tzinfo=timezone.utc)
+        dt_night = datetime(2026, 9, 24, 23, 30, tzinfo=UTC)
+        dt_day = datetime(2026, 9, 24, 12, 0, tzinfo=UTC)
 
         assert pref_service.is_in_quiet_hours(pref, dt_night) is True
         assert pref_service.is_in_quiet_hours(pref, dt_day) is False
@@ -189,7 +168,7 @@ class TestPreferencesAndQuietHours:
             quiet_hours_end="07:00",
             allow_critical_in_quiet_hours=True,
         )
-        dt_night = datetime(2026, 9, 24, 23, 30, tzinfo=timezone.utc)
+        dt_night = datetime(2026, 9, 24, 23, 30, tzinfo=UTC)
 
         permitted, reason = pref_service.is_channel_permitted(
             pref,
@@ -243,7 +222,7 @@ class TestDeduplicationGroupingRateLimitingRetry:
         n1 = Notification(content=NotificationContent(title="T1", body="B1"))
         n2 = Notification(content=NotificationContent(title="T2", body="B2"))
 
-        grp1 = grouping.add_to_group(n1, "github_emails")
+        grouping.add_to_group(n1, "github_emails")
         grp2 = grouping.add_to_group(n2, "github_emails")
         assert grp2.count == 2
         assert len(grp2.member_notification_ids) == 2

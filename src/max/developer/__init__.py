@@ -35,6 +35,7 @@ __all__ = [
     "WorkflowType",
     "PRStatus",
     "IssueStatus",
+    "IssuePriority",
     "CIRunStatus",
     "MergeStrategy",
     "GitOperationRisk",

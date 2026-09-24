@@ -155,7 +155,7 @@ class TestTerminalServiceCriticalBlocked:
     def test_rejected_command_stored_in_repository(self, service_setup):
         service, _, execution_repo, _ = service_setup
         req = CommandRequest(command="sudo", args=[], shell=TerminalShell.MOCK)
-        result = service.execute_command(req)
+        service.execute_command(req)
         stored = execution_repo.get(req.request_id)
         assert stored is not None
         assert stored.status == CommandStatus.REJECTED

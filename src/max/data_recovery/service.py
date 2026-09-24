@@ -1,15 +1,17 @@
 """Centralized Data Recovery Service Facade for Module 39."""
 
 import logging
-from typing import Any
 
 from max.config.settings import Settings, get_settings
 from max.data_recovery.backup import BackupManager, BackupMetadata
-from max.data_recovery.classification import ClassificationLevel, DataClassificationTag, DataClassifier
+from max.data_recovery.classification import (
+    DataClassificationTag,
+    DataClassifier,
+)
 from max.data_recovery.encryption import DataEncryptionManager
 from max.data_recovery.migration import MigrationManager, MigrationStatus
 from max.data_recovery.restore import DisasterRecoveryManager, RestoreReport
-from max.data_recovery.retention import RetentionManager, RetentionPolicy, RetentionPruneResult
+from max.data_recovery.retention import RetentionManager, RetentionPruneResult
 from max.data_recovery.verification import BackupVerifier, VerificationReport
 
 logger = logging.getLogger(__name__)

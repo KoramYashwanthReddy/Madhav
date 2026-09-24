@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import asyncio
 import logging
 import time
-from typing import Any, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Any
 
 from max.speech.domain.enums import AudioFormat, SpeechProcessingStatus, VoiceGender
 from max.speech.domain.models import (

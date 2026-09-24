@@ -115,3 +115,7 @@ class PermissionDecision(BaseModel):
     metadata: dict[str, Any] = Field(
         default_factory=dict, description="Decision evaluation metadata"
     )
+
+    @property
+    def is_allowed(self) -> bool:
+        return self.effect == PermissionEffect.ALLOW

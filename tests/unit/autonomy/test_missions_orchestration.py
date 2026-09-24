@@ -1,9 +1,16 @@
 """Unit tests for Mission Orchestration, Execution Loop, and Verification."""
 
-import pytest
 from max.autonomy.approval import ApprovalService
 from max.autonomy.budget import AutonomyBudgetService
-from max.autonomy.domain import ActionStatus, AutonomyLevel, Mission, MissionAction, MissionStatus, ResourceBudget, RiskLevel
+from max.autonomy.domain import (
+    ActionStatus,
+    AutonomyLevel,
+    Mission,
+    MissionAction,
+    MissionStatus,
+    ResourceBudget,
+    RiskLevel,
+)
 from max.autonomy.orchestrator import MissionOrchestrator, MissionVerificationService
 from max.autonomy.policy import AutonomyPolicyService
 

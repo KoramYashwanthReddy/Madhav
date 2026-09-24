@@ -48,7 +48,7 @@ class BaseDocumentConverter:
                 csv_parts.append(f'"line_{i}","{escaped}"')
             content_bytes = ("line_number,content\n" + "\n".join(csv_parts)).encode("utf-8")
         elif target_fmt in (DocumentFormat.PDF, DocumentFormat.DOCX, DocumentFormat.XLSX, DocumentFormat.PPTX, DocumentFormat.XML):
-            content_bytes = f"<!-- CONVERTED TO {target_fmt.value.upper()} -->\n{text}".encode("utf-8")
+            content_bytes = f"<!-- CONVERTED TO {target_fmt.value.upper()} -->\n{text}".encode()
         else:
             raise DocumentConversionError(
                 f"Unsupported target format for conversion: '{target_fmt.value}'",

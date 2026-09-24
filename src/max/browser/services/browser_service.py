@@ -5,33 +5,23 @@ element interaction (click, type, select, scroll), content extraction, screensho
 downloads, uploads, post-action state verification, and audit trace logging.
 """
 
-from datetime import UTC, datetime
 import logging
-import os
+from datetime import UTC, datetime
 from typing import Any
-import uuid
 
-from max.config.sections import BrowserSettings
 from max.browser.backends.base import BrowserBackend
 from max.browser.domain.enums import (
-    BrowserActionStatus,
     BrowserActionType,
     BrowserAuditEventType,
-    BrowserRiskLevel,
     BrowserStatus,
-    BrowserTabStatus,
-    BrowserVerificationStatus,
 )
 from max.browser.domain.exceptions import (
     BrowserError,
     BrowserSessionNotFoundError,
     BrowserSubsystemDisabledError,
     BrowserTabNotFoundError,
-    BrowserVerificationFailedError,
 )
 from max.browser.domain.models import (
-    BrowserActionRequest,
-    BrowserActionResult,
     BrowserAuditEvent,
     BrowserClickRequest,
     BrowserClickResult,
@@ -62,6 +52,7 @@ from max.browser.repositories.repositories import (
     BrowserTabRepository,
 )
 from max.browser.security.browser_policy import BrowserPolicyService
+from max.config.sections import BrowserSettings
 
 logger = logging.getLogger(__name__)
 
@@ -144,7 +135,7 @@ class BrowserService:
 
     async def create_tab(self, session_id: str, url: str = "about:blank") -> BrowserTab:
         """Create a new tab in an active session."""
-        sess = self._get_session(session_id)
+        self._get_session(session_id)
         existing_tabs = self.tab_repo.list_tabs(session_id, active_only=True)
         if len(existing_tabs) >= self.settings.max_tabs_per_session:
             raise BrowserError(
@@ -226,7 +217,7 @@ class BrowserService:
         )
 
         req = BrowserNavigationRequest(url=url, tab_id=target_tab_id, timeout=timeout)
-        start_time = datetime.now(UTC)
+        datetime.now(UTC)
 
         res = await self.backend.navigate(session_id, target_tab_id, req)
 

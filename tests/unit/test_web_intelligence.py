@@ -6,16 +6,17 @@ from fastapi.testclient import TestClient
 
 from max.api.router import register_routers
 from max.tools.services.registry import ToolRegistryService
-from max.web_intelligence.container import get_web_intelligence_container, reset_web_intelligence_container
+from max.web_intelligence.container import (
+    get_web_intelligence_container,
+    reset_web_intelligence_container,
+)
 from max.web_intelligence.domain.enums import (
     CitationStyle,
     ConflictType,
     ContentTrustLevel,
-    EvidenceConfidence,
     ResearchMode,
     ResearchStatus,
     SourceAuthority,
-    SourceFreshness,
     SourceType,
 )
 from max.web_intelligence.domain.exceptions import CitationValidationError, DomainBlockedError
@@ -27,21 +28,14 @@ from max.web_intelligence.domain.models import (
     SearchRequest,
     Source,
     SourceMetadata,
-    SourceTrustMetadata,
-    WebDocument,
 )
 from max.web_intelligence.providers.mock import MockSearchProvider
 from max.web_intelligence.security.prompt_injection import PromptInjectionEnforcer
 from max.web_intelligence.services.citation_service import CitationService
 from max.web_intelligence.services.content_acquisition import ContentAcquisitionService
-from max.web_intelligence.services.content_extraction import ContentExtractionService
 from max.web_intelligence.services.evidence_comparator import EvidenceComparator
-from max.web_intelligence.services.evidence_service import EvidenceService
-from max.web_intelligence.services.quality_checker import ResearchQualityChecker
 from max.web_intelligence.services.query_planner import QueryPlanner
-from max.web_intelligence.services.research_planner import ResearchPlanner
 from max.web_intelligence.services.source_discovery import SourceDiscoveryService
-from max.web_intelligence.services.synthesis_service import ResearchSynthesisService
 from max.web_intelligence.services.tool_integration import register_web_intelligence_tools
 
 

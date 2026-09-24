@@ -10,8 +10,7 @@ import logging
 import re
 from typing import Any
 
-from max.speech.domain.enums import RawAudioRetention, SpeechInputType
-from max.speech.domain.exceptions import AudioPermissionError, SpeechSecurityError
+from max.speech.domain.exceptions import AudioPermissionError
 from max.speech.domain.models import SpeechEvent, Transcript
 
 logger = logging.getLogger(__name__)

@@ -27,7 +27,6 @@ from max.application_control.domain.enums import (
     ApplicationVerificationStatus,
 )
 
-
 # ---------------------------------------------------------------------------
 # Core Application Identity Models
 # ---------------------------------------------------------------------------

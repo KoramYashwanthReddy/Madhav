@@ -11,7 +11,6 @@ from fastapi.testclient import TestClient
 from max.api.router import register_routers
 from max.developer.container import get_developer_container, reset_developer_container
 from max.developer.domain.enums import (
-    CIRunStatus,
     DevSessionStatus,
     GitOperationRisk,
     IssuePriority,
@@ -22,10 +21,6 @@ from max.developer.domain.enums import (
     WorkflowType,
 )
 from max.developer.domain.exceptions import (
-    DevIssueNotFoundError,
-    DevPRNotFoundError,
-    DevSessionNotFoundError,
-    DevWorkflowNotFoundError,
     PermissionDeniedError,
 )
 from max.developer.domain.models import (
@@ -33,9 +28,6 @@ from max.developer.domain.models import (
     DeveloperIssue,
     DeveloperSession,
     DeveloperWorkflow,
-    GitBranch,
-    GitCommit,
-    GitStatus,
     PullRequest,
 )
 from max.developer.repositories.repositories import (
@@ -45,10 +37,6 @@ from max.developer.repositories.repositories import (
 )
 from max.developer.security.git_policy import GitOperationPolicy
 from max.developer.services.git_service import GitService
-from max.developer.services.issue_service import IssueService
-from max.developer.services.pr_service import PRService
-from max.developer.services.repo_service import RepoService
-from max.developer.services.workflow_service import WorkflowService
 from max.terminal.domain.models import CommandResult
 
 

@@ -1,11 +1,10 @@
 """Hardware Resource Detection, Pre-Flight Resource Estimation, and GPU Locking."""
 
 import logging
-import os
 import platform
+
 import psutil
 import torch
-from typing import Any
 
 from max.config.settings import Settings, get_settings
 from max.training.domain import ResourceEstimation, TrainingConfig, TrainingHardwareProfile

@@ -1,6 +1,7 @@
 """Configuration section models for MAX configuration system."""
 
 from typing import Any
+
 from pydantic import BaseModel, Field, SecretStr
 
 from max.common.types import LogLevel

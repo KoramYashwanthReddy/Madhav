@@ -2,22 +2,24 @@
 
 import os
 import tempfile
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from max.api.router import register_routers
-from max.coding.container import get_coding_container, reset_coding_container
-from max.coding.domain.enums import ChangeType, CodingMode, CodingStatus, FailureCategory, ProjectType
+from max.coding.container import reset_coding_container
+from max.coding.domain.enums import (
+    CodingStatus,
+    FailureCategory,
+    ProjectType,
+)
 from max.coding.domain.exceptions import ProtectedPathError, StalePatchError
-from max.coding.domain.models import CodingObjective, CodingRequest
 from max.coding.security.prompt_injection import CodeSecurityEnforcer
-from max.coding.services.code_planner import CodePlanner
 from max.coding.services.code_search import CodeSearchService
 from max.coding.services.debugger_service import DebuggerService
 from max.coding.services.patch_service import PatchService
 from max.coding.services.repo_analyzer import RepositoryAnalyzer
-from max.coding.services.review_service import ReviewService
 from max.coding.services.tool_integration import register_coding_tools
 from max.tools.services.registry import ToolRegistryService
 

@@ -1,9 +1,9 @@
 """Enumerations for Module 15 — Permission & Security."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class PermissionSubjectType(str, Enum):
+class PermissionSubjectType(StrEnum):
     """Classification of entities that can request actions."""
 
     USER = "USER"
@@ -14,7 +14,7 @@ class PermissionSubjectType(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class PermissionAction(str, Enum):
+class PermissionAction(StrEnum):
     """Explicit action operations evaluated by the permission system."""
 
     READ = "READ"
@@ -36,7 +36,7 @@ class PermissionAction(str, Enum):
     ADMINISTER = "ADMINISTER"
 
 
-class ResourceSensitivity(str, Enum):
+class ResourceSensitivity(StrEnum):
     """Resource data classification level."""
 
     PUBLIC = "PUBLIC"
@@ -46,7 +46,7 @@ class ResourceSensitivity(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class PermissionScope(str, Enum):
+class PermissionScope(StrEnum):
     """Scope boundaries for permission policies and grants."""
 
     EXACT_RESOURCE = "EXACT_RESOURCE"
@@ -60,7 +60,7 @@ class PermissionScope(str, Enum):
     GLOBAL = "GLOBAL"
 
 
-class PermissionEffect(str, Enum):
+class PermissionEffect(StrEnum):
     """Policy rule evaluation outcome."""
 
     ALLOW = "ALLOW"
@@ -68,7 +68,7 @@ class PermissionEffect(str, Enum):
     REQUIRE_APPROVAL = "REQUIRE_APPROVAL"
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     """Action risk classification level."""
 
     LOW = "LOW"
@@ -77,7 +77,7 @@ class RiskLevel(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class PermissionDecisionStatus(str, Enum):
+class PermissionDecisionStatus(StrEnum):
     """Status of a permission decision."""
 
     ALLOWED = "ALLOWED"
@@ -88,7 +88,7 @@ class PermissionDecisionStatus(str, Enum):
     ERROR = "ERROR"
 
 
-class DecisionReason(str, Enum):
+class DecisionReason(StrEnum):
     """Structured rationale for permission decisions."""
 
     NO_POLICY_MATCH = "NO_POLICY_MATCH"
@@ -109,7 +109,7 @@ class DecisionReason(str, Enum):
     EVALUATION_ERROR = "EVALUATION_ERROR"
 
 
-class RequestStatus(str, Enum):
+class RequestStatus(StrEnum):
     """Status of a permission check request."""
 
     PENDING = "PENDING"
@@ -118,7 +118,7 @@ class RequestStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class ApprovalStatus(str, Enum):
+class ApprovalStatus(StrEnum):
     """Status of a human approval request."""
 
     PENDING = "PENDING"
@@ -128,7 +128,7 @@ class ApprovalStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class ApprovalType(str, Enum):
+class ApprovalType(StrEnum):
     """Classification of approval type."""
 
     USER_CONFIRMATION = "USER_CONFIRMATION"
@@ -136,7 +136,7 @@ class ApprovalType(str, Enum):
     ADMIN_APPROVAL = "ADMIN_APPROVAL"
 
 
-class PermissionGrantType(str, Enum):
+class PermissionGrantType(StrEnum):
     """Duration type for permission grants."""
 
     ONE_TIME = "ONE_TIME"
@@ -145,7 +145,7 @@ class PermissionGrantType(str, Enum):
     PERSISTENT = "PERSISTENT"
 
 
-class SecurityMode(str, Enum):
+class SecurityMode(StrEnum):
     """System-wide operational security mode."""
 
     NORMAL = "NORMAL"
@@ -154,7 +154,7 @@ class SecurityMode(str, Enum):
     MAINTENANCE = "MAINTENANCE"
 
 
-class SecurityEventType(str, Enum):
+class SecurityEventType(StrEnum):
     """Categorization of audit log security events."""
 
     PERMISSION_REQUESTED = "PERMISSION_REQUESTED"
@@ -172,7 +172,7 @@ class SecurityEventType(str, Enum):
     SECURITY_VIOLATION = "SECURITY_VIOLATION"
 
 
-class SecurityViolationType(str, Enum):
+class SecurityViolationType(StrEnum):
     """Classification of security boundary violations."""
 
     PERMISSION_BYPASS_ATTEMPT = "PERMISSION_BYPASS_ATTEMPT"

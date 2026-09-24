@@ -5,13 +5,13 @@ Manages DeveloperSession lifecycle and repository introspection.
 
 import logging
 import os
+from datetime import UTC
 
 from max.developer.domain.enums import DevSessionStatus
-from max.developer.domain.exceptions import DevSessionNotFoundError, RepositoryNotFoundError
-from max.developer.domain.models import DeveloperSession, Repository
+from max.developer.domain.exceptions import RepositoryNotFoundError
+from max.developer.domain.models import DevAuditEvent, DeveloperSession, Repository
 from max.developer.repositories.repositories import DevAuditRepository, DevSessionRepository
 from max.developer.services.git_service import GitService
-from max.developer.domain.models import DevAuditEvent
 
 logger = logging.getLogger(__name__)
 
@@ -98,10 +98,10 @@ class RepoService:
 
     def close_session(self, session_id: str) -> DeveloperSession:
         """Close a developer session."""
-        from datetime import datetime, timezone
+        from datetime import datetime
         session = self._session_repo.get(session_id)
         session.status = DevSessionStatus.CLOSED
-        session.closed_at = datetime.now(timezone.utc)
+        session.closed_at = datetime.now(UTC)
         self._session_repo.save(session)
         self._audit_repo.append(
             DevAuditEvent(

@@ -22,7 +22,7 @@ export const ToolsView: React.FC = () => {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
-        {tools.map((tool, idx) => (
+        {Array.isArray(tools) && tools.map((tool: any, idx) => (
           <div key={idx} className="glass-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -32,7 +32,7 @@ export const ToolsView: React.FC = () => {
                 </code>
               </div>
 
-              {tool.requires_approval ? (
+              {tool.requires_approval || tool.risk_level === 'high' || tool.risk_level === 'medium' ? (
                 <span style={{ fontSize: '10px', background: 'rgba(239, 68, 68, 0.2)', color: 'hsl(350, 89%, 65%)', padding: '2px 8px', borderRadius: '4px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <ShieldAlert size={12} /> Approval Required
                 </span>
@@ -45,17 +45,28 @@ export const ToolsView: React.FC = () => {
 
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>{tool.description}</p>
 
-            <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '10px' }}>
-              <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase' }}>Parameters</span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px' }}>
-                {tool.parameters.map((p, pIdx) => (
-                  <div key={pIdx} style={{ fontSize: '11px', display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)' }}>
-                    <span style={{ color: 'var(--text-main)' }}>{p.name} ({p.type})</span>
-                    <span style={{ color: 'var(--text-dim)' }}>{p.required ? 'Required' : 'Optional'}</span>
-                  </div>
-                ))}
+            {Array.isArray(tool.parameters) && tool.parameters.length > 0 && (
+              <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '10px' }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase' }}>Parameters</span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '4px' }}>
+                  {tool.parameters.map((p: any, pIdx: number) => (
+                    <div key={pIdx} style={{ fontSize: '11px', display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)' }}>
+                      <span style={{ color: 'var(--text-main)' }}>{p.name} ({p.type})</span>
+                      <span style={{ color: 'var(--text-dim)' }}>{p.required ? 'Required' : 'Optional'}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {tool.input_schema && typeof tool.input_schema === 'object' && Object.keys(tool.input_schema).length > 0 && (
+              <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '10px' }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-dim)', fontWeight: 600, textTransform: 'uppercase' }}>Input Schema</span>
+                <pre style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-muted)', background: 'rgba(0,0,0,0.3)', padding: '8px 12px', borderRadius: '4px', margin: '4px 0 0 0', overflowX: 'auto' }}>
+                  {JSON.stringify(tool.input_schema, null, 2)}
+                </pre>
+              </div>
+            )}
           </div>
         ))}
       </div>

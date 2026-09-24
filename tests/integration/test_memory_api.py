@@ -15,12 +15,12 @@ def reset_memory_service() -> None:
 
 
 def test_api_create_get_list_and_search_memory() -> None:
-    """Verify POST /memories, GET /memories/{id}, GET /memories, and POST /memories/search."""
+    """Verify POST /memory, GET /memory/{id}, GET /memory, and POST /memory/search."""
     client = TestClient(app)
 
     # 1. Create memory
     create_resp = client.post(
-        "/api/v1/memories",
+        "/api/v1/memory",
         json={
             "type": "preference",
             "text": "User prefers dark mode UI interface",
@@ -35,19 +35,19 @@ def test_api_create_get_list_and_search_memory() -> None:
     assert mem_data["importance"] == "high"
 
     # 2. Get memory by ID
-    get_resp = client.get(f"/api/v1/memories/{mem_id}")
+    get_resp = client.get(f"/api/v1/memory/{mem_id}")
     assert get_resp.status_code == 200
     assert get_resp.json()["memory_id"] == mem_id
     assert get_resp.json()["last_accessed_at"] is not None
 
     # 3. List memories
-    list_resp = client.get("/api/v1/memories")
+    list_resp = client.get("/api/v1/memory")
     assert list_resp.status_code == 200
     list_data = list_resp.json()
     assert list_data["total"] >= 1
 
     # 4. Search memories
-    search_resp = client.post("/api/v1/memories/search", json={"query": "dark mode"})
+    search_resp = client.post("/api/v1/memory/search", json={"query": "dark mode"})
     assert search_resp.status_code == 200
     assert search_resp.json()["total"] == 1
 
@@ -57,23 +57,23 @@ def test_api_memory_lifecycle_operations() -> None:
     client = TestClient(app)
 
     # Create memory
-    create_resp = client.post("/api/v1/memories", json={"text": "Lifecycle test memory"})
+    create_resp = client.post("/api/v1/memory", json={"text": "Lifecycle test memory"})
     mem_id = create_resp.json()["memory_id"]
 
     # Archive
-    arch_resp = client.post(f"/api/v1/memories/{mem_id}/archive")
+    arch_resp = client.post(f"/api/v1/memory/{mem_id}/archive")
     assert arch_resp.status_code == 200
     assert arch_resp.json()["status"] == "archived"
 
     # Restore
-    rest_resp = client.post(f"/api/v1/memories/{mem_id}/restore")
+    rest_resp = client.post(f"/api/v1/memory/{mem_id}/restore")
     assert rest_resp.status_code == 200
     assert rest_resp.json()["status"] == "active"
 
     # Soft Delete
-    del_resp = client.delete(f"/api/v1/memories/{mem_id}")
+    del_resp = client.delete(f"/api/v1/memory/{mem_id}")
     assert del_resp.status_code == 204
 
     # Get after delete returns 404
-    get_del = client.get(f"/api/v1/memories/{mem_id}")
+    get_del = client.get(f"/api/v1/memory/{mem_id}")
     assert get_del.status_code == 404

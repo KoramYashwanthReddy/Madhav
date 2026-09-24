@@ -2,15 +2,14 @@
 
 import datetime
 import logging
-from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings
 from max.data_recovery.service import get_data_recovery_service
 from max.models.api.routes import get_model_manager
-from max.models.services.manager import ModelManager
-from max.training.domain import ModelArtifact, PromotionStatus, TrainingJob
-from max.training.evaluation import EvaluationComparisonReport, TrainingEvaluationService
+from max.training.domain import PromotionStatus, TrainingJob
+from max.training.evaluation import TrainingEvaluationService
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +38,7 @@ class ModelPromotionService:
 
     def approve_model(self, job: TrainingJob, user_id: str = "user_admin") -> ModelPromotionRecord:
         """Approve a evaluated candidate model for promotion after security and evaluation verification."""
-        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        now_iso = datetime.datetime.now(datetime.UTC).isoformat()
         prom_id = f"prom_{job.job_id}"
         model_id = f"max-trained-{job.job_id}"
 

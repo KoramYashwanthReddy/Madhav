@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, NoReturn
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel, Field
 
 from max.vision.container import get_vision_container
@@ -109,7 +109,7 @@ def _decode_hex(hex_str: str, field_name: str = "image_bytes_hex") -> bytes:
         )
 
 
-def _handle_vision_error(exc: Exception) -> None:
+def _handle_vision_error(exc: Exception) -> NoReturn:
     """Map vision exceptions to FastAPI HTTP responses."""
     if isinstance(exc, (CameraPermissionError, ScreenCapturePermissionError, VisionSecurityError)):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc))

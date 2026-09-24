@@ -14,8 +14,10 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from max.terminal.backends.base import TerminalBackend
-from max.terminal.backends.windows import _MAX_OUTPUT_BYTES  # shared constant
-from max.terminal.backends.windows import _build_safe_env, _sanitize_output
+from max.terminal.backends.windows import (
+    _build_safe_env,
+    _sanitize_output,
+)
 from max.terminal.domain.enums import CommandFailureReason, CommandStatus, TerminalShell
 from max.terminal.domain.models import CommandRequest, CommandResult
 

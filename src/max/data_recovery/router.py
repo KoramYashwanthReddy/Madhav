@@ -1,7 +1,6 @@
 """FastAPI Router for Module 39 — Data, Storage, Backup & Disaster Recovery endpoints."""
 
-from typing import Any
-from fastapi import APIRouter, Depends, Query, Body
+from fastapi import APIRouter, Body, Depends, Query
 from pydantic import BaseModel, Field
 
 from max.core.request_id import get_request_id

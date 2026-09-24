@@ -2,7 +2,7 @@
 
 import logging
 import os
-from typing import Any
+
 from pydantic import BaseModel, Field
 
 from max.config.settings import Settings, get_settings
@@ -34,7 +34,7 @@ class SecretManager:
             secret_file_path = f"/run/secrets/{name}"
             if os.path.exists(secret_file_path):
                 try:
-                    with open(secret_file_path, "r", encoding="utf-8") as f:
+                    with open(secret_file_path, encoding="utf-8") as f:
                         return f.read().strip()
                 except Exception as exc:
                     logger.warning("Failed to read Docker secret %s: %s", name, exc)

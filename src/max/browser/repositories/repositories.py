@@ -3,12 +3,9 @@
 Provides thread-safe in-memory repositories for sessions, tabs, and audit logs.
 """
 
-from datetime import UTC, datetime
 from threading import RLock
-from typing import Sequence
-import uuid
 
-from max.browser.domain.enums import BrowserStatus, BrowserTabStatus
+from max.browser.domain.enums import BrowserTabStatus
 from max.browser.domain.models import BrowserAuditEvent, BrowserSession, BrowserTab
 
 

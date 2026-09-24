@@ -3,7 +3,7 @@
 import hashlib
 import json
 import os
-from datetime import datetime, timezone
+from typing import Any
 
 from max.document.domain.enums import DocumentFormat
 from max.document.domain.exceptions import DocumentGenerationError
@@ -31,7 +31,7 @@ class BaseDocumentGenerator:
         if fmt in (DocumentFormat.TXT, DocumentFormat.MD):
             content_bytes = req.content_markdown.encode("utf-8")
         elif fmt == DocumentFormat.JSON:
-            doc_obj = {"title": req.title, "content": req.content_markdown}
+            doc_obj: dict[str, Any] = {"title": req.title, "content": req.content_markdown}
             if req.tables:
                 doc_obj["tables"] = [t.model_dump() for t in req.tables]
             content_bytes = json.dumps(doc_obj, indent=2).encode("utf-8")

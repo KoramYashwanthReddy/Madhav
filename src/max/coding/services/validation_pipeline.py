@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from max.coding.domain.enums import ProjectType
 from max.coding.domain.models import BuildRun, LintRun, ProjectMetadata, TestRun, TypeCheckRun
@@ -49,9 +49,9 @@ class ValidationPipeline:
             args.append(target_test)
 
         cmd_str = f"{exe} {' '.join(args)}"
-        start_t = datetime.now(timezone.utc)
+        start_t = datetime.now(UTC)
         exec_res = self._exec(exe, args, repo_root)
-        end_t = datetime.now(timezone.utc)
+        end_t = datetime.now(UTC)
         duration = (end_t - start_t).total_seconds()
 
         exit_code = exec_res.exit_code if exec_res.exit_code is not None else 0
@@ -87,9 +87,9 @@ class ValidationPipeline:
             args = ["build", "./..."]
 
         cmd_str = f"{exe} {' '.join(args)}"
-        start_t = datetime.now(timezone.utc)
+        start_t = datetime.now(UTC)
         exec_res = self._exec(exe, args, repo_root)
-        end_t = datetime.now(timezone.utc)
+        end_t = datetime.now(UTC)
         duration = (end_t - start_t).total_seconds()
 
         exit_code = exec_res.exit_code if exec_res.exit_code is not None else 0
