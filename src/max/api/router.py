@@ -26,6 +26,7 @@ from max.document.api.routes import router as document_router
 from max.vision.api.routes import router as vision_router
 from max.speech.api.routes import router as speech_router
 from max.notifications.api.routes import router as notifications_router
+from max.scheduler.api.routes import automations_router, scheduler_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -61,7 +62,10 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(vision_router)
     v1_router.include_router(speech_router)
     v1_router.include_router(notifications_router)
+    v1_router.include_router(scheduler_router)
+    v1_router.include_router(automations_router)
     app.include_router(v1_router)
+
 
 
 

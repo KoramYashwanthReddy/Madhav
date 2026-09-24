@@ -29,7 +29,9 @@ from max.config.sections import (
     VisionSettings,
     SpeechSettings,
     NotificationSettings,
+    SchedulerSettings,
 )
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 def validate_server_settings(server: ServerSettings) -> None:
@@ -631,3 +633,25 @@ def validate_notification_settings(notif_cfg: NotificationSettings) -> None:
             f"Invalid max_retries: {notif_cfg.max_retries}. Cannot be negative.",
             details={"max_retries": notif_cfg.max_retries},
         )
+
+
+def validate_scheduler_settings(sched_cfg: SchedulerSettings) -> None:
+    """Validate Module 28 — Scheduler System subsystem configuration parameters."""
+    if sched_cfg.poll_interval <= 0:
+        raise ConfigurationError(
+            f"Invalid poll_interval: {sched_cfg.poll_interval}. Must be positive.",
+            details={"poll_interval": sched_cfg.poll_interval},
+        )
+    if sched_cfg.max_concurrency <= 0:
+        raise ConfigurationError(
+            f"Invalid max_concurrency: {sched_cfg.max_concurrency}. Must be positive.",
+            details={"max_concurrency": sched_cfg.max_concurrency},
+        )
+    try:
+        ZoneInfo(sched_cfg.timezone)
+    except (ZoneInfoNotFoundError, Exception) as exc:
+        raise ConfigurationError(
+            f"Invalid IANA timezone: {sched_cfg.timezone}.",
+            details={"timezone": sched_cfg.timezone, "error": str(exc)},
+        )
+

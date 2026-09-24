@@ -883,3 +883,41 @@ class NotificationSettings(BaseModel):
         default=True, description="Enable user quiet hours evaluation"
     )
 
+
+class SchedulerSettings(BaseModel):
+    """Configuration parameters for Module 28 — Scheduler & Automation Engine."""
+
+    enabled: bool = Field(default=True, description="Enable Scheduler subsystem")
+    timezone: str = Field(default="UTC", description="Default scheduler IANA timezone")
+    poll_interval: float = Field(
+        default=1.0, ge=0.1, le=60.0, description="Scheduler polling loop interval in seconds"
+    )
+    max_concurrency: int = Field(
+        default=10, ge=1, le=100, description="Maximum concurrent scheduler executions"
+    )
+    max_retries: int = Field(
+        default=3, ge=0, le=10, description="Default maximum execution retry attempts"
+    )
+    initial_retry_delay_seconds: float = Field(
+        default=5.0, ge=0.1, le=300.0, description="Initial retry backoff delay in seconds"
+    )
+    max_retry_delay_seconds: float = Field(
+        default=300.0, ge=1.0, le=3600.0, description="Maximum retry backoff delay in seconds"
+    )
+    max_executions_per_minute: int = Field(
+        default=60, ge=1, le=1000, description="Maximum executions allowed per minute"
+    )
+    max_executions_per_hour: int = Field(
+        default=1000, ge=1, le=100000, description="Maximum executions allowed per hour"
+    )
+    lock_timeout_seconds: float = Field(
+        default=30.0, ge=1.0, le=600.0, description="Distributed scheduler lock expiration timeout"
+    )
+    misfire_policy: str = Field(
+        default="SKIP", description="Default misfire policy (SKIP, RUN_ONCE, RUN_IMMEDIATELY, CATCH_UP)"
+    )
+    circuit_breaker_threshold: int = Field(
+        default=10, ge=1, le=100, description="Consecutive failure threshold to disable automation"
+    )
+
+
