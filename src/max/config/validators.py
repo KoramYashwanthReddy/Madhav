@@ -4,6 +4,7 @@ from max.config.enums import Environment
 from max.config.errors import ConfigurationError
 from max.config.sections import (
     AgentSettings,
+    ApplicationControlSettings,
     ApplicationSettings,
     ComputerControlSettings,
     ContextManagementSettings,
@@ -421,5 +422,25 @@ def validate_filesystem_settings(fs_cfg: FilesystemSettings) -> None:
             f"Invalid operation_timeout: {fs_cfg.operation_timeout}. Must be positive.",
             details={"operation_timeout": fs_cfg.operation_timeout},
         )
+
+
+def validate_application_control_settings(app_cfg: ApplicationControlSettings) -> None:
+    """Validate Application Control subsystem configuration parameters."""
+    if app_cfg.default_launch_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid default_launch_timeout: {app_cfg.default_launch_timeout}. Must be positive.",
+            details={"default_launch_timeout": app_cfg.default_launch_timeout},
+        )
+    if app_cfg.max_instances_per_app <= 0:
+        raise ConfigurationError(
+            f"Invalid max_instances_per_app: {app_cfg.max_instances_per_app}. Must be positive.",
+            details={"max_instances_per_app": app_cfg.max_instances_per_app},
+        )
+    if app_cfg.max_page_size <= 0:
+        raise ConfigurationError(
+            f"Invalid max_page_size: {app_cfg.max_page_size}. Must be positive.",
+            details={"max_page_size": app_cfg.max_page_size},
+        )
+
 
 

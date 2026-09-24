@@ -465,3 +465,35 @@ class TerminalSettings(BaseModel):
     )
 
 
+class ApplicationControlSettings(BaseModel):
+    """Application Control subsystem configuration settings (Module 19)."""
+
+    enabled: bool = Field(
+        default=True, description="Toggle Application Control active state"
+    )
+    dry_run: bool = Field(
+        default=False, description="Enable dry-run simulation mode by default"
+    )
+    default_launch_timeout: float = Field(
+        default=30.0, ge=1.0, le=300.0,
+        description="Default timeout in seconds for launching applications"
+    )
+    max_instances_per_app: int = Field(
+        default=10, ge=1, le=100,
+        description="Maximum concurrent instances allowed per application"
+    )
+    allow_system_apps: bool = Field(
+        default=True, description="Allow interaction with system/OS applications"
+    )
+    blocked_executables: list[str] = Field(
+        default_factory=list, description="List of executable names explicitly blocked from launching"
+    )
+    allowed_executables: list[str] = Field(
+        default_factory=list, description="List of allowed executables (empty = all except blocked)"
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for application listings"
+    )
+
+
+
