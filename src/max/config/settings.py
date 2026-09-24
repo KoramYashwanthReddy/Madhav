@@ -67,7 +67,12 @@ from max.config.validators import (
     validate_speech_settings,
     validate_notification_settings,
     validate_scheduler_settings,
+    validate_integrations_settings,
 )
+from max.config.sections import (
+    IntegrationsSettings,
+)
+
 
 
 class Settings(BaseSettings):
@@ -121,6 +126,7 @@ class Settings(BaseSettings):
     speech: SpeechSettings = Field(default_factory=SpeechSettings)
     notification: NotificationSettings = Field(default_factory=NotificationSettings)
     scheduler: SchedulerSettings = Field(default_factory=SchedulerSettings)
+    integrations: IntegrationsSettings = Field(default_factory=IntegrationsSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -153,6 +159,7 @@ class Settings(BaseSettings):
         validate_speech_settings(self.speech)
         validate_notification_settings(self.notification)
         validate_scheduler_settings(self.scheduler)
+        validate_integrations_settings(self.integrations)
 
 
 

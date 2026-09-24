@@ -27,6 +27,11 @@ from max.vision.api.routes import router as vision_router
 from max.speech.api.routes import router as speech_router
 from max.notifications.api.routes import router as notifications_router
 from max.scheduler.api.routes import automations_router, scheduler_router
+from max.integrations.api.routes import (
+    connections_router,
+    integrations_router,
+    webhooks_router,
+)
 
 
 def register_routers(app: FastAPI) -> None:
@@ -64,6 +69,9 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(notifications_router)
     v1_router.include_router(scheduler_router)
     v1_router.include_router(automations_router)
+    v1_router.include_router(integrations_router)
+    v1_router.include_router(connections_router)
+    v1_router.include_router(webhooks_router)
     app.include_router(v1_router)
 
 

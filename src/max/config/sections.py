@@ -921,3 +921,28 @@ class SchedulerSettings(BaseModel):
     )
 
 
+class IntegrationsSettings(BaseModel):
+    """Configuration parameters for Module 29 — External Integrations."""
+
+    enabled: bool = Field(default=True, description="Enable External Integrations subsystem")
+    request_timeout_seconds: float = Field(
+        default=30.0, ge=1.0, le=300.0, description="Default external HTTP request timeout in seconds"
+    )
+    max_retries: int = Field(
+        default=3, ge=0, le=10, description="Default maximum request retries for retryable errors"
+    )
+    rate_limit_per_minute: int = Field(
+        default=60, ge=1, le=10000, description="Maximum requests allowed per minute per connection"
+    )
+    webhook_max_payload_size_bytes: int = Field(
+        default=1048576, ge=1024, le=10485760, description="Maximum incoming webhook payload size (1MB default)"
+    )
+    webhook_replay_window_seconds: float = Field(
+        default=300.0, ge=10.0, le=3600.0, description="Allowed replay window for webhook timestamp validation"
+    )
+    health_check_interval_seconds: float = Field(
+        default=3600.0, ge=60.0, le=86400.0, description="Interval for automated background health checks"
+    )
+
+
+

@@ -30,6 +30,7 @@ from max.config.sections import (
     SpeechSettings,
     NotificationSettings,
     SchedulerSettings,
+    IntegrationsSettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -654,4 +655,19 @@ def validate_scheduler_settings(sched_cfg: SchedulerSettings) -> None:
             f"Invalid IANA timezone: {sched_cfg.timezone}.",
             details={"timezone": sched_cfg.timezone, "error": str(exc)},
         )
+
+
+def validate_integrations_settings(integrations_cfg: IntegrationsSettings) -> None:
+    """Validate Module 29 — External Integrations subsystem configuration parameters."""
+    if integrations_cfg.request_timeout_seconds <= 0:
+        raise ConfigurationError(
+            f"Invalid request_timeout_seconds: {integrations_cfg.request_timeout_seconds}. Must be positive.",
+            details={"request_timeout_seconds": integrations_cfg.request_timeout_seconds},
+        )
+    if integrations_cfg.rate_limit_per_minute <= 0:
+        raise ConfigurationError(
+            f"Invalid rate_limit_per_minute: {integrations_cfg.rate_limit_per_minute}. Must be positive.",
+            details={"rate_limit_per_minute": integrations_cfg.rate_limit_per_minute},
+        )
+
 
