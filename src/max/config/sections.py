@@ -1016,6 +1016,77 @@ class ObservabilitySettings(BaseModel):
     service_version: str = Field(default="1.0.0", description="Canonical service version string")
 
 
+class InfrastructureSettings(BaseModel):
+    """Configuration parameters for Module 38 — Infrastructure & Production Deployment."""
+
+    enabled: bool = Field(default=True, description="Enable Infrastructure management subsystem")
+    deployment_target: str = Field(default="LOCAL_DEV", description="Deployment target mode (LOCAL_DEV, LOCAL_PROD, REMOTE_SERVER, CLOUD)")
+    database_url: SecretStr = Field(
+        default=SecretStr("postgresql://max:maxpass@localhost:5432/maxdb"),
+        description="PostgreSQL database connection string",
+    )
+    redis_url: SecretStr = Field(
+        default=SecretStr("redis://localhost:6379/0"),
+        description="Redis cache and queue connection string",
+    )
+    storage_endpoint: str = Field(
+        default="http://localhost:9000",
+        description="MinIO/S3 object storage endpoint URL",
+    )
+    storage_access_key: SecretStr = Field(
+        default=SecretStr("minioadmin"),
+        description="Object storage access key",
+    )
+    storage_secret_key: SecretStr = Field(
+        default=SecretStr("minioadmin"),
+        description="Object storage secret key",
+    )
+    storage_bucket: str = Field(
+        default="max-artifacts",
+        description="Primary object storage bucket",
+    )
+    storage_secure: bool = Field(
+        default=False,
+        description="Use SSL/TLS for object storage connections",
+    )
+    rate_limiting_enabled: bool = Field(
+        default=True,
+        description="Enable infrastructure rate limiting",
+    )
+    rate_limit_requests_per_minute: int = Field(
+        default=120,
+        ge=1,
+        le=10000,
+        description="Global API rate limit per minute",
+    )
+    max_upload_size_mb: int = Field(
+        default=50,
+        ge=1,
+        le=2048,
+        description="Maximum request payload body size in megabytes",
+    )
+    gpu_enabled: bool = Field(
+        default=False,
+        description="Enable NVIDIA GPU hardware acceleration support",
+    )
+    gpu_device_id: int = Field(
+        default=0,
+        ge=0,
+        description="Primary GPU device ID",
+    )
+    secret_manager_type: str = Field(
+        default="ENV",
+        description="Secret management provider (ENV, FILE, DOCKER_SECRETS, VAULT)",
+    )
+    health_check_interval_seconds: float = Field(
+        default=15.0,
+        ge=1.0,
+        le=300.0,
+        description="Health check polling interval in seconds",
+    )
+
+
+
 
 
 

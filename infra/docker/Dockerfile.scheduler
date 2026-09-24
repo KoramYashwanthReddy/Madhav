@@ -1,0 +1,54 @@
+# Multi-stage Dockerfile for MAX Automation Scheduler
+FROM python:3.12-slim AS builder
+
+WORKDIR /build
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY pyproject.toml README.md ./
+COPY src/ ./src/
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir .
+
+FROM python:3.12-slim AS runner
+
+LABEL org.opencontainers.image.title="MAX Automation Scheduler" \
+      org.opencontainers.image.description="Cron & Automation Scheduler for MAX AI Runtime"
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -g 10001 maxgroup && \
+    useradd -u 10001 -g maxgroup -s /bin/bash -m maxuser
+
+COPY --from=builder --chown=maxuser:maxgroup /opt/venv /opt/venv
+COPY --chown=maxuser:maxgroup src/ ./src/
+
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    MAX_APPLICATION__ENVIRONMENT=production \
+    MAX_APPLICATION__DEBUG=false
+
+RUN mkdir -p /app/logs /tmp/max && \
+    chown -R maxuser:maxgroup /app/logs /tmp/max
+
+USER maxuser:maxgroup
+
+STOPSIGNAL SIGTERM
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "from max.infrastructure.redis import get_redis_manager; import asyncio; asyncio.run(get_redis_manager().check_health())" || exit 1
+
+CMD ["python", "-m", "max.scheduler.runner"]

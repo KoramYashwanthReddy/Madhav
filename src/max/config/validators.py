@@ -35,6 +35,7 @@ from max.config.sections import (
     PersonalizationSettings,
     EvaluationSettings,
     ObservabilitySettings,
+    InfrastructureSettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -752,6 +753,28 @@ def validate_observability_settings(observability_cfg: ObservabilitySettings) ->
             f"Invalid max_log_size_bytes: {observability_cfg.max_log_size_bytes}. Must be at least 1024 bytes.",
             details={"max_log_size_bytes": observability_cfg.max_log_size_bytes},
         )
+
+
+def validate_infrastructure_settings(infra_cfg: InfrastructureSettings) -> None:
+    """Validate Module 38 — Infrastructure & Production Deployment configuration parameters."""
+    valid_targets = {"LOCAL_DEV", "LOCAL_PROD", "REMOTE_SERVER", "CLOUD"}
+    if infra_cfg.deployment_target.upper() not in valid_targets:
+        raise ConfigurationError(
+            f"Invalid deployment target: {infra_cfg.deployment_target}. Must be one of {sorted(valid_targets)}.",
+            details={"deployment_target": infra_cfg.deployment_target},
+        )
+    valid_secret_managers = {"ENV", "FILE", "DOCKER_SECRETS", "VAULT"}
+    if infra_cfg.secret_manager_type.upper() not in valid_secret_managers:
+        raise ConfigurationError(
+            f"Invalid secret manager type: {infra_cfg.secret_manager_type}. Must be one of {sorted(valid_secret_managers)}.",
+            details={"secret_manager_type": infra_cfg.secret_manager_type},
+        )
+    if infra_cfg.rate_limit_requests_per_minute < 1:
+        raise ConfigurationError(
+            f"Invalid rate_limit_requests_per_minute: {infra_cfg.rate_limit_requests_per_minute}. Must be at least 1.",
+            details={"rate_limit_requests_per_minute": infra_cfg.rate_limit_requests_per_minute},
+        )
+
 
 
 

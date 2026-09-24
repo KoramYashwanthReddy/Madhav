@@ -1,0 +1,9 @@
+# MAX Root Compose File — Default Production-Like Orchestration
+# Usage:
+#   Development: docker compose -f infra/compose/docker-compose.dev.yml up
+#   Production:  docker compose -f infra/compose/docker-compose.prod.yml up
+# Or simply:
+#   docker compose up
+
+include:
+  - infra/compose/docker-compose.prod.yml

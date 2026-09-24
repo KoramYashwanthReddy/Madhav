@@ -72,6 +72,7 @@ from max.config.validators import (
     validate_personalization_settings,
     validate_evaluation_settings,
     validate_observability_settings,
+    validate_infrastructure_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
@@ -79,6 +80,7 @@ from max.config.sections import (
     PersonalizationSettings,
     EvaluationSettings,
     ObservabilitySettings,
+    InfrastructureSettings,
 )
 
 
@@ -87,7 +89,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, evaluation system, and observability & audit.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, evaluation system, observability & audit, and infrastructure & production deployment.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -138,6 +140,7 @@ class Settings(BaseSettings):
     personalization: PersonalizationSettings = Field(default_factory=PersonalizationSettings)
     evaluation: EvaluationSettings = Field(default_factory=EvaluationSettings)
     observability: ObservabilitySettings = Field(default_factory=ObservabilitySettings)
+    infrastructure: InfrastructureSettings = Field(default_factory=InfrastructureSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -175,6 +178,8 @@ class Settings(BaseSettings):
         validate_personalization_settings(self.personalization)
         validate_evaluation_settings(self.evaluation)
         validate_observability_settings(self.observability)
+        validate_infrastructure_settings(self.infrastructure)
+
 
 
 

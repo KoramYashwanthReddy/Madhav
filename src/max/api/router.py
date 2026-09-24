@@ -36,6 +36,7 @@ from max.proactive.api.routes import router as proactive_router
 from max.personalization.api.routes import router as personalization_router
 from max.evaluation.api.routes import router as evaluation_router
 from max.observability.api.routes import router as observability_router
+from max.infrastructure.router import router as infrastructure_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -80,7 +81,9 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(personalization_router)
     v1_router.include_router(evaluation_router)
     v1_router.include_router(observability_router)
+    v1_router.include_router(infrastructure_router)
     app.include_router(v1_router)
+
 
 
 

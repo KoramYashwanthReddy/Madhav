@@ -1,0 +1,102 @@
+# Local Development Docker Compose Environment for MAX
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: max-dev-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: maxdb
+      POSTGRES_USER: max
+      POSTGRES_PASSWORD: maxpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+      - ../db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - max-data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U max -d maxdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: max-dev-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - max-data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: max-dev-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_dev_data:/data
+    networks:
+      - max-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.backend
+    container_name: max-dev-backend
+    restart: unless-stopped
+    environment:
+      MAX_APPLICATION__ENVIRONMENT: development
+      MAX_APPLICATION__DEBUG: "true"
+      MAX_SERVER__HOST: 0.0.0.0
+      MAX_SERVER__PORT: 8000
+      MAX_INFRASTRUCTURE__DATABASE_URL: postgresql://max:maxpass@postgres:5432/maxdb
+      MAX_INFRASTRUCTURE__REDIS_URL: redis://redis:6379/0
+      MAX_INFRASTRUCTURE__STORAGE_ENDPOINT: http://minio:9000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../src:/app/src
+    networks:
+      - max-app
+      - max-data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+networks:
+  max-app:
+    driver: bridge
+  max-data:
+    driver: bridge
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:
+  minio_dev_data:

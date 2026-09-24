@@ -1,0 +1,46 @@
+# Caddyfile Reverse Proxy for MAX AI System Deployment
+{
+    admin off
+    auto_https off
+}
+
+http://localhost:80, http://127.0.0.1:80 {
+    # Compress responses
+    encode gzip zstd
+
+    # Security Headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    }
+
+    # API Backend Routing (/api/*)
+    handle_path /api/* {
+        reverse_proxy http://max-backend:8000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+
+            # Disable buffering for SSE / WebSocket streaming AI responses
+            flush_interval -1
+        }
+    }
+
+    # Admin Console Routing (/admin/*)
+    handle_path /admin/* {
+        reverse_proxy http://max-admin:8081 {
+            header_up Host {host}
+        }
+    }
+
+    # Primary Web Application Routing (/*)
+    handle {
+        reverse_proxy http://max-web:8080 {
+            header_up Host {host}
+        }
+    }
+}

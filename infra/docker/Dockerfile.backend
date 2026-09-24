@@ -1,0 +1,66 @@
+# Multi-stage Dockerfile for MAX Python Backend
+# Stage 1: Build & Dependency Resolution
+FROM python:3.12-slim AS builder
+
+WORKDIR /build
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY pyproject.toml README.md ./
+COPY src/ ./src/
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir .
+
+# Stage 2: Production Minimal Runtime Image
+FROM python:3.12-slim AS runner
+
+LABEL org.opencontainers.image.title="MAX Personal AI Backend" \
+      org.opencontainers.image.description="Modular Personal AI Operating System Backend Runtime" \
+      org.opencontainers.image.version="1.0.0" \
+      org.opencontainers.image.authors="Antigravity Deepmind Team"
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Security: Create dedicated non-root user and group
+RUN groupadd -g 10001 maxgroup && \
+    useradd -u 10001 -g maxgroup -s /bin/bash -m maxuser
+
+COPY --from=builder --chown=maxuser:maxgroup /opt/venv /opt/venv
+COPY --chown=maxuser:maxgroup src/ ./src/
+COPY --chown=maxuser:maxgroup pyproject.toml README.md ./
+
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    MAX_APPLICATION__ENVIRONMENT=production \
+    MAX_APPLICATION__DEBUG=false \
+    MAX_SERVER__HOST=0.0.0.0 \
+    MAX_SERVER__PORT=8000
+
+# Set up writable temporary log and cache directories for non-root user
+RUN mkdir -p /app/logs /tmp/max && \
+    chown -R maxuser:maxgroup /app/logs /tmp/max
+
+USER maxuser:maxgroup
+
+EXPOSE 8000
+
+STOPSIGNAL SIGTERM
+
+HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+CMD ["python", "-m", "uvicorn", "max.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
