@@ -28,6 +28,7 @@ from max.config.sections import (
     SecuritySettings,
     ServerSettings,
     TaskSettings,
+    TerminalSettings,
     ToolRegistrySettings,
 )
 from max.config.validators import (
@@ -89,6 +90,7 @@ class Settings(BaseSettings):
     security_module: SecurityModuleSettings = Field(default_factory=SecurityModuleSettings)
     computer_control: ComputerControlSettings = Field(default_factory=ComputerControlSettings)
     filesystem: FilesystemSettings = Field(default_factory=FilesystemSettings)
+    terminal: TerminalSettings = Field(default_factory=TerminalSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""

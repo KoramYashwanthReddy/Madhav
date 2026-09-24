@@ -432,3 +432,36 @@ class FilesystemSettings(BaseModel):
     max_page_size: int = Field(default=100, description="Maximum page size for directory listings")
 
 
+class TerminalSettings(BaseModel):
+    """Terminal Agent subsystem configuration settings (Module 18)."""
+
+    enabled: bool = Field(
+        default=True, description="Toggle Terminal Agent active state"
+    )
+    dry_run: bool = Field(
+        default=False, description="Enable dry-run simulation mode (no real subprocess execution)"
+    )
+    default_shell: str = Field(
+        default="POWERSHELL",
+        description="Default shell backend ('POWERSHELL', 'CMD', 'WSL', 'MOCK')",
+    )
+    default_timeout: float = Field(
+        default=30.0, ge=1.0, le=300.0,
+        description="Default command execution timeout in seconds",
+    )
+    max_output_bytes: int = Field(
+        default=524288,
+        description="Maximum captured stdout/stderr bytes per command (default: 512 KiB)",
+    )
+    allowed_working_directories: list[Any] = Field(
+        default_factory=list,
+        description="Allowed working directories for command execution (empty = unrestricted)",
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for terminal history listings"
+    )
+    wsl_distribution: str | None = Field(
+        default=None, description="WSL distribution name for WSL backend (None = default distro)"
+    )
+
+
