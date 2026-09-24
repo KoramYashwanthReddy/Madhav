@@ -1,11 +1,13 @@
 """Standardized API response models for MAX platform foundation."""
 
-from typing import Any
+from typing import Any, Generic, TypeVar
 
 from pydantic import BaseModel, Field
 
+T = TypeVar("T")
 
-class APIResponse[T](BaseModel):
+
+class APIResponse(BaseModel, Generic[T]):
     """Standard success API response wrapper."""
 
     success: bool = Field(default=True, description="Indicates request success status")

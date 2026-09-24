@@ -24,6 +24,7 @@ from max.config.sections import (
     ToolRegistrySettings,
     WebIntelligenceSettings,
     CodingAgentSettings,
+    DeveloperAgentSettings,
 )
 
 
@@ -509,6 +510,25 @@ def validate_coding_agent_settings(coding_cfg: CodingAgentSettings) -> None:
 
 
 
-
-
-
+def validate_developer_agent_settings(dev_cfg: DeveloperAgentSettings) -> None:
+    """Validate Developer Agent subsystem configuration parameters."""
+    if dev_cfg.max_sessions <= 0:
+        raise ConfigurationError(
+            f"Invalid max_sessions: {dev_cfg.max_sessions}. Must be positive.",
+            details={"max_sessions": dev_cfg.max_sessions},
+        )
+    if dev_cfg.max_workflows_per_session <= 0:
+        raise ConfigurationError(
+            f"Invalid max_workflows_per_session: {dev_cfg.max_workflows_per_session}. Must be positive.",
+            details={"max_workflows_per_session": dev_cfg.max_workflows_per_session},
+        )
+    if dev_cfg.git_command_timeout <= 0:
+        raise ConfigurationError(
+            f"Invalid git_command_timeout: {dev_cfg.git_command_timeout}. Must be positive.",
+            details={"git_command_timeout": dev_cfg.git_command_timeout},
+        )
+    if dev_cfg.max_commit_message_length <= 0:
+        raise ConfigurationError(
+            f"Invalid max_commit_message_length: {dev_cfg.max_commit_message_length}. Must be positive.",
+            details={"max_commit_message_length": dev_cfg.max_commit_message_length},
+        )

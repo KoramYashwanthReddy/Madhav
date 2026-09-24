@@ -184,7 +184,12 @@ class KnowledgeSummaryResponse(BaseModel):
     version_count: int
 
 
-class KnowledgeListResponse[T](BaseModel):
+from typing import Generic, TypeVar
+
+T = TypeVar("T")
+
+
+class KnowledgeListResponse(BaseModel, Generic[T]):
     """Generic paginated envelope response for knowledge collections."""
 
     items: list[T] = Field(..., description="Page items")

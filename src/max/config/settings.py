@@ -34,6 +34,7 @@ from max.config.sections import (
     ToolRegistrySettings,
     WebIntelligenceSettings,
     CodingAgentSettings,
+    DeveloperAgentSettings,
 )
 from max.config.validators import (
     validate_agent_settings,
@@ -55,6 +56,7 @@ from max.config.validators import (
     validate_tool_settings,
     validate_web_intelligence_settings,
     validate_coding_agent_settings,
+    validate_developer_agent_settings,
 )
 
 
@@ -103,6 +105,7 @@ class Settings(BaseSettings):
     browser: BrowserSettings = Field(default_factory=BrowserSettings)
     web_intelligence: WebIntelligenceSettings = Field(default_factory=WebIntelligenceSettings)
     coding_agent: CodingAgentSettings = Field(default_factory=CodingAgentSettings)
+    developer_agent: DeveloperAgentSettings = Field(default_factory=DeveloperAgentSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -129,6 +132,7 @@ class Settings(BaseSettings):
         validate_browser_settings(self.browser)
         validate_web_intelligence_settings(self.web_intelligence)
         validate_coding_agent_settings(self.coding_agent)
+        validate_developer_agent_settings(self.developer_agent)
 
 
 

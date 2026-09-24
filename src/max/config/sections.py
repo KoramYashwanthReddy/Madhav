@@ -640,7 +640,47 @@ class CodingAgentSettings(BaseModel):
     )
 
 
+class DeveloperAgentSettings(BaseModel):
+    """Developer Agent subsystem configuration settings (Module 23)."""
 
-
-
-
+    enabled: bool = Field(
+        default=True, description="Toggle Developer Agent active state"
+    )
+    default_branch: str = Field(
+        default="main", description="Default repository main branch name"
+    )
+    protected_branches: list[str] = Field(
+        default_factory=lambda: ["main", "master", "release"],
+        description="Branch names that require elevated approval for dangerous operations",
+    )
+    require_approval_for_push: bool = Field(
+        default=False,
+        description="Require PermissionGate approval before every push (vs. only force-push)",
+    )
+    require_approval_for_merge: bool = Field(
+        default=True,
+        description="Require PermissionGate approval before merging into a protected branch",
+    )
+    max_commit_message_length: int = Field(
+        default=1000, ge=10, le=10000,
+        description="Maximum character length for commit messages",
+    )
+    max_sessions: int = Field(
+        default=20, ge=1, le=200,
+        description="Maximum concurrent developer sessions",
+    )
+    max_workflows_per_session: int = Field(
+        default=10, ge=1, le=100,
+        description="Maximum workflows allowed per developer session",
+    )
+    git_command_timeout: float = Field(
+        default=60.0, ge=1.0, le=600.0,
+        description="Timeout in seconds for Git command execution",
+    )
+    max_log_entries: int = Field(
+        default=100, ge=1, le=5000,
+        description="Maximum git log entries returned per request",
+    )
+    max_page_size: int = Field(
+        default=100, description="Maximum page size for developer listings"
+    )
