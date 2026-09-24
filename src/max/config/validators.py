@@ -26,6 +26,7 @@ from max.config.sections import (
     CodingAgentSettings,
     DeveloperAgentSettings,
     DocumentSettings,
+    VisionSettings,
 )
 
 
@@ -551,4 +552,39 @@ def validate_document_settings(doc_cfg: DocumentSettings) -> None:
         raise ConfigurationError(
             f"Invalid max_processing_time: {doc_cfg.max_processing_time}. Must be positive.",
             details={"max_processing_time": doc_cfg.max_processing_time},
+        )
+
+
+def validate_vision_settings(vis_cfg: VisionSettings) -> None:
+    """Validate Vision System subsystem configuration parameters."""
+    if vis_cfg.max_image_size_mb <= 0:
+        raise ConfigurationError(
+            f"Invalid max_image_size_mb: {vis_cfg.max_image_size_mb}. Must be positive.",
+            details={"max_image_size_mb": vis_cfg.max_image_size_mb},
+        )
+    if vis_cfg.max_pixels <= 0:
+        raise ConfigurationError(
+            f"Invalid max_pixels: {vis_cfg.max_pixels}. Must be positive.",
+            details={"max_pixels": vis_cfg.max_pixels},
+        )
+    if vis_cfg.max_processing_time <= 0:
+        raise ConfigurationError(
+            f"Invalid max_processing_time: {vis_cfg.max_processing_time}. Must be positive.",
+            details={"max_processing_time": vis_cfg.max_processing_time},
+        )
+    if vis_cfg.high_confidence_threshold < vis_cfg.medium_confidence_threshold:
+        raise ConfigurationError(
+            "Vision confidence thresholds invalid: high_confidence_threshold must be >= medium.",
+            details={
+                "high": vis_cfg.high_confidence_threshold,
+                "medium": vis_cfg.medium_confidence_threshold,
+            },
+        )
+    if vis_cfg.medium_confidence_threshold < vis_cfg.low_confidence_threshold:
+        raise ConfigurationError(
+            "Vision confidence thresholds invalid: medium_confidence_threshold must be >= low.",
+            details={
+                "medium": vis_cfg.medium_confidence_threshold,
+                "low": vis_cfg.low_confidence_threshold,
+            },
         )

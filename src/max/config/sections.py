@@ -708,3 +708,78 @@ class DocumentSettings(BaseModel):
         description="List of supported document format extensions",
     )
     max_page_size: int = Field(default=100, description="Maximum page size for document listings")
+
+
+class VisionSettings(BaseModel):
+    """Configuration parameters for Module 25 — Vision System."""
+
+    enabled: bool = Field(default=True, description="Enable Vision System subsystem")
+    default_provider: str = Field(default="mock", description="Default vision provider name")
+    default_model: str = Field(default="mock-vision-v1", description="Default vision model identifier")
+
+    # Image size limits
+    max_image_size_mb: float = Field(
+        default=25.0, ge=0.1, le=500.0, description="Maximum image file size in MB"
+    )
+    max_width: int = Field(default=8192, ge=1, le=65536, description="Maximum image width in pixels")
+    max_height: int = Field(default=8192, ge=1, le=65536, description="Maximum image height in pixels")
+    max_pixels: int = Field(
+        default=33554432, ge=1, description="Maximum total pixel count (default 32MP)"
+    )
+    max_image_memory_mb: float = Field(
+        default=256.0, ge=1.0, le=4096.0, description="Maximum decoded image memory in MB"
+    )
+    max_batch_size: int = Field(default=20, ge=1, le=200, description="Maximum images per batch request")
+
+    # Processing limits
+    max_processing_time: float = Field(
+        default=60.0, ge=1.0, le=600.0, description="Maximum processing time per request in seconds"
+    )
+    max_ocr_blocks: int = Field(
+        default=5000, ge=1, le=100000, description="Maximum OCR text blocks per image"
+    )
+    max_detections: int = Field(
+        default=1000, ge=1, le=50000, description="Maximum object detections per image"
+    )
+
+    # Capability flags
+    ocr_enabled: bool = Field(default=True, description="Enable OCR capability")
+    object_detection_enabled: bool = Field(default=True, description="Enable object detection")
+    ui_analysis_enabled: bool = Field(default=True, description="Enable UI screenshot analysis")
+    document_vision_enabled: bool = Field(default=True, description="Enable document image analysis")
+    chart_analysis_enabled: bool = Field(default=True, description="Enable chart analysis")
+    diagram_analysis_enabled: bool = Field(default=True, description="Enable diagram analysis")
+    face_detection_enabled: bool = Field(
+        default=False, description="Enable face detection (localization only, no identification)"
+    )
+    camera_enabled: bool = Field(default=False, description="Enable camera input support")
+    screen_capture_enabled: bool = Field(default=True, description="Enable screenshot analysis")
+
+    # Caching
+    cache_enabled: bool = Field(default=True, description="Enable deterministic observation cache")
+    cache_ttl_seconds: int = Field(
+        default=3600, ge=60, le=86400, description="Cache entry TTL in seconds"
+    )
+    cache_max_entries: int = Field(
+        default=1000, ge=10, le=100000, description="Maximum cache entries"
+    )
+
+    # Privacy & security
+    privacy_redaction_enabled: bool = Field(
+        default=True, description="Enable extensible privacy redaction layer"
+    )
+    log_images_debug: bool = Field(
+        default=False, description="Log raw images in debug mode (NEVER in production)"
+    )
+
+    # Confidence thresholds
+    high_confidence_threshold: float = Field(
+        default=0.85, ge=0.0, le=1.0, description="Confidence threshold for HIGH classification"
+    )
+    medium_confidence_threshold: float = Field(
+        default=0.60, ge=0.0, le=1.0, description="Confidence threshold for MEDIUM classification"
+    )
+    low_confidence_threshold: float = Field(
+        default=0.40, ge=0.0, le=1.0, description="Confidence threshold for LOW classification"
+    )
+
