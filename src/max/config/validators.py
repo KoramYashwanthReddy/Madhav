@@ -27,6 +27,7 @@ from max.config.sections import (
     DeveloperAgentSettings,
     DocumentSettings,
     VisionSettings,
+    SpeechSettings,
 )
 
 
@@ -586,5 +587,27 @@ def validate_vision_settings(vis_cfg: VisionSettings) -> None:
             details={
                 "medium": vis_cfg.medium_confidence_threshold,
                 "low": vis_cfg.low_confidence_threshold,
+            },
+        )
+
+
+def validate_speech_settings(speech_cfg: SpeechSettings) -> None:
+    """Validate Speech System subsystem configuration parameters."""
+    if speech_cfg.max_audio_size_mb <= 0:
+        raise ConfigurationError(
+            f"Invalid max_audio_size_mb: {speech_cfg.max_audio_size_mb}. Must be positive.",
+            details={"max_audio_size_mb": speech_cfg.max_audio_size_mb},
+        )
+    if speech_cfg.max_audio_duration_seconds <= 0:
+        raise ConfigurationError(
+            f"Invalid max_audio_duration_seconds: {speech_cfg.max_audio_duration_seconds}. Must be positive.",
+            details={"max_audio_duration_seconds": speech_cfg.max_audio_duration_seconds},
+        )
+    if speech_cfg.vad_speech_threshold < speech_cfg.vad_silence_threshold:
+        raise ConfigurationError(
+            "VAD thresholds invalid: vad_speech_threshold must be >= vad_silence_threshold.",
+            details={
+                "speech_threshold": speech_cfg.vad_speech_threshold,
+                "silence_threshold": speech_cfg.vad_silence_threshold,
             },
         )

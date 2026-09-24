@@ -783,3 +783,57 @@ class VisionSettings(BaseModel):
         default=0.40, ge=0.0, le=1.0, description="Confidence threshold for LOW classification"
     )
 
+
+class SpeechSettings(BaseModel):
+    """Configuration parameters for Module 26 — Speech System."""
+
+    enabled: bool = Field(default=True, description="Enable Speech System subsystem")
+    stt_enabled: bool = Field(default=True, description="Enable Speech-to-Text capability")
+    tts_enabled: bool = Field(default=True, description="Enable Text-to-Speech capability")
+    vad_enabled: bool = Field(default=True, description="Enable Voice Activity Detection")
+
+    default_stt_provider: str = Field(default="mock", description="Default STT provider name")
+    default_stt_model: str = Field(default="mock-stt-v1", description="Default STT model identifier")
+    default_tts_provider: str = Field(default="mock", description="Default TTS provider name")
+    default_tts_model: str = Field(default="mock-tts-v1", description="Default TTS model identifier")
+    default_voice_id: str = Field(
+        default="mock_voice_en_female", description="Default TTS voice identifier"
+    )
+
+    max_audio_size_mb: float = Field(
+        default=25.0, ge=0.1, le=500.0, description="Maximum audio upload size in MB"
+    )
+    max_audio_duration_seconds: float = Field(
+        default=600.0, ge=1.0, le=7200.0, description="Maximum audio duration in seconds"
+    )
+    max_audio_stream_duration_seconds: float = Field(
+        default=3600.0, ge=10.0, le=86400.0, description="Maximum audio streaming session duration"
+    )
+    max_channels: int = Field(default=2, ge=1, le=8, description="Maximum audio channels allowed")
+
+    streaming_enabled: bool = Field(default=True, description="Enable audio streaming mode")
+    barge_in_enabled: bool = Field(default=True, description="Enable speech barge-in interruption")
+    wake_word_enabled: bool = Field(
+        default=False, description="Enable wake word detection architecture point"
+    )
+    raw_audio_retention: str = Field(
+        default="TEMPORARY",
+        description="Raw audio retention mode (TEMPORARY, SESSION_ONLY, PERSISTED, DELETED)",
+    )
+    transcript_logging: bool = Field(
+        default=False, description="Log full transcripts for local dev (NEVER in production)"
+    )
+
+    vad_speech_threshold: float = Field(
+        default=0.5, ge=0.0, le=1.0, description="VAD speech probability threshold"
+    )
+    vad_silence_threshold: float = Field(
+        default=0.3, ge=0.0, le=1.0, description="VAD silence probability threshold"
+    )
+    vad_min_speech_duration_ms: int = Field(
+        default=250, ge=50, le=5000, description="Minimum speech duration to trigger speech start"
+    )
+    vad_min_silence_duration_ms: int = Field(
+        default=500, ge=50, le=10000, description="Minimum silence duration to trigger end of speech"
+    )
+

@@ -37,6 +37,7 @@ from max.config.sections import (
     DeveloperAgentSettings,
     DocumentSettings,
     VisionSettings,
+    SpeechSettings,
 )
 from max.config.validators import (
     validate_agent_settings,
@@ -61,6 +62,7 @@ from max.config.validators import (
     validate_developer_agent_settings,
     validate_document_settings,
     validate_vision_settings,
+    validate_speech_settings,
 )
 
 
@@ -112,6 +114,7 @@ class Settings(BaseSettings):
     developer_agent: DeveloperAgentSettings = Field(default_factory=DeveloperAgentSettings)
     document: DocumentSettings = Field(default_factory=DocumentSettings)
     vision: VisionSettings = Field(default_factory=VisionSettings)
+    speech: SpeechSettings = Field(default_factory=SpeechSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -141,6 +144,7 @@ class Settings(BaseSettings):
         validate_developer_agent_settings(self.developer_agent)
         validate_document_settings(self.document)
         validate_vision_settings(self.vision)
+        validate_speech_settings(self.speech)
 
 
 

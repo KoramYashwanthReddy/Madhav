@@ -24,6 +24,7 @@ from max.coding.api.routes import router as coding_router
 from max.developer.api.routes import router as developer_router
 from max.document.api.routes import router as document_router
 from max.vision.api.routes import router as vision_router
+from max.speech.api.routes import router as speech_router
 
 
 def register_routers(app: FastAPI) -> None:
@@ -57,6 +58,7 @@ def register_routers(app: FastAPI) -> None:
     v1_router.include_router(developer_router)
     v1_router.include_router(document_router)
     v1_router.include_router(vision_router)
+    v1_router.include_router(speech_router)
     app.include_router(v1_router)
 
 
