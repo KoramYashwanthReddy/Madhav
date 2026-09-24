@@ -25,6 +25,7 @@ from max.config.sections import (
     WebIntelligenceSettings,
     CodingAgentSettings,
     DeveloperAgentSettings,
+    DocumentSettings,
 )
 
 
@@ -531,4 +532,23 @@ def validate_developer_agent_settings(dev_cfg: DeveloperAgentSettings) -> None:
         raise ConfigurationError(
             f"Invalid max_commit_message_length: {dev_cfg.max_commit_message_length}. Must be positive.",
             details={"max_commit_message_length": dev_cfg.max_commit_message_length},
+        )
+
+
+def validate_document_settings(doc_cfg: DocumentSettings) -> None:
+    """Validate Document Intelligence subsystem configuration parameters."""
+    if doc_cfg.max_document_size_mb <= 0:
+        raise ConfigurationError(
+            f"Invalid max_document_size_mb: {doc_cfg.max_document_size_mb}. Must be positive.",
+            details={"max_document_size_mb": doc_cfg.max_document_size_mb},
+        )
+    if doc_cfg.max_pages <= 0:
+        raise ConfigurationError(
+            f"Invalid max_pages: {doc_cfg.max_pages}. Must be positive.",
+            details={"max_pages": doc_cfg.max_pages},
+        )
+    if doc_cfg.max_processing_time <= 0:
+        raise ConfigurationError(
+            f"Invalid max_processing_time: {doc_cfg.max_processing_time}. Must be positive.",
+            details={"max_processing_time": doc_cfg.max_processing_time},
         )

@@ -684,3 +684,27 @@ class DeveloperAgentSettings(BaseModel):
     max_page_size: int = Field(
         default=100, description="Maximum page size for developer listings"
     )
+
+
+class DocumentSettings(BaseModel):
+    """Configuration parameters for Module 24 — Document Intelligence."""
+
+    enabled: bool = Field(default=True, description="Enable Document Intelligence subsystem")
+    max_document_size_mb: float = Field(
+        default=25.0, ge=0.1, le=500.0, description="Maximum document file size in MB"
+    )
+    max_pages: int = Field(default=500, ge=1, le=5000, description="Maximum pages to process per document")
+    max_elements: int = Field(default=10000, ge=1, le=100000, description="Maximum extracted structural elements")
+    max_table_rows: int = Field(default=1000, ge=1, le=50000, description="Maximum rows per extracted table")
+    max_table_columns: int = Field(default=100, ge=1, le=1000, description="Maximum columns per extracted table")
+    max_text_length: int = Field(default=500000, ge=1000, le=10000000, description="Maximum total extracted text length")
+    max_processing_time: float = Field(default=60.0, ge=1.0, le=600.0, description="Processing timeout in seconds")
+    max_temp_storage_mb: float = Field(default=100.0, ge=1.0, le=5000.0, description="Maximum temporary storage limit in MB")
+    document_processing_enabled: bool = Field(default=True, description="Enable background document parsing")
+    document_generation_enabled: bool = Field(default=True, description="Enable document generation features")
+    document_conversion_enabled: bool = Field(default=True, description="Enable document conversion features")
+    supported_formats: list[str] = Field(
+        default_factory=lambda: ["pdf", "docx", "xlsx", "pptx", "txt", "md", "csv", "json", "xml"],
+        description="List of supported document format extensions",
+    )
+    max_page_size: int = Field(default=100, description="Maximum page size for document listings")
