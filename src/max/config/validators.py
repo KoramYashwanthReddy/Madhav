@@ -33,6 +33,7 @@ from max.config.sections import (
     IntegrationsSettings,
     ProactiveSettings,
     PersonalizationSettings,
+    EvaluationSettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -705,6 +706,26 @@ def validate_personalization_settings(personalization_cfg: PersonalizationSettin
             f"Invalid min_evidence: {personalization_cfg.min_evidence}. Must be at least 1.",
             details={"min_evidence": personalization_cfg.min_evidence},
         )
+
+
+def validate_evaluation_settings(evaluation_cfg: EvaluationSettings) -> None:
+    """Validate Module 32 — Evaluation System configuration parameters."""
+    if evaluation_cfg.timeout_seconds <= 0:
+        raise ConfigurationError(
+            f"Invalid timeout_seconds: {evaluation_cfg.timeout_seconds}. Must be positive.",
+            details={"timeout_seconds": evaluation_cfg.timeout_seconds},
+        )
+    if evaluation_cfg.max_cases_per_run < 1:
+        raise ConfigurationError(
+            f"Invalid max_cases_per_run: {evaluation_cfg.max_cases_per_run}. Must be at least 1.",
+            details={"max_cases_per_run": evaluation_cfg.max_cases_per_run},
+        )
+    if not (0.0 <= evaluation_cfg.regression_threshold <= 1.0):
+        raise ConfigurationError(
+            f"Invalid regression_threshold: {evaluation_cfg.regression_threshold}. Must be between 0.0 and 1.0.",
+            details={"regression_threshold": evaluation_cfg.regression_threshold},
+        )
+
 
 
 

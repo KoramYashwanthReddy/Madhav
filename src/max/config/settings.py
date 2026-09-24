@@ -70,11 +70,13 @@ from max.config.validators import (
     validate_integrations_settings,
     validate_proactive_settings,
     validate_personalization_settings,
+    validate_evaluation_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
     ProactiveSettings,
     PersonalizationSettings,
+    EvaluationSettings,
 )
 
 
@@ -83,7 +85,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, and personalization.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, personalization, and evaluation system.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -132,6 +134,7 @@ class Settings(BaseSettings):
     integrations: IntegrationsSettings = Field(default_factory=IntegrationsSettings)
     proactive: ProactiveSettings = Field(default_factory=ProactiveSettings)
     personalization: PersonalizationSettings = Field(default_factory=PersonalizationSettings)
+    evaluation: EvaluationSettings = Field(default_factory=EvaluationSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -167,6 +170,7 @@ class Settings(BaseSettings):
         validate_integrations_settings(self.integrations)
         validate_proactive_settings(self.proactive)
         validate_personalization_settings(self.personalization)
+        validate_evaluation_settings(self.evaluation)
 
 
 
