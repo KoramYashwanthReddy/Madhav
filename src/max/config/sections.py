@@ -960,5 +960,22 @@ class ProactiveSettings(BaseModel):
     candidate_expiration_seconds: float = Field(default=86400.0, ge=60.0, le=604800.0, description="Expiration window for pending candidates")
 
 
+class PersonalizationSettings(BaseModel):
+    """Configuration parameters for Module 31 — Learning & Personalization Engine."""
+
+    enabled: bool = Field(default=True, description="Enable Personalization subsystem")
+    learning_enabled: bool = Field(default=True, description="Enable automated learning engine")
+    mode: str = Field(default="ADAPTIVE", description="Learning mode (OFF, EXPLICIT_ONLY, ASSISTED, ADAPTIVE)")
+    min_confidence: float = Field(default=0.7, ge=0.0, le=1.0, description="Minimum confidence threshold for hypothesis promotion")
+    min_evidence: int = Field(default=3, ge=1, le=100, description="Minimum evidence count required for hypothesis promotion")
+    decay_enabled: bool = Field(default=True, description="Enable preference decay over time for inferred preferences")
+    decay_rate: float = Field(default=0.05, ge=0.0, le=1.0, description="Daily decay rate for inferred preference confidence")
+    max_profile_size: int = Field(default=1000, ge=10, le=100000, description="Maximum stored preferences per profile")
+    signal_retention: int = Field(default=30, ge=1, le=365, description="Retention window in days for learning signals")
+    require_confirmation: bool = Field(default=False, description="Require explicit user confirmation before acting on inferred preferences")
+    personalization_enabled: bool = Field(default=True, description="Enable injecting personalization context into system behavior")
+
+
+
 
 

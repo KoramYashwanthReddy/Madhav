@@ -32,6 +32,7 @@ from max.config.sections import (
     SchedulerSettings,
     IntegrationsSettings,
     ProactiveSettings,
+    PersonalizationSettings,
 )
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -684,6 +685,27 @@ def validate_proactive_settings(proactive_cfg: ProactiveSettings) -> None:
             f"Invalid max_notifications_per_hour: {proactive_cfg.max_notifications_per_hour}. Must be positive.",
             details={"max_notifications_per_hour": proactive_cfg.max_notifications_per_hour},
         )
+
+
+def validate_personalization_settings(personalization_cfg: PersonalizationSettings) -> None:
+    """Validate Module 31 — Learning & Personalization Engine configuration parameters."""
+    valid_modes = {"OFF", "EXPLICIT_ONLY", "ASSISTED", "ADAPTIVE"}
+    if personalization_cfg.mode.upper() not in valid_modes:
+        raise ConfigurationError(
+            f"Invalid learning mode: {personalization_cfg.mode}. Must be one of {sorted(valid_modes)}.",
+            details={"mode": personalization_cfg.mode},
+        )
+    if not (0.0 <= personalization_cfg.min_confidence <= 1.0):
+        raise ConfigurationError(
+            f"Invalid min_confidence: {personalization_cfg.min_confidence}. Must be between 0.0 and 1.0.",
+            details={"min_confidence": personalization_cfg.min_confidence},
+        )
+    if personalization_cfg.min_evidence < 1:
+        raise ConfigurationError(
+            f"Invalid min_evidence: {personalization_cfg.min_evidence}. Must be at least 1.",
+            details={"min_evidence": personalization_cfg.min_evidence},
+        )
+
 
 
 

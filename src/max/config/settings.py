@@ -69,12 +69,13 @@ from max.config.validators import (
     validate_scheduler_settings,
     validate_integrations_settings,
     validate_proactive_settings,
+    validate_personalization_settings,
 )
 from max.config.sections import (
     IntegrationsSettings,
     ProactiveSettings,
+    PersonalizationSettings,
 )
-
 
 
 class Settings(BaseSettings):
@@ -82,7 +83,7 @@ class Settings(BaseSettings):
 
     Combines application, server, API, logging, security, CORS, identity, AI runtime,
     model management, context management, conversation engine, memory engine,
-    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, and feature flags.
+    personal knowledge engine, RAG engine, reasoning & planning engine, task engine, agent engine, tool registry, permission & security module, computer control, filesystem agent, terminal agent, application control, browser agent, feature flags, proactive intelligence, and personalization.
 
     Supports environment variables prefixed with `MAX_` and double-underscore nested keys.
     """
@@ -130,6 +131,7 @@ class Settings(BaseSettings):
     scheduler: SchedulerSettings = Field(default_factory=SchedulerSettings)
     integrations: IntegrationsSettings = Field(default_factory=IntegrationsSettings)
     proactive: ProactiveSettings = Field(default_factory=ProactiveSettings)
+    personalization: PersonalizationSettings = Field(default_factory=PersonalizationSettings)
 
     def model_post_init(self, __context: Any) -> None:
         """Validate settings after initialization."""
@@ -164,6 +166,7 @@ class Settings(BaseSettings):
         validate_scheduler_settings(self.scheduler)
         validate_integrations_settings(self.integrations)
         validate_proactive_settings(self.proactive)
+        validate_personalization_settings(self.personalization)
 
 
 
